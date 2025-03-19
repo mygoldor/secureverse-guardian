@@ -10,15 +10,30 @@ directories:
 files:
   - "dist/**/*"
   - "electron/**/*"
+  - "backend/**/*"
+  - "requirements.txt"
+  - "run_backend.py"
+
+extraResources:
+  - from: "public"
+    to: "public"
+
+extraFiles:
+  - "README.md"
 
 mac:
   category: "public.app-category.utilities"
   icon: "public/favicon.ico"
+  target:
+    - "dmg"
+    - "zip"
+  artifactName: "${productName}-${version}-${arch}.${ext}"
   
 win:
   icon: "public/favicon.ico"
   target:
     - "nsis"
+  artifactName: "${productName}-${version}-${arch}.${ext}"
 
 linux:
   icon: "public/favicon.ico"
@@ -26,3 +41,16 @@ linux:
     - "AppImage"
     - "deb"
   category: "Utility"
+  artifactName: "${productName}-${version}-${arch}.${ext}"
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "Guardia Security"
+
+publish:
+  provider: "github"
+  releaseType: "release"
+
