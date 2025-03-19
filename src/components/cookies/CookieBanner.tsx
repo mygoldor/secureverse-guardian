@@ -26,10 +26,6 @@ const CookieBanner: React.FC = () => {
   // Force banner to show on mount for testing
   useEffect(() => {
     console.log('Cookie banner mounted, showBanner:', showBanner);
-    // For debugging purposes
-    if (!showBanner) {
-      console.log('Forcing banner to show');
-    }
   }, [showBanner]);
   
   // Handle preference changes
@@ -61,7 +57,7 @@ const CookieBanner: React.FC = () => {
   return (
     <>
       {/* Banner with different styling for landing page */}
-      {(showBanner || true) && !showDetails && ( /* Temporarily force banner to show */
+      {showBanner && !showDetails && (
         <div className={`fixed z-50 backdrop-blur-sm border ${
           isLandingPage 
             ? "bottom-10 left-4 bg-white/95 dark:bg-gray-900/95 p-3 shadow-md rounded-lg border-gray-200 dark:border-gray-800 w-64"

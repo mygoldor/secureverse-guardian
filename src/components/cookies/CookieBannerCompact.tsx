@@ -23,7 +23,7 @@ const CookieBannerCompact: React.FC<CookieBannerCompactProps> = ({
           variant="outline"
           size="sm"
           className="text-[10px] h-5 px-1.5 border-destructive text-destructive hover:bg-destructive/10"
-          onClick={() => onReject()}
+          onClick={onReject}
         >
           {t('reject')}
         </Button>
@@ -31,7 +31,7 @@ const CookieBannerCompact: React.FC<CookieBannerCompactProps> = ({
           variant="default"
           size="sm"
           className="text-[10px] h-5 px-1.5"
-          onClick={() => onAccept()}
+          onClick={onAccept}
         >
           {t('accept')}
         </Button>
