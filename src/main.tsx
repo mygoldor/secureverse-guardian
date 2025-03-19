@@ -28,7 +28,7 @@ window.addEventListener('appinstalled', (event) => {
 
 // Ensure menu button is visible on DOM content loaded
 document.addEventListener("DOMContentLoaded", function() {
-  const menuButton = document.querySelector(".menu-button");
+  const menuButton = document.querySelector(".menu-button") as HTMLElement;
   if (menuButton) {
     menuButton.style.display = "block"; // Ensure it's displayed on loading
     console.log("Menu button visibility enforced");
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("Menu button not found in DOM");
     // Try again after a short delay in case of delayed rendering
     setTimeout(() => {
-      const delayedMenuButton = document.querySelector(".menu-button");
+      const delayedMenuButton = document.querySelector(".menu-button") as HTMLElement;
       if (delayedMenuButton) {
         delayedMenuButton.style.display = "block";
         console.log("Menu button visibility enforced after delay");
