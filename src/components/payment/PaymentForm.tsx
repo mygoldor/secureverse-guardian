@@ -23,8 +23,8 @@ const formSchema = z.object({
   password: z.string().min(8, { message: 'Le mot de passe doit contenir au moins 8 caractères' }),
   plan: z.enum(['monthly', 'yearly']),
   paymentMethod: z.enum(['stripe', 'mollie', 'paypal']),
-  termsAccepted: z.literal(true, {
-    errorMap: () => ({ message: 'Vous devez accepter les conditions générales' }),
+  termsAccepted: z.boolean().refine(val => val === true, {
+    message: 'Vous devez accepter les conditions générales',
   }),
 });
 
