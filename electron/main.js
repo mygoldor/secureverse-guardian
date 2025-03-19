@@ -49,15 +49,20 @@ function startPythonBackend() {
 
 function waitForBackend() {
   const checkBackend = () => {
-    axios.get('http://localhost:5000/status')
+    // Use HTTPS for backend connection
+    axios.get('https://localhost:5000/status', {
+      httpsAgent: new (require('https')).Agent({  
+        rejectUnauthorized: false // Allow self-signed certificates
+      })
+    })
       .then(() => {
         console.log('Backend is ready!');
         if (mainWindow) {
           mainWindow.webContents.send('backend-ready');
         }
       })
-      .catch(() => {
-        console.log('Backend not ready yet, retrying...');
+      .catch((error) => {
+        console.log('Backend not ready yet, retrying...', error.message);
         setTimeout(checkBackend, 1000);
       });
   };
@@ -127,11 +132,17 @@ app.whenReady().then(() => {
     return null;
   });
   
+  // Update all API handlers to use HTTPS
+  
   // Handle file scanning
   ipcMain.handle('scan-file', async (event, filePath) => {
     try {
-      const response = await axios.post('http://localhost:5000/scanner-fichier', {
+      const response = await axios.post('https://localhost:5000/scanner-fichier', {
         file_path: filePath
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false // Allow self-signed certificates
+        })
       });
       return response.data;
     } catch (error) {
@@ -143,8 +154,12 @@ app.whenReady().then(() => {
   // Handle directory scanning
   ipcMain.handle('scan-directory', async (event, directoryPath) => {
     try {
-      const response = await axios.post('http://localhost:5000/scan-directory', {
+      const response = await axios.post('https://localhost:5000/scan-directory', {
         directory_path: directoryPath
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -156,7 +171,11 @@ app.whenReady().then(() => {
   // Handle network scanning
   ipcMain.handle('scan-network', async () => {
     try {
-      const response = await axios.get('http://localhost:5000/scan-reseau');
+      const response = await axios.get('https://localhost:5000/scan-reseau', {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
+      });
       return response.data;
     } catch (error) {
       console.error('Scan network error:', error);
@@ -167,8 +186,12 @@ app.whenReady().then(() => {
   // Handle file quarantine
   ipcMain.handle('quarantine-file', async (event, filePath) => {
     try {
-      const response = await axios.post('http://localhost:5000/quarantine-file', {
+      const response = await axios.post('https://localhost:5000/quarantine-file', {
         file_path: filePath
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -180,8 +203,12 @@ app.whenReady().then(() => {
   // Handle file backup
   ipcMain.handle('backup-files', async (event, directory) => {
     try {
-      const response = await axios.post('http://localhost:5000/backup-files', {
+      const response = await axios.post('https://localhost:5000/backup-files', {
         directory: directory
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -193,7 +220,11 @@ app.whenReady().then(() => {
   // Handle list quarantined files
   ipcMain.handle('list-quarantined-files', async () => {
     try {
-      const response = await axios.get('http://localhost:5000/list-quarantined-files');
+      const response = await axios.get('https://localhost:5000/list-quarantined-files', {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
+      });
       return response.data.files || [];
     } catch (error) {
       console.error('List quarantined files error:', error);
@@ -204,8 +235,12 @@ app.whenReady().then(() => {
   // Handle restore file from quarantine
   ipcMain.handle('restore-file', async (event, fileName) => {
     try {
-      const response = await axios.post('http://localhost:5000/restore-file', {
+      const response = await axios.post('https://localhost:5000/restore-file', {
         file_name: fileName
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -217,8 +252,12 @@ app.whenReady().then(() => {
   // Handle delete file from quarantine
   ipcMain.handle('delete-file', async (event, fileName) => {
     try {
-      const response = await axios.post('http://localhost:5000/delete-file', {
+      const response = await axios.post('https://localhost:5000/delete-file', {
         file_name: fileName
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -230,8 +269,12 @@ app.whenReady().then(() => {
   // Handle scan quarantined file
   ipcMain.handle('scan-quarantined-file', async (event, fileName) => {
     try {
-      const response = await axios.post('http://localhost:5000/scan-quarantined-file', {
+      const response = await axios.post('https://localhost:5000/scan-quarantined-file', {
         file_name: fileName
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -243,7 +286,11 @@ app.whenReady().then(() => {
   // Handle security logs retrieval
   ipcMain.handle('get-security-logs', async (event, lines) => {
     try {
-      const response = await axios.get(`http://localhost:5000/security-logs?lines=${lines || 50}`);
+      const response = await axios.get(`https://localhost:5000/security-logs?lines=${lines || 50}`, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
+      });
       return response.data;
     } catch (error) {
       console.error('Get security logs error:', error);
@@ -254,7 +301,11 @@ app.whenReady().then(() => {
   // Handle suspicious processes retrieval
   ipcMain.handle('get-suspicious-processes', async () => {
     try {
-      const response = await axios.get('http://localhost:5000/suspicious-processes');
+      const response = await axios.get('https://localhost:5000/suspicious-processes', {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
+      });
       return response.data;
     } catch (error) {
       console.error('Get suspicious processes error:', error);
@@ -265,8 +316,12 @@ app.whenReady().then(() => {
   // Handle process termination
   ipcMain.handle('kill-process', async (event, pid) => {
     try {
-      const response = await axios.post('http://localhost:5000/kill-process', {
+      const response = await axios.post('https://localhost:5000/kill-process', {
         pid: pid
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -278,7 +333,11 @@ app.whenReady().then(() => {
   // Handle get blocked IPs
   ipcMain.handle('get-blocked-ips', async () => {
     try {
-      const response = await axios.get('http://localhost:5000/blocked-ips');
+      const response = await axios.get('https://localhost:5000/blocked-ips', {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
+      });
       return response.data.ips || [];
     } catch (error) {
       console.error('Get blocked IPs error:', error);
@@ -289,8 +348,12 @@ app.whenReady().then(() => {
   // Handle block IP
   ipcMain.handle('block-ip', async (event, ip) => {
     try {
-      const response = await axios.post('http://localhost:5000/block-ip', {
+      const response = await axios.post('https://localhost:5000/block-ip', {
         ip: ip
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
@@ -302,8 +365,12 @@ app.whenReady().then(() => {
   // Handle unblock IP
   ipcMain.handle('unblock-ip', async (event, ip) => {
     try {
-      const response = await axios.post('http://localhost:5000/unblock-ip', {
+      const response = await axios.post('https://localhost:5000/unblock-ip', {
         ip: ip
+      }, {
+        httpsAgent: new (require('https')).Agent({  
+          rejectUnauthorized: false
+        })
       });
       return response.data;
     } catch (error) {
