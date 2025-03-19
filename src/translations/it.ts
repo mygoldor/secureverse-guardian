@@ -1,3 +1,4 @@
+
 import { TranslationKeys } from './types';
 
 const it: TranslationKeys = {
@@ -299,5 +300,24 @@ const it: TranslationKeys = {
   signup_success: 'Registrazione completata',
   signup_success_desc: 'Il tuo account è stato creato. Reindirizzamento alla dashboard...',
   
+  // Security alerts section
+  today_time: 'Oggi, {time}',
+  yesterday_time: 'Ieri, {time}',
+  days_ago: '{days} giorni fa',
+  high_priority: 'Alta priorità',
+  medium_priority: 'Media priorità',
+  low_priority: 'Bassa priorità',
+  phishing_attempt_detected: 'Tentativo di phishing rilevato',
+  suspicious_login_detected: 'Accesso sospetto rilevato',
+  potential_malware: 'Potenziale malware',
+  suspicious_program_detected: 'Programma sospetto rilevato',
+  security_update_available: 'Aggiornamento di sicurezza disponibile',
+  important_security_update: 'Importante aggiornamento di sicurezza',
+  update_now: 'Aggiorna ora',
+  change_password: 'Cambia password',
+  scan_and_quarantine: 'Scansiona e metti in quarantena',
+  no_active_alerts: 'Nessun avviso attivo',
+  system_secure: 'Il tuo sistema è sicuro'
+};
 
-
+export default it;
