@@ -20,6 +20,9 @@ extraResources:
 
 extraFiles:
   - "README.md"
+  - "BUILD.md"
+  - "start-guardia.bat"
+  - "start-guardia.sh"
 
 mac:
   category: "public.app-category.utilities"
@@ -53,4 +56,3 @@ nsis:
 publish:
   provider: "github"
   releaseType: "release"
-
