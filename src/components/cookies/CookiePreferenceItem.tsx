@@ -4,12 +4,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Info } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { TranslationKeys } from '@/translations';
 
 interface CookiePreferenceItemProps {
   id: string;
-  title: keyof typeof import('@/translations').TranslationKeys;
-  description: keyof typeof import('@/translations').TranslationKeys;
-  info: keyof typeof import('@/translations').TranslationKeys;
+  title: keyof TranslationKeys;
+  description: keyof TranslationKeys;
+  info: keyof TranslationKeys;
   checked: boolean;
   onChange?: () => void;
   disabled?: boolean;

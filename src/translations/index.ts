@@ -4,7 +4,7 @@ import fr from './fr';
 import es from './es';
 import de from './de';
 import it from './it';
-import { TranslationKeys } from './types';
+import type { TranslationKeys } from './types';
 
 export type Language = 'fr' | 'en' | 'es' | 'de' | 'it';
 
