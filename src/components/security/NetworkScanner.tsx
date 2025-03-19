@@ -25,7 +25,7 @@ const NetworkScanner: React.FC<NetworkScannerProps> = ({ scanNetwork }) => {
   const handleScanNetwork = async () => {
     try {
       setIsScanning(true);
-      const devices = await scanNetwork(); // Ensuring only one argument is passed
+      const devices = await scanNetwork();
       setNetworkDevices(Array.isArray(devices) ? devices : []);
       
       toast({
