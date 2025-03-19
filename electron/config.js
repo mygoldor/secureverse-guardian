@@ -27,6 +27,7 @@ const config = {
   // Backend configuration
   backend: {
     URL: 'https://localhost:5000',
+    HTTP_URL: 'http://localhost:5001', // HTTP URL for redirection
     PYTHON_SCRIPT: path.join(__dirname, '../backend.py')
   },
 

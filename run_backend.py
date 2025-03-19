@@ -4,6 +4,8 @@ import socket
 import sys
 import os
 import ssl
+import threading
+from flask import Flask, redirect, request
 
 def is_port_in_use(port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -88,14 +90,36 @@ def find_letsencrypt_cert():
     
     return None, None
 
-if __name__ == "__main__":
-    port = 5000
+def run_http_server(http_port):
+    """Run HTTP server that redirects to HTTPS"""
+    redirect_app = Flask("redirect_app")
     
-    # Check if the port is already in use
-    if is_port_in_use(port):
-        print(f"Error: Port {port} is already in use. Another instance of Guardia may be running.")
+    @redirect_app.route('/', defaults={'path': ''})
+    @redirect_app.route('/<path:path>')
+    def redirect_to_https(path):
+        https_url = f"https://{request.host.split(':')[0]}:5000{request.full_path}"
+        return redirect(https_url, code=301)
+    
+    print(f"Starting HTTP redirect server on port {http_port}")
+    redirect_app.run(host="127.0.0.1", port=http_port)
+
+if __name__ == "__main__":
+    https_port = 5000
+    http_port = 5001  # HTTP port for redirection
+    
+    # Check if the ports are already in use
+    if is_port_in_use(https_port):
+        print(f"Error: Port {https_port} is already in use. Another instance of Guardia may be running.")
         print("Please close any other instances of Guardia and try again.")
         sys.exit(1)
+    
+    if is_port_in_use(http_port):
+        print(f"Warning: Port {http_port} is already in use. HTTP redirection will not be available.")
+    else:
+        # Start HTTP server in a separate thread
+        http_thread = threading.Thread(target=run_http_server, args=(http_port,))
+        http_thread.daemon = True
+        http_thread.start()
     
     # Create certificates directory
     cert_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "certs")
@@ -115,7 +139,7 @@ if __name__ == "__main__":
         key_file = os.path.join(cert_dir, "guardia.key")
         cert_exists = generate_self_signed_cert(cert_file, key_file)
     
-    print(f"Starting Guardia Security backend on port {port} with {'HTTPS' if cert_exists else 'HTTP'}...")
+    print(f"Starting Guardia Security backend on port {https_port} with {'HTTPS' if cert_exists else 'HTTP'}...")
     
     if cert_exists:
         # Create SSL context
@@ -123,8 +147,8 @@ if __name__ == "__main__":
         context.load_cert_chain(cert_file, key_file)
         
         # Run with SSL
-        app.run(host="127.0.0.1", port=port, ssl_context=context)
+        app.run(host="127.0.0.1", port=https_port, ssl_context=context)
     else:
         # Fallback to HTTP
         print("WARNING: Running without SSL. Some features may not work properly.")
-        app.run(host="127.0.0.1", port=port)
+        app.run(host="127.0.0.1", port=https_port)

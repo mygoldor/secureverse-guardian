@@ -54,17 +54,30 @@ function startPythonBackend() {
 
 function waitForBackend() {
   const checkBackend = () => {
+    // First try HTTPS
     axios.get(`${config.backend.URL}/status`, { httpsAgent })
       .then(() => {
-        console.log('Backend is ready!');
+        console.log('Backend is ready on HTTPS!');
         const mainWindow = getMainWindow();
         if (mainWindow) {
           mainWindow.webContents.send('backend-ready');
         }
       })
-      .catch((error) => {
-        console.log('Backend not ready yet, retrying...', error.message);
-        setTimeout(checkBackend, 1000);
+      .catch((httpsError) => {
+        // If HTTPS fails, try HTTP
+        console.log('HTTPS connection failed, trying HTTP...', httpsError.message);
+        axios.get(`${config.backend.HTTP_URL}/status`)
+          .then(() => {
+            console.log('Backend is ready on HTTP!');
+            const mainWindow = getMainWindow();
+            if (mainWindow) {
+              mainWindow.webContents.send('backend-ready');
+            }
+          })
+          .catch((httpError) => {
+            console.log('Backend not ready yet, retrying...', httpError.message);
+            setTimeout(checkBackend, 1000);
+          });
       });
   };
   
