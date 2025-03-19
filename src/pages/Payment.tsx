@@ -18,6 +18,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
 import { Link } from 'react-router-dom';
+import { sanitizePersonalData } from '@/utils/gdprCompliance';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Le nom est requis" }),
@@ -77,6 +78,9 @@ const Payment = () => {
     
     setIsProcessing(true);
     
+    // Sanitize data according to GDPR
+    const sanitizedData = sanitizePersonalData(values);
+    
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
@@ -125,7 +129,7 @@ const Payment = () => {
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Pentest et correction automatique
+                  Pentest et correction automatique des failles
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
@@ -169,11 +173,11 @@ const Payment = () => {
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Pentest et correction automatique
+                  Pentest et correction automatique des failles
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Sauvegarde et récupération des fichiers
+                  Sauvegarde et récupération des fichiers en cas d'attaque
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
