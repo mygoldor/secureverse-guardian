@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -16,10 +15,12 @@ import { AlertTriangle, Shield } from 'lucide-react';
 
 interface NetworkScannerProps {
   scanNetwork: () => Promise<any>;
+  getBlockedIPs?: () => Promise<string[]>;
   blockIP?: (ip: string) => Promise<any>;
+  unblockIP?: (ip: string) => Promise<any>;
 }
 
-const NetworkScanner: React.FC<NetworkScannerProps> = ({ scanNetwork, blockIP }) => {
+const NetworkScanner: React.FC<NetworkScannerProps> = ({ scanNetwork, getBlockedIPs, blockIP, unblockIP }) => {
   const [networkDevices, setNetworkDevices] = useState<any[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const [monitorInterval, setMonitorInterval] = useState<NodeJS.Timeout | null>(null);

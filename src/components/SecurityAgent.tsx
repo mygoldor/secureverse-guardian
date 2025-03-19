@@ -40,6 +40,18 @@ declare global {
 const SecurityAgent = () => {
   const { t } = useLanguage();
 
+  // Fonction d'adaptation pour getSuspiciousProcesses
+  const adaptProcessMonitor = () => {
+    if (!window.electron || !window.electron.getSuspiciousProcesses) {
+      return async () => [];
+    }
+    
+    return async () => {
+      const result = await window.electron.getSuspiciousProcesses();
+      return result.processes || [];
+    };
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -113,7 +125,7 @@ const SecurityAgent = () => {
           <TabsContent value="processes">
             {window.electron && (
               <ProcessMonitor 
-                monitorProcesses={window.electron.getSuspiciousProcesses}
+                monitorProcesses={adaptProcessMonitor()}
                 killProcess={window.electron.killProcess}
                 getBlockedIPs={window.electron.getBlockedIPs}
                 blockIP={window.electron.blockIP}
