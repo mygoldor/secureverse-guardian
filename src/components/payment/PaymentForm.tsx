@@ -7,9 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { Link } from 'react-router-dom';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,6 +42,8 @@ interface PaymentFormProps {
 export type FormValues = z.infer<typeof formSchema>;
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => {
+  const [showPassword, setShowPassword] = React.useState(false);
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,72 +54,108 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
     },
   });
   
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid gap-2">
-        <Label htmlFor="name">Nom complet</Label>
-        <Input id="name" placeholder="Votre nom" type="text" {...form.register("name")} />
-        {form.formState.errors.name && (
-          <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
-        )}
-      </div>
-      
-      <div className="grid gap-2">
-        <Label htmlFor="email">Adresse e-mail</Label>
-        <Input id="email" placeholder="exemple@gmail.com" type="email" {...form.register("email")} />
-        {form.formState.errors.email && (
-          <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
-        )}
-      </div>
-      
-      <div className="grid gap-2">
-        <Label htmlFor="password">Mot de passe</Label>
-        <Input id="password" type="password" {...form.register("password")} />
-        {form.formState.errors.password && (
-          <p className="text-sm text-red-500">{form.formState.errors.password.message}</p>
-        )}
-      </div>
-      
-      <div className="flex items-start space-x-2 mt-4">
-        <Checkbox
-          id="terms"
-          {...form.register("terms", { 
-            required: true 
-          })}
-        />
-        <div className="grid gap-1.5 leading-none">
-          <label
-            htmlFor="terms"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            J'accepte les 
-            <Link to="/terms" className="ml-1 text-security-primary hover:underline">
-              Conditions Générales d'Utilisation
-            </Link>
-          </label>
-          {form.formState.errors.terms && (
-            <p className="text-sm text-red-500">
-              Vous devez accepter les Conditions Générales
-            </p>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom complet</FormLabel>
+              <FormControl>
+                <Input placeholder="Votre nom" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
-      </div>
-      
-      <Button 
-        type="submit" 
-        className="w-full bg-security-primary hover:bg-security-secondary"
-        disabled={isProcessing}
-      >
-        {isProcessing ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Traitement en cours...
-          </>
-        ) : (
-          "S'abonner maintenant"
-        )}
-      </Button>
-    </form>
+        />
+        
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Adresse e-mail</FormLabel>
+              <FormControl>
+                <Input placeholder="exemple@gmail.com" type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mot de passe</FormLabel>
+              <div className="relative">
+                <FormControl>
+                  <Input 
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="Minimum 8 caractères" 
+                    {...field} 
+                  />
+                </FormControl>
+                <button 
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="terms"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-sm font-normal">
+                  J'accepte les{" "}
+                  <Link to="/terms" className="text-security-primary hover:underline">
+                    Conditions Générales d'Utilisation
+                  </Link>
+                </FormLabel>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+        
+        <Button 
+          type="submit" 
+          className="w-full bg-security-primary hover:bg-security-secondary"
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Traitement en cours...
+            </>
+          ) : (
+            "S'abonner maintenant"
+          )}
+        </Button>
+      </form>
+    </Form>
   );
 };
 
