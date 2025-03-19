@@ -3,9 +3,12 @@ import React from 'react';
 import { Shield, Bell, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Header = () => {
   const location = useLocation();
+  const { t } = useLanguage();
   
   // Check if a path is active
   const isActive = (path: string) => {
@@ -35,7 +38,7 @@ const Header = () => {
             to="/dashboard" 
             className={`transition-colors ${isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
           >
-            Tableau de bord
+            {t('dashboard')}
           </Link>
           <Link 
             to="/protection" 
@@ -64,12 +67,13 @@ const Header = () => {
         </div>
         
         <div className="flex items-center space-x-3">
+          <LanguageSelector />
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="h-5 w-5" />
             <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-security-danger"></span>
           </Button>
           <Button className="hidden md:inline-flex bg-security-primary hover:bg-security-secondary text-white">
-            Quick Scan
+            {t('quick_scan')}
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-5 w-5" />
