@@ -3,6 +3,14 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 
 interface NetworkScannerProps {
   scanNetwork: () => Promise<any>;
@@ -17,7 +25,7 @@ const NetworkScanner: React.FC<NetworkScannerProps> = ({ scanNetwork }) => {
   const handleScanNetwork = async () => {
     try {
       setIsScanning(true);
-      const devices = await scanNetwork();
+      const devices = await scanNetwork(); // Removed second argument here
       setNetworkDevices(Array.isArray(devices) ? devices : []);
       
       toast({
@@ -48,22 +56,22 @@ const NetworkScanner: React.FC<NetworkScannerProps> = ({ scanNetwork }) => {
       
       {networkDevices.length > 0 && (
         <div className="border rounded-md overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-muted/50">
-              <tr>
-                <th className="p-2 text-left font-medium text-muted-foreground">IP</th>
-                <th className="p-2 text-left font-medium text-muted-foreground">MAC</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('ip_address') || 'IP'}</TableHead>
+                <TableHead>{t('mac_address') || 'MAC'}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {networkDevices.map((device, index) => (
-                <tr key={index} className="border-t">
-                  <td className="p-2">{device.ip}</td>
-                  <td className="p-2">{device.mac}</td>
-                </tr>
+                <TableRow key={index}>
+                  <TableCell>{device.ip}</TableCell>
+                  <TableCell>{device.mac}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
