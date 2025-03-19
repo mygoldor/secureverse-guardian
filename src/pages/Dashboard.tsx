@@ -8,6 +8,7 @@ import SecurityCharts from '@/components/dashboard/SecurityCharts';
 import AnalysisHistory from '@/components/dashboard/AnalysisHistory';
 import SecuritySettings from '@/components/dashboard/SecuritySettings';
 import Subscription from '@/components/dashboard/Subscription';
+import QuickScan from '@/components/QuickScan';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Dashboard = () => {
@@ -22,6 +23,11 @@ const Dashboard = () => {
           <section className="mb-8">
             <h2 className="text-xl font-bold mb-4 text-[#003366]">{t('security_summary')}</h2>
             <SecuritySummary />
+          </section>
+          
+          <section className="mb-8">
+            <h2 className="text-xl font-bold mb-4 text-[#003366]">{t('analyse_rapide')}</h2>
+            <QuickScan />
           </section>
           
           <section className="mb-8">
