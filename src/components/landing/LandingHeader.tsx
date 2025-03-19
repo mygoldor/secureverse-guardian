@@ -20,22 +20,24 @@ const LandingHeader = () => {
           <span className="font-bold text-2xl text-white">Guardia</span>
         </Link>
         
-        <nav className="hidden md:flex items-center space-x-6 ml-auto">
-          <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
-          <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
-          <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
-          <a href="#contact" className="text-white hover:text-gray-300 transition-colors">{t('contact')}</a>
-          <Link to="/login" className="text-white hover:text-gray-300 transition-colors">{t('login')}</Link>
-        </nav>
-        
-        <div className="flex items-center space-x-3 ml-4">
-          <LanguageSelector />
-          <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white" onClick={() => window.location.href='/signup'}>
-            {t('get_started')}
-          </Button>
-          <Button variant="ghost" size="icon" className="md:hidden text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-          </Button>
+        <div className="flex items-center">
+          <nav className="hidden md:flex items-center space-x-6 mr-6">
+            <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
+            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
+            <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
+            <a href="#contact" className="text-white hover:text-gray-300 transition-colors">{t('contact')}</a>
+            <Link to="/login" className="text-white hover:text-gray-300 transition-colors">{t('login')}</Link>
+          </nav>
+          
+          <div className="flex items-center space-x-3">
+            <LanguageSelector />
+            <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white" onClick={() => window.location.href='/signup'}>
+              {t('get_started')}
+            </Button>
+            <Button variant="ghost" size="icon" className="md:hidden text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </Button>
+          </div>
         </div>
       </div>
     </header>
