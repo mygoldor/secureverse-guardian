@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'  # Déclencher uniquement si des fichiers dans src/ sont modifiés
+      - 'src/**'
   pull_request:
     branches: [ main ]
   # Manual trigger from the Actions tab
