@@ -333,7 +333,29 @@ const en: TranslationKeys = {
   change: "Change",
   login_history: "Login history",
   view_all: "View all",
-  failed: "Failed"
+  failed: "Failed",
+  
+  // Cookie banner
+  accept: "Accept",
+  reject: "Reject",
+  accept_all: "Accept all",
+  reject_all: "Reject all",
+  save_preferences: "Save preferences",
+  cookie_preferences_description: "We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. By clicking \"Accept all\", you consent to our use of cookies.",
+  essential_cookies: "Essential Cookies",
+  essential_cookies_description: "Essential cookies are necessary for the website to function properly. These cookies ensure basic functionalities and security features of the website.",
+  essential_cookies_required: "These cookies are required and cannot be disabled.",
+  functional_cookies: "Functional Cookies",
+  functional_cookies_description: "Functional cookies help perform certain functionalities like sharing content from our website on social media platforms or collecting feedback.",
+  functional_cookies_info: "Remembers your preferences and improves user experience.",
+  analytics_cookies: "Analytics Cookies",
+  analytics_cookies_description: "Analytics cookies help us understand how visitors interact with our website. They help us measure the number of visitors and see how visitors move around our website.",
+  analytics_cookies_info: "Collects anonymous data to help us improve our website.",
+  marketing_cookies: "Marketing Cookies",
+  marketing_cookies_description: "Marketing cookies are used to track visitors across websites. The intention is to display ads that are relevant and engaging for the individual user.",
+  marketing_cookies_info: "Allows for personalized ads and content based on your interests.",
+  gdpr_compliant: "GDPR Compliant",
+  cookie_policy: "Cookie Policy",
 };
 
 export default en;

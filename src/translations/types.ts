@@ -1,4 +1,3 @@
-
 // Define the translation structure as a TypeScript type for better type safety
 export type TranslationKeys = {
   // General
@@ -334,4 +333,26 @@ export type TranslationKeys = {
   login_history: string;
   view_all: string;
   failed: string;
+  
+  // Cookie banner
+  accept: string;
+  reject: string;
+  accept_all: string;
+  reject_all: string;
+  save_preferences: string;
+  cookie_preferences_description: string;
+  essential_cookies: string;
+  essential_cookies_description: string;
+  essential_cookies_required: string;
+  functional_cookies: string;
+  functional_cookies_description: string;
+  functional_cookies_info: string;
+  analytics_cookies: string;
+  analytics_cookies_description: string;
+  analytics_cookies_info: string;
+  marketing_cookies: string;
+  marketing_cookies_description: string;
+  marketing_cookies_info: string;
+  gdpr_compliant: string;
+  cookie_policy: string;
 };
