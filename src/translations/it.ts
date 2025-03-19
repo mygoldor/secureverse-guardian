@@ -333,7 +333,29 @@ const it: TranslationKeys = {
   change: "Modifica",
   login_history: "Cronologia accessi",
   view_all: "Vedi tutto",
-  failed: "Fallito"
+  failed: "Fallito",
+  
+  // Cookie banner
+  accept: 'Accetta',
+  reject: 'Rifiuta',
+  accept_all: 'Accetta tutti',
+  reject_all: 'Rifiuta tutti',
+  save_preferences: 'Salva preferenze',
+  cookie_preferences_description: 'Utilizziamo i cookie per migliorare la tua esperienza sul nostro sito. Puoi scegliere quali cookie accettare.',
+  essential_cookies: 'Cookie essenziali',
+  essential_cookies_description: 'Necessari per il funzionamento del sito',
+  essential_cookies_required: 'Sempre attivi',
+  functional_cookies: 'Cookie funzionali',
+  functional_cookies_description: 'Per migliorare l\'esperienza utente',
+  functional_cookies_info: 'Memorizza le preferenze dell\'utente',
+  analytics_cookies: 'Cookie di analisi',
+  analytics_cookies_description: 'Per capire come utilizzi il sito',
+  analytics_cookies_info: 'Raccoglie dati anonimi sull\'utilizzo',
+  marketing_cookies: 'Cookie di marketing',
+  marketing_cookies_description: 'Per contenuti personalizzati',
+  marketing_cookies_info: 'Mostra annunci basati sui tuoi interessi',
+  gdpr_compliant: 'Conforme al GDPR',
+  cookie_policy: 'Politica dei cookie',
 };
 
 export default it;

@@ -333,7 +333,29 @@ const es: TranslationKeys = {
   change: "Cambiar",
   login_history: "Historial de inicio de sesión",
   view_all: "Ver todo",
-  failed: "Fallido"
+  failed: "Fallido",
+  
+  // Cookie banner
+  accept: 'Aceptar',
+  reject: 'Rechazar',
+  accept_all: 'Aceptar todo',
+  reject_all: 'Rechazar todo',
+  save_preferences: 'Guardar preferencias',
+  cookie_preferences_description: 'Utilizamos cookies para mejorar su experiencia en nuestro sitio. Puede elegir qué cookies aceptar.',
+  essential_cookies: 'Cookies esenciales',
+  essential_cookies_description: 'Necesarias para el funcionamiento del sitio',
+  essential_cookies_required: 'Siempre activas',
+  functional_cookies: 'Cookies funcionales',
+  functional_cookies_description: 'Para mejorar la experiencia del usuario',
+  functional_cookies_info: 'Almacena las preferencias del usuario',
+  analytics_cookies: 'Cookies analíticas',
+  analytics_cookies_description: 'Para entender cómo utiliza el sitio',
+  analytics_cookies_info: 'Recopila datos anónimos sobre el uso',
+  marketing_cookies: 'Cookies de marketing',
+  marketing_cookies_description: 'Para contenido personalizado',
+  marketing_cookies_info: 'Muestra anuncios basados en sus intereses',
+  gdpr_compliant: 'Cumple con el RGPD',
+  cookie_policy: 'Política de cookies',
 };
 
 export default es;
