@@ -1,3 +1,4 @@
+
 // Define the translation structure as a TypeScript type for better type safety
 export type TranslationKeys = {
   // General
@@ -314,7 +315,6 @@ export type TranslationKeys = {
   high_priority: string;
   medium_priority: string;
   low_priority: string;
-  learn_more: string;
   resolved: string;
   no_active_alerts: string;
   system_secure: string;

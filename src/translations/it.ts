@@ -1,4 +1,3 @@
-
 import { TranslationKeys } from './types';
 
 const it: TranslationKeys = {
@@ -316,6 +315,7 @@ const it: TranslationKeys = {
   update_now: 'Aggiorna ora',
   change_password: 'Cambia password',
   scan_and_quarantine: 'Scansiona e metti in quarantena',
+  resolved: 'Risolto',
   no_active_alerts: 'Nessun avviso attivo',
   system_secure: 'Il tuo sistema è sicuro'
 };

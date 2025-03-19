@@ -315,7 +315,6 @@ const en: TranslationKeys = {
   high_priority: "High Priority",
   medium_priority: "Medium Priority",
   low_priority: "Low Priority",
-  learn_more: "Learn More",
   resolved: "Resolved",
   no_active_alerts: "No Active Alerts",
   system_secure: "Your system is currently secure",
