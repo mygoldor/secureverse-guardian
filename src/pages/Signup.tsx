@@ -6,21 +6,45 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Shield, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-const Login = () => {
+const Signup = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { t } = useLanguage();
+  const { toast } = useToast();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Authentication logic would go here
-    console.log('Login attempt with:', { email, password });
+    
+    // Basic validation
+    if (password !== confirmPassword) {
+      toast({
+        title: t('passwords_dont_match'),
+        description: t('passwords_dont_match_desc'),
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Signup logic would go here
+    console.log('Signup attempt with:', { name, email, password });
+    toast({
+      title: t('signup_success'),
+      description: t('signup_success_desc'),
+    });
   };
 
   return (
@@ -31,10 +55,23 @@ const Login = () => {
             <Shield className="h-8 w-8 text-[#003366]" />
             <span className="font-bold text-2xl text-[#003366]">Guardia</span>
           </Link>
-          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('login_to_guardia')}</h2>
+          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('create_account_guardia')}</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">{t('full_name')}</Label>
+            <Input 
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t('enter_your_name')}
+              required
+              className="w-full"
+            />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="email">{t('email_address')}</Label>
             <Input 
@@ -70,25 +107,47 @@ const Login = () => {
             </div>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">{t('confirm_password')}</Label>
+            <div className="relative">
+              <Input 
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder={t('confirm_your_password')}
+                required
+                className="w-full pr-10"
+              />
+              <button 
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
           <Button 
             type="submit" 
             className="w-full bg-[#003366] hover:bg-[#00509E] text-white"
           >
-            {t('login')}
+            {t('create_account')}
           </Button>
         </form>
 
-        <div className="mt-6 text-center space-y-2">
-          <Link to="/forgot-password" className="text-sm text-[#003366] hover:underline block">
-            {t('forgot_password')}
-          </Link>
-          <Link to="/signup" className="text-sm text-[#003366] hover:underline block">
-            {t('create_account')}
-          </Link>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            {t('already_have_account')} {' '}
+            <Link to="/login" className="text-[#003366] hover:underline">
+              {t('login')}
+            </Link>
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Signup;

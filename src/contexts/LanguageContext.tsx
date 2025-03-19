@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -69,9 +70,20 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               enter_your_email: "Enter your email",
               password: "Password",
               enter_your_password: "Enter your password",
-              login: "Log in",
               forgot_password: "Forgot password?",
               create_account: "Create an account",
+              
+              // Signup page translations
+              create_account_guardia: "Create an account with Guardia",
+              full_name: "Full name",
+              enter_your_name: "Enter your full name",
+              confirm_password: "Confirm password",
+              confirm_your_password: "Confirm your password",
+              already_have_account: "Already have an account?",
+              passwords_dont_match: "Passwords don't match",
+              passwords_dont_match_desc: "Please ensure both passwords are identical",
+              signup_success: "Account created successfully",
+              signup_success_desc: "Welcome to Guardia! You can now log in."
             }
           },
           fr: {
@@ -112,9 +124,20 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               enter_your_email: "Entrez votre e-mail",
               password: "Mot de passe",
               enter_your_password: "Entrez votre mot de passe",
-              login: "Se connecter",
               forgot_password: "Mot de passe oublié ?",
               create_account: "Créer un compte",
+              
+              // Signup page translations
+              create_account_guardia: "Créer un compte avec Guardia",
+              full_name: "Nom complet",
+              enter_your_name: "Entrez votre nom complet",
+              confirm_password: "Confirmer le mot de passe",
+              confirm_your_password: "Confirmez votre mot de passe",
+              already_have_account: "Vous avez déjà un compte ?",
+              passwords_dont_match: "Les mots de passe ne correspondent pas",
+              passwords_dont_match_desc: "Veuillez vous assurer que les deux mots de passe sont identiques",
+              signup_success: "Compte créé avec succès",
+              signup_success_desc: "Bienvenue chez Guardia ! Vous pouvez maintenant vous connecter."
             }
           },
           es: {
@@ -155,9 +178,20 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               enter_your_email: "Introduzca su correo electrónico",
               password: "Contraseña",
               enter_your_password: "Introduzca su contraseña",
-              login: "Iniciar sesión",
               forgot_password: "¿Olvidó su contraseña?",
               create_account: "Crear una cuenta",
+              
+              // Signup page translations
+              create_account_guardia: "Crear una cuenta con Guardia",
+              full_name: "Nombre completo",
+              enter_your_name: "Introduzca su nombre completo",
+              confirm_password: "Confirmar contraseña",
+              confirm_your_password: "Confirme su contraseña",
+              already_have_account: "¿Ya tiene una cuenta?",
+              passwords_dont_match: "Las contraseñas no coinciden",
+              passwords_dont_match_desc: "Por favor, asegúrese de que ambas contraseñas sean idénticas",
+              signup_success: "Cuenta creada con éxito",
+              signup_success_desc: "¡Bienvenido a Guardia! Ahora puede iniciar sesión."
             }
           },
           de: {
@@ -198,9 +232,20 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               enter_your_email: "Geben Sie Ihre E-Mail ein",
               password: "Passwort",
               enter_your_password: "Geben Sie Ihr Passwort ein",
-              login: "Anmelden",
               forgot_password: "Passwort vergessen?",
               create_account: "Konto erstellen",
+              
+              // Signup page translations
+              create_account_guardia: "Erstellen Sie ein Konto bei Guardia",
+              full_name: "Vollständiger Name",
+              enter_your_name: "Geben Sie Ihren vollständigen Namen ein",
+              confirm_password: "Passwort bestätigen",
+              confirm_your_password: "Bestätigen Sie Ihr Passwort",
+              already_have_account: "Haben Sie bereits ein Konto?",
+              passwords_dont_match: "Passwörter stimmen nicht überein",
+              passwords_dont_match_desc: "Bitte stellen Sie sicher, dass beide Passwörter identisch sind",
+              signup_success: "Konto erfolgreich erstellt",
+              signup_success_desc: "Willkommen bei Guardia! Sie können sich jetzt anmelden."
             }
           },
           it: {
@@ -241,11 +286,22 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               enter_your_email: "Inserisci la tua email",
               password: "Password",
               enter_your_password: "Inserisci la tua password",
-              login: "Accedi",
               forgot_password: "Password dimenticata?",
               create_account: "Crea un account",
+              
+              // Signup page translations
+              create_account_guardia: "Crea un account con Guardia",
+              full_name: "Nome completo",
+              enter_your_name: "Inserisci il tuo nome completo",
+              confirm_password: "Conferma password",
+              confirm_your_password: "Conferma la tua password",
+              already_have_account: "Hai già un account?",
+              passwords_dont_match: "Le password non corrispondono",
+              passwords_dont_match_desc: "Assicurati che entrambe le password siano identiche",
+              signup_success: "Account creato con successo",
+              signup_success_desc: "Benvenuto in Guardia! Ora puoi accedere."
             }
-          },
+          }
         },
       });
 

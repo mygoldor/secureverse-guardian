@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Monitor, ShieldBan, Cloud, Search, ChartBar, ArrowRight, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
@@ -31,7 +30,7 @@ const Landing = () => {
           
           <div className="flex items-center space-x-3">
             <LanguageSelector />
-            <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white" onClick={() => window.location.href='/login'}>
+            <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white" onClick={() => window.location.href='/signup'}>
               {t('get_started')}
             </Button>
             <Button variant="ghost" size="icon" className="md:hidden text-white">
@@ -47,7 +46,7 @@ const Landing = () => {
           <div className="text-left">
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{t('hero_title')}</h1>
             <p className="text-xl text-gray-200 mb-8">{t('hero_subtitle')}</p>
-            <Link to="/login">
+            <Link to="/signup">
               <Button className="bg-[#00CC66] hover:bg-[#00AA55] text-white text-lg px-8 py-6">
                 {t('discover_guardia')} <ArrowRight className="ml-2" />
               </Button>
@@ -225,7 +224,7 @@ const Landing = () => {
                   <span>3 appareils</span>
                 </li>
               </ul>
-              <Link to="/login">
+              <Link to="/signup">
                 <Button className="w-full bg-[#0099FF] hover:bg-[#007ACC] text-white">
                   Choisir ce plan
                 </Button>
@@ -272,7 +271,7 @@ const Landing = () => {
                   <span>Économisez 2 mois</span>
                 </li>
               </ul>
-              <Link to="/login">
+              <Link to="/signup">
                 <Button className="w-full bg-[#00CC66] hover:bg-[#00AA55] text-white">
                   Choisir ce plan
                 </Button>
@@ -295,7 +294,7 @@ const Landing = () => {
                 placeholder="Votre adresse e-mail" 
                 className="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099FF]"
               />
-              <Link to="/login">
+              <Link to="/signup">
                 <Button className="bg-[#00CC66] hover:bg-[#00AA55] text-white px-6">
                   S'inscrire
                 </Button>
