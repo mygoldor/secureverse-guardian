@@ -15,6 +15,7 @@ import Payment from "./pages/Payment";
 import TermsOfService from "./pages/TermsOfService";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/login" element={<Login />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

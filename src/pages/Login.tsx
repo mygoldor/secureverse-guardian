@@ -1,0 +1,80 @@
+
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Shield } from 'lucide-react';
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { t } = useLanguage();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Authentication logic would go here
+    console.log('Login attempt with:', { email, password });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F9F9F9] flex flex-col items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-md">
+        <div className="flex flex-col items-center mb-6">
+          <Link to="/" className="flex items-center space-x-2 mb-6">
+            <Shield className="h-8 w-8 text-[#003366]" />
+            <span className="font-bold text-2xl text-[#003366]">Guardia</span>
+          </Link>
+          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('login_to_guardia')}</h2>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">{t('email_address')}</Label>
+            <Input 
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t('enter_your_email')}
+              required
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">{t('password')}</Label>
+            <Input 
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t('enter_your_password')}
+              required
+              className="w-full"
+            />
+          </div>
+
+          <Button 
+            type="submit" 
+            className="w-full bg-[#003366] hover:bg-[#00509E] text-white"
+          >
+            {t('login')}
+          </Button>
+        </form>
+
+        <div className="mt-6 text-center space-y-2">
+          <Link to="/forgot-password" className="text-sm text-[#003366] hover:underline block">
+            {t('forgot_password')}
+          </Link>
+          <Link to="/signup" className="text-sm text-[#003366] hover:underline block">
+            {t('create_account')}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
