@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -47,7 +46,6 @@ const SecurityAgent = () => {
   const loadSecurityLogs = async () => {
     if (window.electron) {
       try {
-        // Passing only one argument (20) to getSecurityLogs
         const response = await window.electron.getSecurityLogs(20);
         setSecurityLogs(response.logs || []);
       } catch (error) {
