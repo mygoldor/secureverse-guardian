@@ -28,9 +28,10 @@ const NetworkScanner: React.FC<NetworkScannerProps> = ({ scanNetwork }) => {
       const devices = await scanNetwork();
       setNetworkDevices(Array.isArray(devices) ? devices : []);
       
+      // Fix: Use string interpolation or concatenation instead of passing an object parameter
       toast({
         title: t('network_scan_complete'),
-        description: t('found_devices', { count: devices.length }),
+        description: t('found_devices') + ': ' + devices.length,
       });
     } catch (error) {
       console.error('Network scan failed:', error);
