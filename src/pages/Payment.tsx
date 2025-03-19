@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { CreditCard, Calendar, DollarSign, Lock, Mail, Shield, CheckCircle } from 'lucide-react';
+import { CreditCard, Calendar, DollarSign, Lock, Mail, Shield, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -17,10 +17,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
+import { Link } from 'react-router-dom';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Le nom est requis" }),
   email: z.string().email({ message: "Adresse email invalide" }),
+  password: z.string().min(8, { message: "Le mot de passe doit contenir au moins 8 caractères" }),
   cardName: z.string().min(2, { message: "Nom sur la carte requis" }),
   cardNumber: z.string().min(16, { message: "Numéro de carte valide requis" }).max(19),
   expiryDate: z.string().min(5, { message: "Date d'expiration valide requise (MM/AA)" }),
@@ -41,6 +43,7 @@ const Payment = () => {
     defaultValues: {
       name: "",
       email: "",
+      password: "",
       cardName: "",
       cardNumber: "",
       expiryDate: "",
@@ -97,6 +100,13 @@ const Payment = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
       <main className="flex-grow max-w-4xl mx-auto px-4 py-8">
+        <div className="mb-6">
+          <Link to="/" className="inline-flex items-center text-security-primary hover:underline">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour au tableau de bord
+          </Link>
+        </div>
+        
         <h1 className="text-3xl font-bold text-center mb-2">Protégez vos appareils dès aujourd'hui</h1>
         <p className="text-center text-gray-500 mb-8">Abonnez-vous à Guardia pour une sécurité optimale de vos données</p>
         
@@ -220,10 +230,24 @@ const Payment = () => {
                               placeholder="email@exemple.com" 
                               {...field} 
                               onChange={handleEmailChange}
-                              className={!isEmailAvailable ? "border-security-danger" : ""}
+                              className={!isEmailAvailable ? "border-red-500" : ""}
                             />
                             <Mail className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
                           </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mot de passe</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="••••••••" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
