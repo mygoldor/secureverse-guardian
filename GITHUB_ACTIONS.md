@@ -21,6 +21,16 @@ The GitHub Actions workflow performs the following steps:
 5. Builds the project using `npm run build`
 6. (When implemented) Runs tests using `npm test`
 
+## Skipping CI Builds
+
+If you need to skip the CI build for a particular commit, simply include `[skip ci]` in your commit message:
+
+```bash
+git commit -m "Update documentation [skip ci]"
+```
+
+This is useful for changes that don't require a new build, such as documentation updates or other non-code changes.
+
 ## Manual Workflow Trigger
 
 If you need to trigger a build without pushing changes:
