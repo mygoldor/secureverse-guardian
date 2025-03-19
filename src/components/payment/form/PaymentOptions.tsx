@@ -14,16 +14,16 @@ const PaymentOptions: React.FC<PaymentOptionsProps> = ({ control }) => {
     <FormField
       control={control}
       name="paymentMethod"
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem>
-          <FormLabel>Mode de paiement</FormLabel>
+          <FormLabel className={fieldState.invalid ? "text-red-500" : ""}>Mode de paiement</FormLabel>
           <FormControl>
             <PaymentMethodSelector 
               value={field.value} 
               onChange={field.onChange} 
             />
           </FormControl>
-          <FormMessage />
+          {fieldState.error && <FormMessage />}
         </FormItem>
       )}
     />

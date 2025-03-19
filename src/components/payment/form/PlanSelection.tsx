@@ -15,7 +15,7 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({ control, onPlanChange }) 
     <FormField
       control={control}
       name="plan"
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className="space-y-3">
           <FormLabel>Sélection du plan</FormLabel>
           <FormControl>
@@ -37,7 +37,7 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({ control, onPlanChange }) 
               </div>
             </RadioGroup>
           </FormControl>
-          <FormMessage />
+          {fieldState.error && <FormMessage />}
         </FormItem>
       )}
     />

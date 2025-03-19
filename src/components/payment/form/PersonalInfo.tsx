@@ -19,7 +19,11 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ control }) => {
           <FormItem>
             <FormLabel>Nom</FormLabel>
             <FormControl>
-              <Input placeholder="Votre nom" {...field} />
+              <Input 
+                placeholder="Votre nom" 
+                {...field} 
+                className={field.value && field.value.length < 2 ? "border-red-300" : ""}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -33,7 +37,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ control }) => {
           <FormItem>
             <FormLabel>Adresse e-mail</FormLabel>
             <FormControl>
-              <Input type="email" placeholder="votre@email.com" {...field} />
+              <Input 
+                type="email" 
+                placeholder="votre@email.com" 
+                {...field} 
+                className={field.value && !field.value.includes('@') ? "border-red-300" : ""}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -47,7 +56,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ control }) => {
           <FormItem>
             <FormLabel>Mot de passe</FormLabel>
             <FormControl>
-              <Input type="password" placeholder="••••••••" {...field} />
+              <Input 
+                type="password" 
+                placeholder="••••••••" 
+                {...field} 
+                className={field.value && field.value.length < 8 ? "border-red-300" : ""}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -50,6 +50,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       paymentMethod: 'stripe',
       termsAccepted: false,
     },
+    mode: 'onChange', // Enable validation as the user types
   });
 
   // Update form when selectedPlan changes

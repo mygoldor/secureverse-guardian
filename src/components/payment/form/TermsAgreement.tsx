@@ -14,20 +14,23 @@ const TermsAgreement: React.FC<TermsAgreementProps> = ({ control }) => {
     <FormField
       control={control}
       name="termsAccepted"
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
           <FormControl>
             <Checkbox
               checked={field.value}
               onCheckedChange={field.onChange}
+              className={fieldState.invalid ? "border-red-500" : ""}
             />
           </FormControl>
           <div className="space-y-1 leading-none">
-            <FormLabel>
+            <FormLabel className={fieldState.invalid ? "text-red-500" : ""}>
               J'accepte les Conditions Générales
             </FormLabel>
+            {fieldState.invalid && (
+              <FormMessage />
+            )}
           </div>
-          <FormMessage />
         </FormItem>
       )}
     />
