@@ -3,6 +3,7 @@ import React from 'react';
 import { Download, Check, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Analysis {
   id: number;
@@ -14,6 +15,8 @@ interface Analysis {
 }
 
 const AnalysisHistory = () => {
+  const { t } = useLanguage();
+  
   const analyses: Analysis[] = [
     {
       id: 1,
@@ -54,24 +57,24 @@ const AnalysisHistory = () => {
                   ) : (
                     <AlertCircle className="h-5 w-5 text-red-500" />
                   )}
-                  <h4 className="font-medium text-security-foreground">Analyse du {analysis.date}</h4>
+                  <h4 className="font-medium text-security-foreground">{t('scan_details')} {analysis.date}</h4>
                 </div>
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                   analysis.status === 'success' 
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-red-100 text-red-800'
                 }`}>
-                  {analysis.status === 'success' ? 'Succès' : 'Échec'}
+                  {analysis.status === 'success' ? t('successful') : t('scan_failed')}
                 </span>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                 <div>
-                  <p className="text-sm text-security-muted">Menaces détectées: <span className="font-medium">{analysis.threatsDetected}</span></p>
-                  <p className="text-sm text-security-muted">Menaces résolues: <span className="font-medium">{analysis.threatsResolved}</span></p>
+                  <p className="text-sm text-security-muted">{t('threats_detected')}: <span className="font-medium">{analysis.threatsDetected}</span></p>
+                  <p className="text-sm text-security-muted">{t('threats_found')}: <span className="font-medium">{analysis.threatsResolved}</span></p>
                 </div>
                 <div>
-                  <p className="text-sm text-security-muted">Types de menaces:</p>
+                  <p className="text-sm text-security-muted">{t('threat_details')}:</p>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {analysis.threatTypes.map((type, index) => (
                       <span key={index} className="px-2 py-1 text-xs rounded-full bg-gray-100">{type}</span>
@@ -82,7 +85,7 @@ const AnalysisHistory = () => {
               
               <Button variant="outline" size="sm" className="flex items-center">
                 <Download className="h-4 w-4 mr-1" />
-                Télécharger le rapport
+                {t('download_report')}
               </Button>
             </div>
           ))}

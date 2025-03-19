@@ -318,6 +318,22 @@ const en: TranslationKeys = {
   resolved: "Resolved",
   no_active_alerts: "No Active Alerts",
   system_secure: "Your system is currently secure",
+  
+  // Additional translations for AnalysisHistory and SecuritySettings
+  download_report: "Download report",
+  notifications: "Notifications",
+  email_notifications: "Email notifications",
+  receive_email_alerts: "Receive alerts by email",
+  sms_notifications: "SMS notifications",
+  receive_sms_alerts: "Receive alerts by SMS",
+  authentication: "Authentication",
+  two_factor_authentication: "Two-factor authentication",
+  secure_account_further: "Secure your account further",
+  last_changed: "Last changed",
+  change: "Change",
+  login_history: "Login history",
+  view_all: "View all",
+  failed: "Failed"
 };
 
 export default en;

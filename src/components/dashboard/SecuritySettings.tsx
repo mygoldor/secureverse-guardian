@@ -4,6 +4,7 @@ import { Bell, Key, ShieldCheck, Smartphone, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface LoginHistory {
   id: number;
@@ -14,6 +15,7 @@ interface LoginHistory {
 }
 
 const SecuritySettings = () => {
+  const { t } = useLanguage();
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [smsNotifications, setSmsNotifications] = useState(false);
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
@@ -46,14 +48,14 @@ const SecuritySettings = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
         <CardContent className="pt-6">
-          <h3 className="font-medium mb-4 text-security-foreground">Notifications</h3>
+          <h3 className="font-medium mb-4 text-security-foreground">{t('notifications')}</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Bell className="h-5 w-5 text-blue-500" />
                 <div>
-                  <p className="font-medium text-security-foreground">Notifications par e-mail</p>
-                  <p className="text-sm text-security-muted">Recevoir des alertes par e-mail</p>
+                  <p className="font-medium text-security-foreground">{t('email_notifications')}</p>
+                  <p className="text-sm text-security-muted">{t('receive_email_alerts')}</p>
                 </div>
               </div>
               <Switch 
@@ -66,8 +68,8 @@ const SecuritySettings = () => {
               <div className="flex items-center space-x-3">
                 <Smartphone className="h-5 w-5 text-blue-500" />
                 <div>
-                  <p className="font-medium text-security-foreground">Notifications par SMS</p>
-                  <p className="text-sm text-security-muted">Recevoir des alertes par SMS</p>
+                  <p className="font-medium text-security-foreground">{t('sms_notifications')}</p>
+                  <p className="text-sm text-security-muted">{t('receive_sms_alerts')}</p>
                 </div>
               </div>
               <Switch 
@@ -78,14 +80,14 @@ const SecuritySettings = () => {
           </div>
           
           <div className="mt-6 pt-6 border-t border-gray-100">
-            <h3 className="font-medium mb-4 text-security-foreground">Authentification</h3>
+            <h3 className="font-medium mb-4 text-security-foreground">{t('authentication')}</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <ShieldCheck className="h-5 w-5 text-red-500" />
                   <div>
-                    <p className="font-medium text-security-foreground">Authentification à deux facteurs</p>
-                    <p className="text-sm text-security-muted">Sécuriser davantage votre compte</p>
+                    <p className="font-medium text-security-foreground">{t('two_factor_authentication')}</p>
+                    <p className="text-sm text-security-muted">{t('secure_account_further')}</p>
                   </div>
                 </div>
                 <Switch 
@@ -98,12 +100,12 @@ const SecuritySettings = () => {
                 <div className="flex items-center space-x-3">
                   <Key className="h-5 w-5 text-red-500" />
                   <div>
-                    <p className="font-medium text-security-foreground">Mot de passe</p>
-                    <p className="text-sm text-security-muted">Dernière modification il y a 30 jours</p>
+                    <p className="font-medium text-security-foreground">{t('password')}</p>
+                    <p className="text-sm text-security-muted">{t('last_changed')} 30 {t('days_ago')}</p>
                   </div>
                 </div>
                 <Button variant="outline" size="sm">
-                  Modifier
+                  {t('change')}
                 </Button>
               </div>
             </div>
@@ -114,8 +116,8 @@ const SecuritySettings = () => {
       <Card>
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium text-security-foreground">Historique des connexions</h3>
-            <Button variant="outline" size="sm">Voir tout</Button>
+            <h3 className="font-medium text-security-foreground">{t('login_history')}</h3>
+            <Button variant="outline" size="sm">{t('view_all')}</Button>
           </div>
           
           <div className="space-y-4">
@@ -131,7 +133,7 @@ const SecuritySettings = () => {
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-red-100 text-red-800'
                       }`}>
-                        {login.status === 'success' ? 'Réussie' : 'Échec'}
+                        {login.status === 'success' ? t('successful') : t('failed')}
                       </span>
                     </div>
                     <p className="text-sm text-security-muted">{login.location}</p>

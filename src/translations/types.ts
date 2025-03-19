@@ -318,4 +318,20 @@ export type TranslationKeys = {
   resolved: string;
   no_active_alerts: string;
   system_secure: string;
+  
+  // Additional translations for AnalysisHistory and SecuritySettings
+  download_report: string;
+  notifications: string;
+  email_notifications: string;
+  receive_email_alerts: string;
+  sms_notifications: string;
+  receive_sms_alerts: string;
+  authentication: string;
+  two_factor_authentication: string;
+  secure_account_further: string;
+  last_changed: string;
+  change: string;
+  login_history: string;
+  view_all: string;
+  failed: string;
 };

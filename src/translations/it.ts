@@ -317,7 +317,23 @@ const it: TranslationKeys = {
   scan_and_quarantine: 'Scansiona e metti in quarantena',
   resolved: 'Risolto',
   no_active_alerts: 'Nessun avviso attivo',
-  system_secure: 'Il tuo sistema è sicuro'
+  system_secure: 'Il tuo sistema è sicuro',
+  
+  // Additional translations for AnalysisHistory and SecuritySettings
+  download_report: "Scarica rapporto",
+  notifications: "Notifiche",
+  email_notifications: "Notifiche email",
+  receive_email_alerts: "Ricevi avvisi via email",
+  sms_notifications: "Notifiche SMS",
+  receive_sms_alerts: "Ricevi avvisi via SMS",
+  authentication: "Autenticazione",
+  two_factor_authentication: "Autenticazione a due fattori",
+  secure_account_further: "Proteggi ulteriormente il tuo account",
+  last_changed: "Ultima modifica",
+  change: "Modifica",
+  login_history: "Cronologia accessi",
+  view_all: "Vedi tutto",
+  failed: "Fallito"
 };
 
 export default it;

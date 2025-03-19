@@ -318,6 +318,22 @@ const es: TranslationKeys = {
   resolved: "Resuelto",
   no_active_alerts: "Sin alertas activas",
   system_secure: "Su sistema está actualmente seguro",
+  
+  // Additional translations for AnalysisHistory and SecuritySettings
+  download_report: "Descargar informe",
+  notifications: "Notificaciones",
+  email_notifications: "Notificaciones por correo electrónico",
+  receive_email_alerts: "Recibir alertas por correo electrónico",
+  sms_notifications: "Notificaciones SMS",
+  receive_sms_alerts: "Recibir alertas por SMS",
+  authentication: "Autenticación",
+  two_factor_authentication: "Autenticación de dos factores",
+  secure_account_further: "Proteja aún más su cuenta",
+  last_changed: "Última modificación hace",
+  change: "Cambiar",
+  login_history: "Historial de inicio de sesión",
+  view_all: "Ver todo",
+  failed: "Fallido"
 };
 
 export default es;
