@@ -82,62 +82,59 @@ const Header = () => {
           <Button className="hidden md:inline-flex bg-security-primary hover:bg-security-secondary text-white">
             {t('quick_scan')}
           </Button>
-          
-          {/* Mobile menu using Sheet component */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="md:hidden flex items-center justify-center bg-red-600 hover:bg-red-700 text-white border-4 border-white shadow-xl rounded-lg"
-                style={{ minWidth: '50px', minHeight: '50px', position: 'fixed', bottom: '20px', right: '20px', zIndex: 50 }}
-              >
-                <Menu className="h-7 w-7" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[80%] sm:w-[350px]">
-              <SheetHeader className="mb-6">
-                <SheetTitle>Guardia</SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-col space-y-4">
-                <Link 
-                  to="/dashboard" 
-                  className={`py-2 text-base ${isActive('/') || isActive('/dashboard') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-                >
-                  Dashboard
-                </Link>
-                <Link 
-                  to="/protection" 
-                  className={`py-2 text-base ${isActive('/protection') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-                >
-                  Protection
-                </Link>
-                <Link 
-                  to="/privacy" 
-                  className={`py-2 text-base ${isActive('/privacy') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-                >
-                  Privacy
-                </Link>
-                <Link 
-                  to="/performance" 
-                  className={`py-2 text-base ${isActive('/performance') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-                >
-                  Performance
-                </Link>
-                <Link 
-                  to="/settings" 
-                  className={`py-2 text-base ${isActive('/settings') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-                >
-                  Settings
-                </Link>
-                <Button className="mt-2 bg-security-primary hover:bg-security-secondary text-white">
-                  {t('quick_scan')}
-                </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
         </div>
       </div>
+
+      {/* Mobile menu button - completely separate from the header */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button 
+            className="fixed z-50 bottom-4 right-4 rounded-full w-16 h-16 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white shadow-xl border-4 border-white md:hidden"
+          >
+            <Menu className="h-8 w-8" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-[80%] sm:w-[350px]">
+          <SheetHeader className="mb-6">
+            <SheetTitle>Guardia</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col space-y-4">
+            <Link 
+              to="/dashboard" 
+              className={`py-2 text-base ${isActive('/') || isActive('/dashboard') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+            >
+              Dashboard
+            </Link>
+            <Link 
+              to="/protection" 
+              className={`py-2 text-base ${isActive('/protection') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+            >
+              Protection
+            </Link>
+            <Link 
+              to="/privacy" 
+              className={`py-2 text-base ${isActive('/privacy') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+            >
+              Privacy
+            </Link>
+            <Link 
+              to="/performance" 
+              className={`py-2 text-base ${isActive('/performance') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+            >
+              Performance
+            </Link>
+            <Link 
+              to="/settings" 
+              className={`py-2 text-base ${isActive('/settings') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+            >
+              Settings
+            </Link>
+            <Button className="mt-2 bg-security-primary hover:bg-security-secondary text-white">
+              {t('quick_scan')}
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 };
