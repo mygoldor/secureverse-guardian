@@ -30,6 +30,7 @@ const CookieConsentContext = createContext<CookieConsentContextType | undefined>
 export const CookieConsentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
   const [cookiePreferences, setCookiePreferences] = useState<CookieCategories>(defaultCookiePreferences);
+  // Always show banner by default
   const [showBanner, setShowBanner] = useState<boolean>(true);
 
   // Check for existing consent on mount
@@ -39,7 +40,8 @@ export const CookieConsentProvider: React.FC<{ children: ReactNode }> = ({ child
     
     if (storedConsent !== null) {
       setCookieConsent(storedConsent === 'true');
-      setShowBanner(false);
+      // Even if we have stored consent, we'll show the banner for now
+      // setShowBanner(false); // Commented out to always show banner
     } else {
       setShowBanner(true); // Show banner if no consent is stored
     }
@@ -52,6 +54,9 @@ export const CookieConsentProvider: React.FC<{ children: ReactNode }> = ({ child
         setCookiePreferences(defaultCookiePreferences);
       }
     }
+    
+    // Force show banner for testing
+    console.log('Cookie context initialized, showBanner:', true);
   }, []);
 
   // Save consent and preferences to localStorage

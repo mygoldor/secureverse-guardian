@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -16,6 +17,15 @@ const CookieBanner: React.FC = () => {
   
   const [showDetails, setShowDetails] = useState(false);
   const [localPreferences, setLocalPreferences] = useState(cookiePreferences);
+  
+  // Force banner to show on mount for testing
+  useEffect(() => {
+    console.log('Cookie banner mounted, showBanner:', showBanner);
+    // For debugging purposes
+    if (!showBanner) {
+      console.log('Forcing banner to show');
+    }
+  }, [showBanner]);
   
   // Handle preference changes
   const handlePreferenceChange = (category: keyof typeof cookiePreferences) => {
@@ -35,10 +45,10 @@ const CookieBanner: React.FC = () => {
   return (
     <>
       {/* Banner with different styling for landing page */}
-      {showBanner && !showDetails && (
+      {(showBanner || true) && !showDetails && ( /* Temporarily force banner to show */
         <div className={`fixed z-50 backdrop-blur-sm border ${
           isLandingPage 
-            ? "bottom-10 left-4 bg-white/95 dark:bg-gray-900/95 p-3 shadow-md rounded-lg border-gray-200 dark:border-gray-800 w-60"
+            ? "bottom-10 left-4 bg-white/95 dark:bg-gray-900/95 p-3 shadow-md rounded-lg border-gray-200 dark:border-gray-800 w-64"
             : "bottom-1 right-1 bg-white/80 dark:bg-gray-900/80 py-1 px-2 shadow-sm rounded-md border-gray-200 dark:border-gray-800 flex items-center gap-1.5"
         }`}>
           {isLandingPage ? (
@@ -46,12 +56,12 @@ const CookieBanner: React.FC = () => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-1.5">
-                  <Cookie className="h-4 w-4 text-security-primary" />
+                  <Cookie className="h-5 w-5 text-security-primary" />
                   <span className="text-sm font-medium">{t('cookies')}</span>
                 </div>
               </div>
               <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">
-                {t('cookie_preferences_description').substring(0, 80)}...
+                {t('cookie_preferences_description').substring(0, 100)}...
               </p>
               <div className="grid grid-cols-2 gap-2">
                 <Button
