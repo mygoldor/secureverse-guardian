@@ -1,37 +1,36 @@
-
 import React from 'react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { sanitizePersonalData } from '@/utils/gdprCompliance';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Loader2 } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+import { Link } from 'react-router-dom';
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Le nom est requis" }),
-  email: z.string().email({ message: "Email invalide" }),
-  password: z.string().min(8, { message: "Mot de passe trop court (min. 8 caractères)" }),
-  acceptTerms: z.literal(true, {
-    errorMap: () => ({ message: "Vous devez accepter les conditions générales" })
-  })
+  name: z.string().min(2, {
+    message: "Le nom doit comporter au moins 2 caractères.",
+  }),
+  email: z.string().email({
+    message: "Veuillez entrer une adresse email valide.",
+  }),
+  password: z.string().min(8, {
+    message: "Le mot de passe doit comporter au moins 8 caractères.",
+  }),
+  terms: z.boolean().refine((value) => value === true, {
+    message: "Vous devez accepter les Conditions Générales",
+  }),
 });
-
-export type FormValues = z.infer<typeof formSchema>;
 
 interface PaymentFormProps {
   isProcessing: boolean;
   onSubmit: (values: FormValues) => void;
 }
+
+export type FormValues = z.infer<typeof formSchema>;
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => {
   const form = useForm<FormValues>({
@@ -40,100 +39,76 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
       name: "",
       email: "",
       password: "",
-      acceptTerms: false
-    }
+      terms: false,
+    },
   });
-
-  const handleSubmit = (values: FormValues) => {
-    // Sanitize data according to GDPR
-    const sanitizedData = sanitizePersonalData(values);
-    onSubmit(values);
-  };
-
+  
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nom complet</FormLabel>
-              <FormControl>
-                <Input placeholder="Jean Dupont" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <div className="grid gap-2">
+        <Label htmlFor="name">Nom complet</Label>
+        <Input id="name" placeholder="Votre nom" type="text" {...form.register("name")} />
+        {form.formState.errors.name && (
+          <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
+        )}
+      </div>
+      
+      <div className="grid gap-2">
+        <Label htmlFor="email">Adresse e-mail</Label>
+        <Input id="email" placeholder="exemple@gmail.com" type="email" {...form.register("email")} />
+        {form.formState.errors.email && (
+          <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
+        )}
+      </div>
+      
+      <div className="grid gap-2">
+        <Label htmlFor="password">Mot de passe</Label>
+        <Input id="password" type="password" {...form.register("password")} />
+        {form.formState.errors.password && (
+          <p className="text-sm text-red-500">{form.formState.errors.password.message}</p>
+        )}
+      </div>
+      
+      <div className="flex items-start space-x-2 mt-4">
+        <Checkbox
+          id="terms"
+          {...form.register("terms", { 
+            required: true 
+          })}
         />
-        
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Adresse email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="jean@exemple.fr" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="acceptTerms"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-2">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel className="text-sm font-normal cursor-pointer">
-                  J'accepte les <a href="#" className="text-security-primary hover:underline">Conditions Générales</a> et la <a href="#" className="text-security-primary hover:underline">Politique de Confidentialité</a>
-                </FormLabel>
-                <FormMessage />
-              </div>
-            </FormItem>
-          )}
-        />
-        
-        <div className="pt-4">
-          <Button 
-            type="submit" 
-            className="w-full bg-security-primary hover:bg-security-secondary"
-            disabled={isProcessing}
+        <div className="grid gap-1.5 leading-none">
+          <label
+            htmlFor="terms"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            {isProcessing ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Traitement en cours...
-              </>
-            ) : (
-              "S'abonner maintenant"
-            )}
-          </Button>
+            J'accepte les 
+            <Link to="/terms" className="ml-1 text-security-primary hover:underline">
+              Conditions Générales d'Utilisation
+            </Link>
+          </label>
+          {form.formState.errors.terms && (
+            <p className="text-sm text-red-500">
+              Vous devez accepter les Conditions Générales
+            </p>
+          )}
         </div>
-      </form>
-    </Form>
+      </div>
+      
+      <Button 
+        type="submit" 
+        className="w-full bg-security-primary hover:bg-security-secondary"
+        disabled={isProcessing}
+      >
+        {isProcessing ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Traitement en cours...
+          </>
+        ) : (
+          "S'abonner maintenant"
+        )}
+      </Button>
+    </form>
   );
 };
 
