@@ -85,14 +85,14 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile menu button - completely separate from the header */}
+      {/* Mobile menu using Sheet component and custom CSS */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button 
-            className="fixed z-50 bottom-4 right-4 rounded-full w-16 h-16 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white shadow-xl border-4 border-white md:hidden"
+          <button 
+            className="menu-button md:hidden"
           >
-            <Menu className="h-8 w-8" />
-          </Button>
+            <Menu className="h-6 w-6" />
+          </button>
         </SheetTrigger>
         <SheetContent side="right" className="w-[80%] sm:w-[350px]">
           <SheetHeader className="mb-6">

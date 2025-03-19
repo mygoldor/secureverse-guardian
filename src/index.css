@@ -123,6 +123,20 @@
   .security-button {
     @apply px-4 py-2 rounded-lg font-medium transition-colors;
   }
+  
+  /* Custom menu button style as specified by user */
+  .menu-button {
+    display: block; /* S'assurer qu'il est bien affiché */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* Le mettre au premier plan */
+    background-color: #007bff; /* Couleur du bouton */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }
 
 /* Custom responsive styles */
@@ -161,5 +175,9 @@
     display: inline-block;
     width: 45%;
     margin: 2%;
+  }
+  
+  .menu-button {
+    display: none; /* Masquer le bouton menu sur les grands écrans */
   }
 }
