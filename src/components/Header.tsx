@@ -2,22 +2,60 @@
 import React from 'react';
 import { Shield, Bell, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+  
+  // Check if a path is active
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
     <header className="w-full bg-white border-b border-gray-100 shadow-sm py-3 px-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <Shield className="h-8 w-8 text-security-primary" />
-          <span className="font-bold text-2xl text-security-primary">Guardia</span>
+          <Link to="/">
+            <div className="flex items-center space-x-2">
+              <Shield className="h-8 w-8 text-security-primary" />
+              <span className="font-bold text-2xl text-security-primary">Guardia</span>
+            </div>
+          </Link>
         </div>
         
         <div className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-security-foreground hover:text-security-primary transition-colors">Dashboard</a>
-          <a href="#" className="text-security-muted hover:text-security-primary transition-colors">Protection</a>
-          <a href="#" className="text-security-muted hover:text-security-primary transition-colors">Privacy</a>
-          <a href="#" className="text-security-muted hover:text-security-primary transition-colors">Performance</a>
-          <a href="#" className="text-security-muted hover:text-security-primary transition-colors">Settings</a>
+          <Link 
+            to="/" 
+            className={`transition-colors ${isActive('/') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+          >
+            Dashboard
+          </Link>
+          <Link 
+            to="/protection" 
+            className={`transition-colors ${isActive('/protection') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+          >
+            Protection
+          </Link>
+          <Link 
+            to="/privacy"
+
+            className={`transition-colors ${isActive('/privacy') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+          >
+            Privacy
+          </Link>
+          <Link 
+            to="/performance" 
+            className={`transition-colors ${isActive('/performance') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+          >
+            Performance
+          </Link>
+          <Link 
+            to="/settings" 
+            className={`transition-colors ${isActive('/settings') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+          >
+            Settings
+          </Link>
         </div>
         
         <div className="flex items-center space-x-3">
