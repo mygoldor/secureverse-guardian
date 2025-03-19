@@ -20,8 +20,8 @@ const LandingHeader = () => {
           <span className="font-bold text-2xl text-white">Guardia</span>
         </Link>
         
-        <div className="flex items-center">
-          <nav className="hidden md:flex items-center space-x-6 mr-6">
+        <div className="flex items-center ml-20">
+          <nav className="hidden md:flex items-center space-x-10 mr-6">
             <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
             <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
             <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
