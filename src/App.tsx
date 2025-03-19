@@ -13,6 +13,7 @@ import Settings from "./pages/Settings";
 import Payment from "./pages/Payment";
 import TermsOfService from "./pages/TermsOfService";
 import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/landing" element={<Landing />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/protection" element={<Protection />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/performance" element={<Performance />} />

@@ -32,14 +32,19 @@ const Header = () => {
             Dashboard
           </Link>
           <Link 
+            to="/dashboard" 
+            className={`transition-colors ${isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+          >
+            Tableau de bord
+          </Link>
+          <Link 
             to="/protection" 
             className={`transition-colors ${isActive('/protection') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
           >
             Protection
           </Link>
           <Link 
-            to="/privacy"
-
+            to="/privacy" 
             className={`transition-colors ${isActive('/privacy') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
           >
             Privacy
