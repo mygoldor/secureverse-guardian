@@ -124,3 +124,42 @@
     @apply px-4 py-2 rounded-lg font-medium transition-colors;
   }
 }
+
+/* Custom responsive styles */
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .header {
+    text-align: center;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .cta-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  .feature-box {
+    display: block;
+    width: 100%;
+  }
+
+  .footer {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .feature-box {
+    display: inline-block;
+    width: 45%;
+    margin: 2%;
+  }
+}
