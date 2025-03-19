@@ -15,7 +15,9 @@ const Landing = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Initialize page with error handling
+    // Debug information
+    console.log('Landing page component mounted');
+    
     try {
       // Simulate loading to ensure components are properly mounted
       const timer = setTimeout(() => {
@@ -31,8 +33,8 @@ const Landing = () => {
       
       toast({
         variant: "destructive",
-        title: "Erreur de chargement",
-        description: "Une erreur s'est produite lors du chargement de la page. Veuillez réessayer.",
+        title: "Error loading",
+        description: "An error occurred while loading the page. Please try again.",
       });
     }
   }, [toast]);
@@ -50,13 +52,13 @@ const Landing = () => {
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">Une erreur s'est produite</h2>
-        <p className="text-gray-600 mb-6">Nous ne pouvons pas charger la page en ce moment. Veuillez réessayer plus tard.</p>
+        <h2 className="text-2xl font-bold text-red-600 mb-4">An error occurred</h2>
+        <p className="text-gray-600 mb-6">We cannot load the page at this time. Please try again later.</p>
         <button 
           className="px-4 py-2 bg-security-primary text-white rounded hover:bg-security-primary/90"
           onClick={() => window.location.reload()}
         >
-          Actualiser la page
+          Refresh page
         </button>
       </div>
     );
