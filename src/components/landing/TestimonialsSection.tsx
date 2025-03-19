@@ -67,7 +67,7 @@ const TestimonialsSection = () => {
         
         <div className="text-center mt-10">
           <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white">
-            Rejoignez-les aujourd'hui
+            {t('get_started')}
           </Button>
         </div>
       </div>

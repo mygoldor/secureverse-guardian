@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -62,17 +63,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               testimonials_title: "What Our Clients Say",
               ready_to_protect: "Ready to Protect Your Digital World?",
               signup_now: "Sign up now and get comprehensive protection against cyber threats.",
-
-              // Login page translations
               login_to_guardia: "Log in to Guardia",
               email_address: "Email address",
-              enter_your_email: "Enter your email",
               password: "Password",
               enter_your_password: "Enter your password",
               forgot_password: "Forgot password?",
               create_account: "Create an account",
-              
-              // Signup page translations
               create_account_guardia: "Create an account with Guardia",
               full_name: "Full name",
               enter_your_name: "Enter your full name",
@@ -83,13 +79,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match_desc: "Please ensure both passwords are identical",
               signup_success: "Account created successfully",
               signup_success_desc: "Welcome to Guardia! You can now log in.",
-
-              // New translations
               enter_your_email: "Enter your email",
               cancel_anytime: "No commitment required, cancel anytime.",
               full_protection: "Total protection",
               quick_installation: "Quick installation",
-              thirty_day_guarantee: "30-day guarantee"
+              thirty_day_guarantee: "30-day guarantee",
+              discover_guardia: "Discover Guardia"
             }
           },
           fr: {
@@ -123,17 +118,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               testimonials_title: "Ce Que Disent Nos Clients",
               ready_to_protect: "Prêt à Protéger Votre Monde Numérique ?",
               signup_now: "Inscrivez-vous maintenant et bénéficiez d'une protection complète contre les cybermenaces.",
-
-              // Login page translations
               login_to_guardia: "Se connecter à Guardia",
               email_address: "Adresse e-mail",
-              enter_your_email: "Entrez votre e-mail",
               password: "Mot de passe",
               enter_your_password: "Entrez votre mot de passe",
               forgot_password: "Mot de passe oublié ?",
               create_account: "Créer un compte",
-              
-              // Signup page translations
               create_account_guardia: "Créer un compte avec Guardia",
               full_name: "Nom complet",
               enter_your_name: "Entrez votre nom complet",
@@ -144,13 +134,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match_desc: "Veuillez vous assurer que les deux mots de passe sont identiques",
               signup_success: "Compte créé avec succès",
               signup_success_desc: "Bienvenue chez Guardia ! Vous pouvez maintenant vous connecter.",
-
-              // New translations
               enter_your_email: "Entrez votre email",
               cancel_anytime: "Aucun engagement nécessaire, annulez à tout moment.",
               full_protection: "Protection totale",
               quick_installation: "Installation rapide",
-              thirty_day_guarantee: "Garantie 30 jours"
+              thirty_day_guarantee: "Garantie 30 jours",
+              discover_guardia: "Découvrir Guardia"
             }
           },
           es: {
@@ -184,17 +173,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               testimonials_title: "Lo Que Dicen Nuestros Clientes",
               ready_to_protect: "¿Listo para Proteger Su Mundo Digital?",
               signup_now: "Regístrese ahora y obtenga protección integral contra las ciberamenazas.",
-
-              // Login page translations
               login_to_guardia: "Iniciar sesión en Guardia",
               email_address: "Dirección de correo electrónico",
-              enter_your_email: "Introduzca su correo electrónico",
               password: "Contraseña",
               enter_your_password: "Introduzca su contraseña",
               forgot_password: "¿Olvidó su contraseña?",
               create_account: "Crear una cuenta",
-              
-              // Signup page translations
               create_account_guardia: "Crear una cuenta con Guardia",
               full_name: "Nombre completo",
               enter_your_name: "Introduzca su nombre completo",
@@ -205,13 +189,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match_desc: "Por favor, asegúrese de que ambas contraseñas sean idénticas",
               signup_success: "Cuenta creada con éxito",
               signup_success_desc: "¡Bienvenido a Guardia! Ahora puede iniciar sesión.",
-
-              // New translations
               enter_your_email: "Introduce tu correo electrónico",
               cancel_anytime: "Sin compromiso, cancela cuando quieras.",
               full_protection: "Protección total",
               quick_installation: "Instalación rápida",
-              thirty_day_guarantee: "Garantía de 30 días"
+              thirty_day_guarantee: "Garantía de 30 días",
+              discover_guardia: "Descubrir Guardia"
             }
           },
           de: {
@@ -235,7 +218,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               malware_protection: "Malware-Schutz",
               malware_protection_desc: "Erweiterter Schutz vor Viren, Spyware und anderer Malware.",
               auto_backup: "Automatische Sicherung",
-              auto_backup_desc: "Regelmä��ige Backups, um sicherzustellen, dass Ihre Daten immer sicher und wiederherstellbar sind.",
+              auto_backup_desc: "Regelmäßige Backups, um sicherzustellen, dass Ihre Daten immer sicher und wiederherstellbar sind.",
               vulnerability_analysis: "Schwachstellenanalyse",
               vulnerability_analysis_desc: "Proaktives Scannen, um Sicherheitslücken zu identifizieren und zu beheben.",
               security_reports: "Sicherheitsberichte",
@@ -245,17 +228,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               testimonials_title: "Was unsere Kunden sagen",
               ready_to_protect: "Sind Sie bereit, Ihre digitale Welt zu schützen?",
               signup_now: "Melden Sie sich jetzt an und erhalten Sie umfassenden Schutz vor Cyber-Bedrohungen.",
-
-              // Login page translations
               login_to_guardia: "Bei Guardia anmelden",
               email_address: "E-Mail-Adresse",
-              enter_your_email: "Geben Sie Ihre E-Mail ein",
               password: "Passwort",
               enter_your_password: "Geben Sie Ihr Passwort ein",
               forgot_password: "Passwort vergessen?",
               create_account: "Konto erstellen",
-              
-              // Signup page translations
               create_account_guardia: "Erstellen Sie ein Konto bei Guardia",
               full_name: "Vollständiger Name",
               enter_your_name: "Geben Sie Ihren vollständigen Namen ein",
@@ -266,13 +244,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match_desc: "Bitte stellen Sie sicher, dass beide Passwörter identisch sind",
               signup_success: "Konto erfolgreich erstellt",
               signup_success_desc: "Willkommen bei Guardia! Sie können sich jetzt anmelden.",
-
-              // New translations
               enter_your_email: "Geben Sie Ihre E-Mail ein",
               cancel_anytime: "Keine Verpflichtung, jederzeit kündbar.",
               full_protection: "Vollständiger Schutz",
               quick_installation: "Schnelle Installation",
-              thirty_day_guarantee: "30 Tage Garantie"
+              thirty_day_guarantee: "30 Tage Garantie",
+              discover_guardia: "Guardia entdecken"
             }
           },
           it: {
@@ -306,17 +283,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               testimonials_title: "Cosa dicono i nostri clienti",
               ready_to_protect: "Pronto a Proteggere il Tuo Mondo Digitale?",
               signup_now: "Iscriviti ora e ottieni una protezione completa contro le minacce informatiche.",
-
-              // Login page translations
               login_to_guardia: "Accedi a Guardia",
               email_address: "Indirizzo email",
-              enter_your_email: "Inserisci la tua email",
               password: "Password",
               enter_your_password: "Inserisci la tua password",
               forgot_password: "Password dimenticata?",
               create_account: "Crea un account",
-              
-              // Signup page translations
               create_account_guardia: "Crea un account con Guardia",
               full_name: "Nome completo",
               enter_your_name: "Inserisci il tuo nome completo",
@@ -327,13 +299,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match_desc: "Assicurati che entrambe le password siano identiche",
               signup_success: "Account creato con successo",
               signup_success_desc: "Benvenuto in Guardia! Ora puoi accedere.",
-
-              // New translations
               enter_your_email: "Inserisci la tua email",
               cancel_anytime: "Nessun impegno richiesto, annulla in qualsiasi momento.",
               full_protection: "Protezione totale",
               quick_installation: "Installazione rapida",
-              thirty_day_guarantee: "Garanzia di 30 giorni"
+              thirty_day_guarantee: "Garanzia di 30 giorni",
+              discover_guardia: "Scopri Guardia"
             }
           }
         },
