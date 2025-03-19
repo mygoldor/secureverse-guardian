@@ -26,4 +26,23 @@ window.addEventListener('appinstalled', (event) => {
   console.log('Guardia was successfully installed as a PWA');
 });
 
+// Ensure menu button is visible on DOM content loaded
+document.addEventListener("DOMContentLoaded", function() {
+  const menuButton = document.querySelector(".menu-button");
+  if (menuButton) {
+    menuButton.style.display = "block"; // Ensure it's displayed on loading
+    console.log("Menu button visibility enforced");
+  } else {
+    console.log("Menu button not found in DOM");
+    // Try again after a short delay in case of delayed rendering
+    setTimeout(() => {
+      const delayedMenuButton = document.querySelector(".menu-button");
+      if (delayedMenuButton) {
+        delayedMenuButton.style.display = "block";
+        console.log("Menu button visibility enforced after delay");
+      }
+    }, 1000);
+  }
+});
+
 createRoot(document.getElementById("root")!).render(<App />);
