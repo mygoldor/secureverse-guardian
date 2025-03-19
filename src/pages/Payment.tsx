@@ -8,14 +8,16 @@ import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import PaymentForm, { FormValues } from '@/components/payment/PaymentForm';
 import SuccessModal from '@/components/payment/SuccessModal';
 import { Card, CardContent } from '@/components/ui/card';
-import { Shield, Check, AlertTriangle, Star, Lock, CreditCard, Clock, Gift } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Shield, Check, AlertTriangle, Star, Lock, CreditCard, Clock, Gift, User } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from 'react-router-dom';
 
-type PaymentMethod = 'card' | 'paypal' | 'mollie';
+type PaymentMethod = 'stripe' | 'paypal' | 'mollie';
 
 const Payment = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual'>('monthly');
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('stripe');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   
@@ -63,7 +65,7 @@ const Payment = () => {
             </p>
             
             {/* Trust Badges */}
-            <div className="flex items-center justify-center gap-4 mt-6">
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-6">
               <div className="bg-white px-4 py-2 rounded-lg shadow-sm flex items-center">
                 <Star className="h-4 w-4 text-yellow-500 mr-1" />
                 <span className="text-sm font-medium">Noté 4.9/5</span>
@@ -299,7 +301,7 @@ const Payment = () => {
                   
                   <div className="space-y-2">
                     <h4 className="font-medium">Quels modes de paiement acceptez-vous ?</h4>
-                    <p className="text-gray-600">Nous acceptons les cartes de crédit (Visa, Mastercard), PayPal, et plusieurs méthodes de paiement locales via Mollie.</p>
+                    <p className="text-gray-600">Nous acceptons les cartes de crédit (Visa, Mastercard), PayPal, et plusieurs méthodes de paiement locales via Mollie (Bancontact, iDEAL).</p>
                   </div>
                 </div>
               </TabsContent>

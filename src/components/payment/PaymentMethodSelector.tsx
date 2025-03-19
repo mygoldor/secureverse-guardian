@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { CreditCard } from 'lucide-react';
+import { CreditCard, CreditCardIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type PaymentMethod = 'card' | 'paypal' | 'mollie';
+type PaymentMethod = 'stripe' | 'paypal' | 'mollie';
 
 interface PaymentMethodSelectorProps {
   selectedMethod: PaymentMethod;
@@ -21,19 +21,19 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       <div 
         className={cn(
           "flex items-center p-4 border rounded-lg cursor-pointer",
-          selectedMethod === 'card' 
+          selectedMethod === 'stripe' 
             ? "border-security-primary bg-security-primary/5" 
             : "border-gray-200 hover:border-gray-300"
         )}
-        onClick={() => onChange('card')}
+        onClick={() => onChange('stripe')}
       >
         <div className={cn(
           "w-5 h-5 rounded-full border-2 mr-3",
-          selectedMethod === 'card' 
+          selectedMethod === 'stripe' 
             ? "border-security-primary" 
             : "border-gray-300"
         )}>
-          {selectedMethod === 'card' && (
+          {selectedMethod === 'stripe' && (
             <div className="w-2.5 h-2.5 bg-security-primary rounded-full m-auto mt-[1px]"></div>
           )}
         </div>
