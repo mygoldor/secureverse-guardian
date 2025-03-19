@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Language = 'fr' | 'en';
+type Language = 'fr' | 'en' | 'es' | 'de' | 'it';
 
 interface LanguageContextType {
   language: Language;
@@ -87,6 +87,11 @@ const translations = {
     'privacy': 'Politique de confidentialité',
     'cookies': 'Politique des cookies',
     'legal': 'Mentions légales',
+    
+    // Dashboard page
+    'dashboard': 'Tableau de bord',
+    'quick_scan': 'Analyse rapide',
+    'change_language': 'Changer de langue',
   },
   en: {
     // General
@@ -165,6 +170,99 @@ const translations = {
     'privacy': 'Privacy Policy',
     'cookies': 'Cookie Policy',
     'legal': 'Legal Notice',
+    
+    // Dashboard page
+    'dashboard': 'Dashboard',
+    'quick_scan': 'Quick Scan',
+    'change_language': 'Change Language',
+  },
+  // Adding placeholder translations for the additional languages
+  es: {
+    // General
+    'app_name': 'Guardia',
+    'get_started': 'Comenzar',
+    'learn_more': 'Saber más',
+    'contact_us': 'Contáctenos',
+    'login': 'Iniciar sesión',
+    'logout': 'Cerrar sesión',
+    'signup': 'Registrarse',
+    'email': 'Correo electrónico',
+    'password': 'Contraseña',
+    'confirm_password': 'Confirmar contraseña',
+    'forgot_password': '¿Olvidó su contraseña?',
+    
+    // Navigation
+    'home': 'Inicio',
+    'features': 'Características',
+    'pricing': 'Precios',
+    'about': 'Acerca de',
+    'faq': 'Preguntas frecuentes',
+    'blog': 'Blog',
+    'testimonials': 'Testimonios',
+    'contact': 'Contacto',
+    
+    // Dashboard page
+    'dashboard': 'Panel de control',
+    'quick_scan': 'Escaneo rápido',
+    'change_language': 'Cambiar idioma',
+  },
+  de: {
+    // General
+    'app_name': 'Guardia',
+    'get_started': 'Loslegen',
+    'learn_more': 'Mehr erfahren',
+    'contact_us': 'Kontaktieren Sie uns',
+    'login': 'Anmelden',
+    'logout': 'Abmelden',
+    'signup': 'Registrieren',
+    'email': 'E-Mail',
+    'password': 'Passwort',
+    'confirm_password': 'Passwort bestätigen',
+    'forgot_password': 'Passwort vergessen?',
+    
+    // Navigation
+    'home': 'Startseite',
+    'features': 'Funktionen',
+    'pricing': 'Preise',
+    'about': 'Über uns',
+    'faq': 'FAQ',
+    'blog': 'Blog',
+    'testimonials': 'Erfahrungsberichte',
+    'contact': 'Kontakt',
+    
+    // Dashboard page
+    'dashboard': 'Dashboard',
+    'quick_scan': 'Schnellscan',
+    'change_language': 'Sprache ändern',
+  },
+  it: {
+    // General
+    'app_name': 'Guardia',
+    'get_started': 'Inizia',
+    'learn_more': 'Scopri di più',
+    'contact_us': 'Contattaci',
+    'login': 'Accedi',
+    'logout': 'Esci',
+    'signup': 'Registrati',
+    'email': 'Email',
+    'password': 'Password',
+    'confirm_password': 'Conferma password',
+    'forgot_password': 'Password dimenticata?',
+    
+    // Navigation
+    'home': 'Home',
+    'features': 'Funzionalità',
+    'pricing': 'Prezzi',
+    'about': 'Chi siamo',
+    'faq': 'FAQ',
+    'blog': 'Blog',
+    'testimonials': 'Testimonianze',
+    'contact': 'Contatti',
+    
+    // Dashboard page
+    'dashboard': 'Dashboard',
+    'quick_scan': 'Scansione rapida',
+    'change_language': 'Cambia lingua',
   }
 };
 
