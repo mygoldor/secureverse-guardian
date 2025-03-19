@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Monitor, ShieldBan, Cloud, Search, ChartBar, ArrowRight, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
@@ -188,11 +189,15 @@ const Landing = () => {
       {/* Pricing */}
       <section id="pricing" className="py-16 md:py-24 px-4 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#003366] text-center mb-12">Nos Tarifs</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#003366] text-center mb-4">Nos Tarifs</h2>
+          <p className="text-lg text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+            Choisissez le plan qui correspond le mieux à vos besoins. Tous nos plans incluent nos fonctionnalités de sécurité essentielles pour vous protéger en ligne.
+          </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow border-t-4 border-[#0099FF]">
               <h3 className="text-2xl font-bold text-[#003366] mb-2">Plan mensuel</h3>
+              <p className="text-gray-600 mb-4">Parfait pour les utilisateurs qui préfèrent une flexibilité mensuelle sans engagement à long terme.</p>
               <div className="mb-4">
                 <span className="text-4xl font-bold text-[#003366]">9,99 €</span>
                 <span className="text-gray-500">/mois</span>
@@ -231,14 +236,15 @@ const Landing = () => {
               </Link>
             </div>
             
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow border-t-4 border-[#00CC66]">
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow border-t-4 border-[#00CC66] relative">
               <div className="absolute top-0 right-0 bg-[#00CC66] text-white text-xs font-bold px-3 py-1 rounded-br-lg rounded-tl-lg">ÉCONOMISEZ 2 MOIS</div>
               <h3 className="text-2xl font-bold text-[#003366] mb-2">Plan annuel</h3>
+              <p className="text-gray-600 mb-4">Notre offre la plus populaire avec une réduction importante pour un engagement annuel.</p>
               <div className="mb-4">
                 <span className="text-4xl font-bold text-[#003366]">99,99 €</span>
                 <span className="text-gray-500">/an</span>
               </div>
-              <p className="text-gray-600 mb-6">Fonctionnalités complètes, mises à jour régulières et support 24/7.</p>
+              <p className="text-gray-600 mb-6">Protection premium avec des avantages exclusifs pour nos abonnés annuels.</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
