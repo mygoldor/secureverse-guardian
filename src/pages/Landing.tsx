@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Monitor, ShieldBan, Cloud, Search, ChartBar, ArrowRight, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
@@ -208,25 +207,25 @@ const Landing = () => {
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Protection complète</span>
+                  <span>Protection complète contre les virus et malwares</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Mises à jour automatiques</span>
+                  <span>Mises à jour automatiques de sécurité</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Support 24/7</span>
+                  <span>Support client disponible 24/7</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>3 appareils</span>
+                  <span>Protection pour 3 appareils maximum</span>
                 </li>
               </ul>
               <Link to="/signup">
@@ -250,31 +249,31 @@ const Landing = () => {
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Protection complète</span>
+                  <span>Protection complète contre tous types de menaces</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Mises à jour automatiques</span>
+                  <span>Mises à jour automatiques prioritaires</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Support prioritaire 24/7</span>
+                  <span>Support prioritaire avec assistance dédiée</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>5 appareils</span>
+                  <span>Protection pour 5 appareils maximum</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Économisez 2 mois</span>
+                  <span>Économisez l'équivalent de 2 mois d'abonnement</span>
                 </li>
               </ul>
               <Link to="/signup">
