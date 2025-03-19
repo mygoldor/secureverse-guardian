@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CreditCard, CreditCardIcon } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type PaymentMethod = 'stripe' | 'paypal' | 'mollie';

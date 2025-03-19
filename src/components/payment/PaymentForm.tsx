@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, Eye, EyeOff, CreditCard, Lock, Mail, User } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
 import { Link } from 'react-router-dom';
 import {
   Form,
@@ -177,11 +176,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
             </>
           )}
         </Button>
-        
-        <div className="flex items-center justify-center mt-3 pt-3 text-xs text-muted-foreground">
-          <Lock className="h-3 w-3 mr-1" />
-          Paiement sécurisé avec cryptage SSL 256-bit
-        </div>
       </form>
     </Form>
   );
