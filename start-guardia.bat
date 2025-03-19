@@ -9,6 +9,11 @@ if "%ERRORLEVEL%"=="0" (
   goto :EOF
 )
 
+:: Set the app icon in the taskbar
+if exist "%SystemRoot%\System32\reg.exe" (
+  reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /v "Guardia Security" /t REG_BINARY /d 020000000000000000000000 /f >NUL 2>&1
+)
+
 :: Find and run the executable
 if exist "Guardia Security.exe" (
   start "" "Guardia Security.exe"
@@ -16,3 +21,4 @@ if exist "Guardia Security.exe" (
   :: Development environment fallback
   npm run electron
 )
+
