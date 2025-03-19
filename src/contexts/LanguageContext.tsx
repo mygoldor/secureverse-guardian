@@ -82,7 +82,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match: "Passwords don't match",
               passwords_dont_match_desc: "Please ensure both passwords are identical",
               signup_success: "Account created successfully",
-              signup_success_desc: "Welcome to Guardia! You can now log in."
+              signup_success_desc: "Welcome to Guardia! You can now log in.",
+
+              // New translations
+              enter_your_email: "Enter your email",
+              cancel_anytime: "No commitment required, cancel anytime.",
+              full_protection: "Total protection",
+              quick_installation: "Quick installation",
+              thirty_day_guarantee: "30-day guarantee"
             }
           },
           fr: {
@@ -136,7 +143,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match: "Les mots de passe ne correspondent pas",
               passwords_dont_match_desc: "Veuillez vous assurer que les deux mots de passe sont identiques",
               signup_success: "Compte créé avec succès",
-              signup_success_desc: "Bienvenue chez Guardia ! Vous pouvez maintenant vous connecter."
+              signup_success_desc: "Bienvenue chez Guardia ! Vous pouvez maintenant vous connecter.",
+
+              // New translations
+              enter_your_email: "Entrez votre email",
+              cancel_anytime: "Aucun engagement nécessaire, annulez à tout moment.",
+              full_protection: "Protection totale",
+              quick_installation: "Installation rapide",
+              thirty_day_guarantee: "Garantie 30 jours"
             }
           },
           es: {
@@ -190,7 +204,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match: "Las contraseñas no coinciden",
               passwords_dont_match_desc: "Por favor, asegúrese de que ambas contraseñas sean idénticas",
               signup_success: "Cuenta creada con éxito",
-              signup_success_desc: "¡Bienvenido a Guardia! Ahora puede iniciar sesión."
+              signup_success_desc: "¡Bienvenido a Guardia! Ahora puede iniciar sesión.",
+
+              // New translations
+              enter_your_email: "Introduce tu correo electrónico",
+              cancel_anytime: "Sin compromiso, cancela cuando quieras.",
+              full_protection: "Protección total",
+              quick_installation: "Instalación rápida",
+              thirty_day_guarantee: "Garantía de 30 días"
             }
           },
           de: {
@@ -214,7 +235,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               malware_protection: "Malware-Schutz",
               malware_protection_desc: "Erweiterter Schutz vor Viren, Spyware und anderer Malware.",
               auto_backup: "Automatische Sicherung",
-              auto_backup_desc: "Regelmäßige Backups, um sicherzustellen, dass Ihre Daten immer sicher und wiederherstellbar sind.",
+              auto_backup_desc: "Regelmä��ige Backups, um sicherzustellen, dass Ihre Daten immer sicher und wiederherstellbar sind.",
               vulnerability_analysis: "Schwachstellenanalyse",
               vulnerability_analysis_desc: "Proaktives Scannen, um Sicherheitslücken zu identifizieren und zu beheben.",
               security_reports: "Sicherheitsberichte",
@@ -244,7 +265,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match: "Passwörter stimmen nicht überein",
               passwords_dont_match_desc: "Bitte stellen Sie sicher, dass beide Passwörter identisch sind",
               signup_success: "Konto erfolgreich erstellt",
-              signup_success_desc: "Willkommen bei Guardia! Sie können sich jetzt anmelden."
+              signup_success_desc: "Willkommen bei Guardia! Sie können sich jetzt anmelden.",
+
+              // New translations
+              enter_your_email: "Geben Sie Ihre E-Mail ein",
+              cancel_anytime: "Keine Verpflichtung, jederzeit kündbar.",
+              full_protection: "Vollständiger Schutz",
+              quick_installation: "Schnelle Installation",
+              thirty_day_guarantee: "30 Tage Garantie"
             }
           },
           it: {
@@ -298,7 +326,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
               passwords_dont_match: "Le password non corrispondono",
               passwords_dont_match_desc: "Assicurati che entrambe le password siano identiche",
               signup_success: "Account creato con successo",
-              signup_success_desc: "Benvenuto in Guardia! Ora puoi accedere."
+              signup_success_desc: "Benvenuto in Guardia! Ora puoi accedere.",
+
+              // New translations
+              enter_your_email: "Inserisci la tua email",
+              cancel_anytime: "Nessun impegno richiesto, annulla in qualsiasi momento.",
+              full_protection: "Protezione totale",
+              quick_installation: "Installazione rapida",
+              thirty_day_guarantee: "Garanzia di 30 giorni"
             }
           }
         },

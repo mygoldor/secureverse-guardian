@@ -18,16 +18,16 @@ const CtaSection = () => {
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
             <input 
               type="email" 
-              placeholder="Votre adresse e-mail" 
+              placeholder={t('enter_your_email')} 
               className="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099FF]"
             />
             <Link to="/signup">
               <Button className="bg-[#00CC66] hover:bg-[#00AA55] text-white px-6">
-                S'inscrire
+                {t('create_account')}
               </Button>
             </Link>
           </div>
-          <p className="text-gray-500 text-sm mt-4">Aucun engagement nécessaire, annulez à tout moment.</p>
+          <p className="text-gray-500 text-sm mt-4">{t('cancel_anytime')}</p>
         </div>
         
         <div className="mt-8 flex justify-center items-center space-x-8">
@@ -35,7 +35,7 @@ const CtaSection = () => {
             <div className="bg-white/10 p-3 rounded-full mb-2">
               <Shield className="h-6 w-6 text-white" />
             </div>
-            <p className="text-white text-sm">Protection totale</p>
+            <p className="text-white text-sm">{t('full_protection')}</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="bg-white/10 p-3 rounded-full mb-2">
@@ -43,7 +43,7 @@ const CtaSection = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <p className="text-white text-sm">Installation rapide</p>
+            <p className="text-white text-sm">{t('quick_installation')}</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="bg-white/10 p-3 rounded-full mb-2">
@@ -51,7 +51,7 @@ const CtaSection = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
               </svg>
             </div>
-            <p className="text-white text-sm">Garantie 30 jours</p>
+            <p className="text-white text-sm">{t('thirty_day_guarantee')}</p>
           </div>
         </div>
       </div>
