@@ -1,3 +1,4 @@
+
 import { TranslationKeys } from './types';
 
 const de: TranslationKeys = {
@@ -96,6 +97,7 @@ const de: TranslationKeys = {
   // Dashboard page
   dashboard: 'Dashboard',
   quick_scan: 'Schnellscan',
+  analyse_rapide: 'Schnellscan', // Added the missing translation for German
   change_language: 'Sprache ändern',
 
   // Security elements

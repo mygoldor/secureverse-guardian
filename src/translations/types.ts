@@ -1,3 +1,4 @@
+
 // Define the translation structure as a TypeScript type for better type safety
 export type TranslationKeys = {
   // General
@@ -95,6 +96,7 @@ export type TranslationKeys = {
   // Dashboard page
   dashboard: string;
   quick_scan: string;
+  analyse_rapide: string; // Added the missing key here
   change_language: string;
 
   // Security elements

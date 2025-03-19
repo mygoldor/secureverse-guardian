@@ -1,3 +1,4 @@
+
 import { TranslationKeys } from './types';
 
 const en: TranslationKeys = {
@@ -96,6 +97,7 @@ const en: TranslationKeys = {
   // Dashboard page
   dashboard: 'Dashboard',
   quick_scan: 'Quick Scan',
+  analyse_rapide: 'Quick Scan', // Added the missing translation for English
   change_language: 'Change Language',
 
   // Security elements

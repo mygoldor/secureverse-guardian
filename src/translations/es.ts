@@ -1,3 +1,4 @@
+
 import { TranslationKeys } from './types';
 
 const es: TranslationKeys = {
@@ -96,6 +97,7 @@ const es: TranslationKeys = {
   // Dashboard page
   dashboard: 'Panel de control',
   quick_scan: 'Escaneo rápido',
+  analyse_rapide: 'Escaneo rápido', // Added the missing translation for Spanish
   change_language: 'Cambiar idioma',
 
   // Security elements

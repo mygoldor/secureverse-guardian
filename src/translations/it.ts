@@ -96,6 +96,7 @@ const it: TranslationKeys = {
   // Dashboard page
   dashboard: 'Dashboard',
   quick_scan: 'Scansione rapida',
+  analyse_rapide: 'Scansione rapida',
   change_language: 'Cambia lingua',
 
   // Security elements
