@@ -82,4 +82,204 @@ export type TranslationKeys = {
   dashboard: string;
   quick_scan: string;
   change_language: string;
+
+  // Security elements
+  security_agent: string;
+  security_agent_description: string;
+  security_agent_footer: string;
+  file_scan: string;
+  directory_scan: string;
+  scan_history: string;
+  backup: string;
+  network: string;
+  processes: string;
+  logs: string;
+  file_scanner: string;
+  network_scanner: string;
+  security_monitor: string;
+  security_management: string;
+  backup_and_quarantine: string;
+  scanning: string;
+  scan_network: string;
+  scanning_network: string;
+  monitor_network: string;
+  stop_monitoring: string;
+  scan_file: string;
+  scan_directory: string;
+  scanning_directory: string;
+  quarantine_file: string;
+  details: string;
+  clean: string;
+  threat: string;
+  threats: string;
+  detected: string;
+  scan_complete: string;
+  no_threats_found: string;
+  threats_found: string;
+  scan_failed: string;
+  threats_detected: string;
+  threats_found_in_directory: string;
+  no_threats_found_in_directory: string;
+  selected_file: string;
+  selected_directory: string;
+  no_file_selected: string;
+  no_directory_selected: string;
+  select_file: string;
+  select_directory: string;
+  
+  // Backup and quarantine
+  backup_complete: string;
+  backup_failed: string;
+  backing_up: string;
+  backup_files: string;
+  quarantine_load_failed: string;
+  file_restored: string;
+  file_restore_failed: string;
+  file_deleted: string;
+  file_delete_failed: string;
+  file_scan_complete: string;
+  file_safe: string;
+  file_unsafe: string;
+  file_scan_failed: string;
+  quarantine: string;
+  quarantined_files: string;
+  refresh: string;
+  loading_quarantined_files: string;
+  no_quarantined_files: string;
+  no_threats_in_quarantine: string;
+  safe: string;
+  unsafe: string;
+  restore: string;
+  delete: string;
+  
+  // Scan history
+  back_to_history: string;
+  rescan: string;
+  scan_details: string;
+  item_type: string;
+  file: string;
+  directory: string;
+  scan_status: string;
+  scan_date: string;
+  scan_time: string;
+  path: string;
+  threat_details: string;
+  suspicious_behavior: string;
+  malware_signature_match: string;
+  search_scans: string;
+  sort_newest: string;
+  sort_oldest: string;
+  calendar_view: string;
+  no_matching_scans: string;
+  no_scan_history: string;
+  
+  // Network and monitoring
+  ip_address: string;
+  mac_address: string;
+  status: string;
+  actions: string;
+  suspicious: string;
+  blocked: string;
+  normal: string;
+  block_ip: string;
+  network_scan_complete: string;
+  found_devices: string;
+  network_scan_failed: string;
+  new_devices_detected: string;
+  new_devices_on_network: string;
+  suspicious_connection_detected: string;
+  suspicious_devices_found: string;
+  network_monitoring_started: string;
+  monitoring_active: string;
+  monitoring_failed: string;
+  network_monitoring_stopped: string;
+  monitoring_inactive: string;
+  ip_blocked: string;
+  ip_block_failed: string;
+  
+  // Process monitoring
+  suspicious_process_detected: string;
+  suspicious_processes_found: string;
+  process_monitoring_started: string;
+  process_monitoring_stopped: string;
+  process_terminated: string;
+  process_id: string;
+  process_termination_failed: string;
+  ip_unblocked: string;
+  ip_unblock_failed: string;
+  process_monitor: string;
+  firewall: string;
+  start_monitoring: string;
+  stop_monitoring: string;
+  process_name: string;
+  cpu_usage: string;
+  memory_usage: string;
+  terminate: string;
+  enter_ip_address: string;
+  unblock: string;
+  no_blocked_ips: string;
+  
+  // System logs
+  security_logs: string;
+  no_logs_available: string;
+  suspicious_processes: string;
+  name: string;
+  no_suspicious_processes: string;
+  
+  // Additional landing page translations
+  discover_guardia: string;
+  computer_security: string;
+  real_time_monitoring: string;
+  real_time_monitoring_desc: string;
+  malware_protection: string;
+  malware_protection_desc: string;
+  auto_backup: string;
+  auto_backup_desc: string;
+  vulnerability_analysis: string;
+  vulnerability_analysis_desc: string;
+  security_reports: string;
+  security_reports_desc: string;
+  multi_device_protection: string;
+  multi_device_protection_desc: string;
+  key_features: string;
+  
+  // CTA section additional fields
+  ready_to_protect: string;
+  signup_now: string;
+  enter_your_email: string;
+  create_account: string;
+  cancel_anytime: string;
+  full_protection: string;
+  quick_installation: string;
+  thirty_day_guarantee: string;
+  
+  // Dashboard additional fields
+  security_summary: string;
+  recent_alerts: string;
+  threat_analysis: string;
+  analysis_history: string;
+  security_settings: string;
+  my_subscription: string;
+  real_time_protection: string;
+  active: string;
+  last_scan: string;
+  security_alerts: string;
+  alerts: string;
+  automatic_backup: string;
+  successful: string;
+  yesterday: string;
+  
+  // Login and signup pages
+  login_to_guardia: string;
+  email_address: string;
+  enter_your_password: string;
+  create_account_guardia: string;
+  full_name: string;
+  enter_your_name: string;
+  confirm_your_password: string;
+  already_have_account: string;
+  passwords_dont_match: string;
+  passwords_dont_match_desc: string;
+  signup_success: string;
+  signup_success_desc: string;
 };
