@@ -18,6 +18,15 @@ const LanguageSelector = () => {
   // Check if we're on the landing page
   const isLandingPage = location.pathname === '/landing';
 
+  // Define language label mapping
+  const languageLabels = {
+    'en': 'English',
+    'fr': 'Français',
+    'es': 'Español',
+    'de': 'Deutsch',
+    'it': 'Italiano'
+  };
+
   return (
     <div className="language-selector">
       <Select
