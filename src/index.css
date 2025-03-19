@@ -90,8 +90,12 @@
   }
 
   body {
-    @apply bg-security-background text-security-foreground;
-    font-family: 'Inter', sans-serif;
+    @apply bg-[#121212] text-white text-center;
+    font-family: 'Inter', Arial, sans-serif;
+  }
+
+  h1 {
+    @apply text-2xl mt-[20%];
   }
 }
 
