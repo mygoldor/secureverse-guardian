@@ -12,7 +12,17 @@ const HeroSection = () => {
     <section id="hero" className="relative py-20 md:py-32 px-4 bg-gradient-to-r from-[#003366] to-[#0099FF]">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="text-left">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{t('hero_title')}</h1>
+          <div className="flex items-center mb-6">
+            <img 
+              src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
+              alt="Guardia" 
+              className="h-16 w-auto mr-4"
+            />
+            <div>
+              <h1 className="text-3xl md:text-5xl font-bold text-white">{t('hero_title')}</h1>
+              <p className="text-[#0099FF] font-bold text-xl">CYBERSECURITY SOLUTION</p>
+            </div>
+          </div>
           <p className="text-xl text-gray-200 mb-8">{t('hero_subtitle')}</p>
           <Link to="/signup">
             <Button className="bg-[#00CC66] hover:bg-[#00AA55] text-white text-lg px-8 py-6">

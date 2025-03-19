@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Bell, Menu } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -21,7 +21,11 @@ const Header = () => {
         <div className="flex items-center space-x-2">
           <Link to="/dashboard">
             <div className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-security-primary" />
+              <img 
+                src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
+                alt="Guardia" 
+                className="h-10 w-auto"
+              />
               <span className="font-bold text-2xl text-security-primary">Guardia</span>
             </div>
           </Link>

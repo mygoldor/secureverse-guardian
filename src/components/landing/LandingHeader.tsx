@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -13,7 +12,11 @@ const LandingHeader = () => {
     <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
-          <Shield className="h-8 w-8 text-white" />
+          <img 
+            src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
+            alt="Guardia" 
+            className="h-10 w-auto"
+          />
           <span className="font-bold text-2xl text-white">Guardia</span>
         </Link>
         

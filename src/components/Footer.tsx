@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -10,12 +10,19 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2 mb-4">
-              <Shield className="h-6 w-6 text-white" />
+              <img 
+                src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
+                alt="Guardia" 
+                className="h-10 w-auto"
+              />
               <span className="font-bold text-xl text-white">Guardia</span>
             </div>
             <p className="text-gray-300 text-sm">
               Votre solution de cybersécurité complète pour protéger vos données et vos appareils contre les menaces numériques.
             </p>
+            <div className="pt-2">
+              <span className="text-[#0099FF] font-bold">CYBERSECURITY SOLUTION</span>
+            </div>
           </div>
           
           <div>
