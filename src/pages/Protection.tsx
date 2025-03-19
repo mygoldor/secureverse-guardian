@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { Shield, RefreshCcw, Lock, Eye } from 'lucide-react';
 import ProtectionCard from '@/components/ProtectionCard';
+import SecurityAgent from '@/components/SecurityAgent';
 
 const Protection = () => {
   const [protectionSettings, setProtectionSettings] = useState({
@@ -31,7 +32,7 @@ const Protection = () => {
           </button>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
           <ProtectionCard
             title="Malware Protection"
             description="Actively monitors and blocks malicious software from running on your device."
@@ -67,6 +68,10 @@ const Protection = () => {
             onToggle={() => handleToggleProtection('ransomwareProtection')}
             color="text-security-success"
           />
+        </div>
+        
+        <div className="mb-8">
+          <SecurityAgent />
         </div>
       </main>
     </div>

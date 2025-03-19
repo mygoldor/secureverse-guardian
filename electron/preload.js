@@ -9,13 +9,20 @@ contextBridge.exposeInMainWorld('electron', {
     version: process.env.npm_package_version
   },
   
-  // Fichier et système
+  // File and system
   selectFile: () => ipcRenderer.invoke('open-file-dialog'),
+  selectDirectory: () => ipcRenderer.invoke('open-directory-dialog'),
   scanFile: (filePath) => ipcRenderer.invoke('scan-file', filePath),
+  quarantineFile: (filePath) => ipcRenderer.invoke('quarantine-file', filePath),
+  backupFiles: (directory) => ipcRenderer.invoke('backup-files', directory),
   
-  // Réseau
+  // Network
   scanNetwork: () => ipcRenderer.invoke('scan-network'),
   
-  // Événements
+  // Security monitoring
+  getSecurityLogs: (lines) => ipcRenderer.invoke('get-security-logs', lines),
+  getSuspiciousProcesses: () => ipcRenderer.invoke('get-suspicious-processes'),
+  
+  // Events
   onBackendReady: (callback) => ipcRenderer.on('backend-ready', () => callback())
 });

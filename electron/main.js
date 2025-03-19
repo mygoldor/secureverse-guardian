@@ -1,3 +1,4 @@
+
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -102,6 +103,16 @@ app.whenReady().then(() => {
     return null;
   });
   
+  ipcMain.handle('open-directory-dialog', async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    });
+    if (!canceled) {
+      return filePaths[0];
+    }
+    return null;
+  });
+  
   // Handle file scanning
   ipcMain.handle('scan-file', async (event, filePath) => {
     try {
@@ -123,6 +134,54 @@ app.whenReady().then(() => {
     } catch (error) {
       console.error('Scan network error:', error);
       return { error: error.toString() };
+    }
+  });
+
+  // Handle file quarantine
+  ipcMain.handle('quarantine-file', async (event, filePath) => {
+    try {
+      const response = await axios.post('http://localhost:5000/quarantine-file', {
+        file_path: filePath
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Quarantine file error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+
+  // Handle file backup
+  ipcMain.handle('backup-files', async (event, directory) => {
+    try {
+      const response = await axios.post('http://localhost:5000/backup-files', {
+        directory: directory
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Backup files error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+
+  // Handle security logs retrieval
+  ipcMain.handle('get-security-logs', async (event, lines) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/security-logs?lines=${lines || 50}`);
+      return response.data;
+    } catch (error) {
+      console.error('Get security logs error:', error);
+      return { logs: [] };
+    }
+  });
+
+  // Handle suspicious processes retrieval
+  ipcMain.handle('get-suspicious-processes', async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/suspicious-processes');
+      return response.data;
+    } catch (error) {
+      console.error('Get suspicious processes error:', error);
+      return { processes: [] };
     }
   });
 });
