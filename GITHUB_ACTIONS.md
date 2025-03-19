@@ -46,16 +46,22 @@ If the build fails:
    - Look for red error messages that indicate what went wrong
 
 2. Common issues and solutions:
+   - **Missing requirements.txt**: Make sure the file exists in the repository root
    - **Python dependency errors**: Ensure requirements.txt is valid and all dependencies are available
-   - **Node.js build errors**: Check that your package.json scripts are correct
-   - **Electron builder errors**: Verify electron-builder.yml configuration is valid
-   - **Permission errors**: The workflow has been updated to include proper permissions
+   - **Node.js build errors**: Verify that package.json has the correct electron:build script
+   - **Electron builder errors**: Check that electron-builder.yml configuration is valid
+   - **Path issues**: The debug steps in the workflow can help identify path-related problems
 
-3. Testing locally:
+3. Solving typical errors:
+   - If `requirements.txt` is not found, check that it's in the correct location and committed to the repository
+   - If `electron:build` fails, make sure the script is properly defined in package.json
+   - If artifact uploads fail, verify that the build is generating files in the expected locations
+
+4. Testing locally:
    - Always verify that your code builds locally before pushing
    - Run `npm run build` and `npm run electron:build` locally to catch issues
 
-4. If builds are cancelled:
+5. If builds are cancelled:
    - This might be due to timeouts or resource constraints
    - Try building with fewer platforms at once by modifying the matrix
    - Optimize your build process to be faster and use fewer resources
@@ -72,3 +78,13 @@ If you need to trigger a build without pushing changes:
 4. Select the branch to build from and click "Run workflow"
 
 This is useful for testing the workflow after making changes to the configuration.
+
+## Debugging Issues
+
+The workflow now includes debugging steps that will:
+1. List files in the workspace
+2. Verify the presence of critical files like requirements.txt
+3. Check the contents of the electron-builder.yml file
+4. List build artifacts after the build process
+
+These debugging steps should help identify issues when builds fail.
