@@ -12,6 +12,7 @@ import Performance from "./pages/Performance";
 import Settings from "./pages/Settings";
 import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
+import MentionsLegales from "./pages/MentionsLegales";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/payment" element={<Payment />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/cookies" element={<CookiesPolicy />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             {/* Redirect any unknown routes to the 404 page */}
