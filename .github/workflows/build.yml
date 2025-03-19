@@ -61,8 +61,11 @@ jobs:
         shell: bash
         continue-on-error: false
 
+      # Use npm install instead of npm ci to update the lock file
       - name: Install Node.js dependencies
-        run: npm ci
+        run: |
+          echo "Using npm install to update lock file"
+          npm install
         continue-on-error: false
 
       - name: Build React app

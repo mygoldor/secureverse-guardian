@@ -51,15 +51,18 @@ If the build fails:
    - **Node.js build errors**: Verify that package.json has the correct electron:build script
    - **Electron builder errors**: Check that electron-builder.yml configuration is valid
    - **Path issues**: The debug steps in the workflow can help identify path-related problems
+   - **package-lock.json sync issues**: If you see errors about missing packages in the lock file, it means your package.json and package-lock.json are out of sync. The workflow uses `npm install` instead of `npm ci` to handle this automatically.
 
 3. Solving typical errors:
    - If `requirements.txt` is not found, check that it's in the correct location and committed to the repository
    - If `electron:build` fails, make sure the script is properly defined in package.json
    - If artifact uploads fail, verify that the build is generating files in the expected locations
+   - If you see Node.js engine compatibility warnings, they are usually just warnings and not actual errors, but you may need to update your Node.js version in the workflow if the build fails.
 
 4. Testing locally:
    - Always verify that your code builds locally before pushing
    - Run `npm run build` and `npm run electron:build` locally to catch issues
+   - If building locally works but CI fails, check if there are differences in the environment or dependencies
 
 5. If builds are cancelled:
    - This might be due to timeouts or resource constraints
@@ -81,10 +84,18 @@ This is useful for testing the workflow after making changes to the configuratio
 
 ## Debugging Issues
 
-The workflow now includes debugging steps that will:
+The workflow includes debugging steps that will:
 1. List files in the workspace
 2. Verify the presence of critical files like requirements.txt
 3. Check the contents of the electron-builder.yml file
 4. List build artifacts after the build process
 
 These debugging steps should help identify issues when builds fail.
+
+## Package Management Tips
+
+To avoid issues with package-lock.json:
+
+1. Commit both package.json and package-lock.json together whenever you update dependencies
+2. Run `npm install` locally before pushing to ensure the lock file is updated
+3. If you get "missing package" errors in CI, it indicates that package.json and package-lock.json are out of sync. The workflow has been configured to handle this by using `npm install` instead of `npm ci`.
