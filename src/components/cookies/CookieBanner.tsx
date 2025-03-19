@@ -32,21 +32,21 @@ const CookieBanner: React.FC = () => {
 
   return (
     <>
-      {/* Simplified smaller banner version */}
+      {/* Compact mini banner */}
       {showBanner && !showDetails && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 px-4 py-3 shadow-lg border-t border-gray-200 dark:border-gray-800 z-50">
-          <div className="max-w-7xl mx-auto flex flex-row items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Cookie className="h-4 w-4 text-security-primary" />
-              <p className="text-xs text-gray-600 dark:text-gray-300">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-2 px-3 shadow-md border-t border-gray-200 dark:border-gray-800 z-50">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <Cookie className="h-3.5 w-3.5 text-security-primary" />
+              <p className="text-xs text-gray-600 dark:text-gray-300 mr-2">
                 {t('cookies')}
               </p>
             </div>
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <Button
-                variant="ghost"
+                variant="ghost" 
                 size="sm"
-                className="text-xs h-7 px-2"
+                className="text-xs h-6 px-2"
                 onClick={() => setShowDetails(true)}
               >
                 {t('cookie_management')}
@@ -54,7 +54,7 @@ const CookieBanner: React.FC = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs h-7 px-2"
+                className="text-xs h-6 px-2 border-destructive text-destructive hover:bg-destructive/10"
                 onClick={rejectAllCookies}
               >
                 {t('reject')}
@@ -62,7 +62,7 @@ const CookieBanner: React.FC = () => {
               <Button
                 variant="default"
                 size="sm"
-                className="text-xs h-7 px-2"
+                className="text-xs h-6 px-2"
                 onClick={acceptAllCookies}
               >
                 {t('accept')}
