@@ -1,15 +1,17 @@
 
 import React, { useState } from 'react';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { CreditCard, Calendar, DollarSign } from 'lucide-react';
+import { CreditCard, Calendar, DollarSign, Lock, Mail, Shield, CheckCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -17,28 +19,59 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
-  cardName: z.string().min(2, { message: "Name is required" }),
-  cardNumber: z.string().min(16, { message: "Valid card number is required" }).max(19),
-  expiryDate: z.string().min(5, { message: "Valid expiry date is required (MM/YY)" }),
-  cvv: z.string().min(3, { message: "CVV is required" }).max(4),
+  name: z.string().min(2, { message: "Le nom est requis" }),
+  email: z.string().email({ message: "Adresse email invalide" }),
+  cardName: z.string().min(2, { message: "Nom sur la carte requis" }),
+  cardNumber: z.string().min(16, { message: "Numéro de carte valide requis" }).max(19),
+  expiryDate: z.string().min(5, { message: "Date d'expiration valide requise (MM/AA)" }),
+  cvv: z.string().min(3, { message: "CVV requis" }).max(4),
+  termsAccepted: z.boolean().refine(val => val === true, {
+    message: "Vous devez accepter les conditions générales",
+  }),
 });
 
 const Payment = () => {
   const [plan, setPlan] = useState<'monthly' | 'yearly'>('monthly');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'mollie'>('card');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isEmailAvailable, setIsEmailAvailable] = useState(true);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
+      email: "",
       cardName: "",
       cardNumber: "",
       expiryDate: "",
       cvv: "",
+      termsAccepted: false,
     },
   });
 
+  const checkEmailAvailability = (email: string) => {
+    // Simulate API call to check if email is already in use
+    // In a real app, this would be an actual API call
+    const isAvailable = email !== "test@example.com"; // Example email that's "already in use"
+    setIsEmailAvailable(isAvailable);
+    
+    if (!isAvailable) {
+      form.setError("email", { 
+        type: "manual", 
+        message: "Cette adresse email est déjà utilisée" 
+      });
+    } else {
+      form.clearErrors("email");
+    }
+    
+    return isAvailable;
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (!checkEmailAvailability(values.email)) {
+      return;
+    }
+    
     setIsProcessing(true);
     
     // Simulate payment processing
@@ -47,42 +80,50 @@ const Payment = () => {
       
       // Show success message
       toast({
-        title: "Payment Successful",
-        description: `Your ${plan} subscription has been activated.`,
+        title: "Paiement réussi",
+        description: `Votre abonnement ${plan === 'monthly' ? 'mensuel' : 'annuel'} a été activé.`,
       });
     }, 2000);
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    form.setValue("email", e.target.value);
+    if (e.target.value.includes('@')) {
+      checkEmailAvailability(e.target.value);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Choose Your Guardia Plan</h1>
+      <main className="flex-grow max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-center mb-2">Protégez vos appareils dès aujourd'hui</h1>
+        <p className="text-center text-gray-500 mb-8">Abonnez-vous à Guardia pour une sécurité optimale de vos données</p>
         
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <Card className={`border-2 ${plan === 'monthly' ? 'border-security-primary' : 'border-gray-200'}`}>
             <CardHeader>
-              <CardTitle>Monthly Plan</CardTitle>
-              <CardDescription>Perfect for short-term protection</CardDescription>
+              <CardTitle>Mensuel</CardTitle>
+              <CardDescription>Protection flexible, engagement minimum</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">€9.99<span className="text-base font-normal text-gray-500">/month</span></p>
+              <p className="text-3xl font-bold">9,99€<span className="text-base font-normal text-gray-500">/mois</span></p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Full Security Protection
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Sécurité 24/7 avec surveillance en temps réel
                 </li>
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Privacy Controls
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Pentest et correction automatique
                 </li>
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Performance Optimization
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Sauvegarde et récupération des fichiers
                 </li>
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Monthly Billing
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Support client prioritaire
                 </li>
               </ul>
             </CardContent>
@@ -92,34 +133,41 @@ const Payment = () => {
                 variant={plan === 'monthly' ? "default" : "outline"}
                 className="w-full"
               >
-                Select Monthly
+                Choisir le mensuel
               </Button>
             </CardFooter>
           </Card>
 
           <Card className={`border-2 ${plan === 'yearly' ? 'border-security-primary' : 'border-gray-200'}`}>
             <CardHeader>
-              <CardTitle>Yearly Plan</CardTitle>
-              <CardDescription>Save over 16% with annual billing</CardDescription>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle>Annuel</CardTitle>
+                  <CardDescription>Économisez plus de 16% avec 2 mois offerts</CardDescription>
+                </div>
+                <div className="bg-security-primary text-white px-2 py-1 rounded-full text-sm font-medium">
+                  Meilleure offre
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">€99.99<span className="text-base font-normal text-gray-500">/year</span></p>
+              <p className="text-3xl font-bold">99,99€<span className="text-base font-normal text-gray-500">/an</span></p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Full Security Protection
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Sécurité 24/7 avec surveillance en temps réel
                 </li>
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Privacy Controls
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Pentest et correction automatique
                 </li>
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Performance Optimization
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Sauvegarde et récupération des fichiers
                 </li>
                 <li className="flex items-center">
-                  <span className="bg-green-100 p-1 rounded-full mr-2">✓</span>
-                  Save over €19.89 per year
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Support client prioritaire + 2 mois offerts
                 </li>
               </ul>
             </CardContent>
@@ -129,7 +177,7 @@ const Payment = () => {
                 variant={plan === 'yearly' ? "default" : "outline"}
                 className="w-full"
               >
-                Select Yearly
+                Choisir l'annuel
               </Button>
             </CardFooter>
           </Card>
@@ -137,63 +185,71 @@ const Payment = () => {
 
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Payment Method</CardTitle>
-            <CardDescription>Choose how you want to pay</CardDescription>
+            <CardTitle>Créez votre compte et payez en toute sécurité</CardTitle>
+            <CardDescription>Vos données sont protégées avec un chiffrement de niveau bancaire</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="card" onValueChange={(value) => setPaymentMethod(value as any)}>
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="card">Credit Card</TabsTrigger>
-                <TabsTrigger value="paypal">PayPal</TabsTrigger>
-                <TabsTrigger value="mollie">Mollie</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="card" className="mt-4">
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="cardName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name on Card</FormLabel>
-                          <FormControl>
-                            <Input placeholder="John Smith" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Informations personnelles</h3>
+                  
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nom complet</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Jean Dupont" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input 
+                              placeholder="email@exemple.com" 
+                              {...field} 
+                              onChange={handleEmailChange}
+                              className={!isEmailAvailable ? "border-security-danger" : ""}
+                            />
+                            <Mail className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Mode de paiement</h3>
+                  
+                  <Tabs defaultValue="card" onValueChange={(value) => setPaymentMethod(value as any)}>
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="card">Carte bancaire</TabsTrigger>
+                      <TabsTrigger value="paypal">PayPal</TabsTrigger>
+                      <TabsTrigger value="mollie">Mollie (Bancontact)</TabsTrigger>
+                    </TabsList>
                     
-                    <FormField
-                      control={form.control}
-                      name="cardNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Card Number</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Input placeholder="4242 4242 4242 4242" {...field} />
-                              <CreditCard className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <div className="grid grid-cols-2 gap-4">
+                    <TabsContent value="card" className="mt-4 space-y-4">
                       <FormField
                         control={form.control}
-                        name="expiryDate"
+                        name="cardName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Expiry Date</FormLabel>
+                            <FormLabel>Nom sur la carte</FormLabel>
                             <FormControl>
-                              <div className="relative">
-                                <Input placeholder="MM/YY" {...field} />
-                                <Calendar className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                              </div>
+                              <Input placeholder="Jean Dupont" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -202,75 +258,140 @@ const Payment = () => {
                       
                       <FormField
                         control={form.control}
-                        name="cvv"
+                        name="cardNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>CVV</FormLabel>
+                            <FormLabel>Numéro de carte</FormLabel>
                             <FormControl>
-                              <Input placeholder="123" type="password" {...field} />
+                              <div className="relative">
+                                <Input placeholder="4242 4242 4242 4242" {...field} />
+                                <CreditCard className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                    </div>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="expiryDate"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Date d'expiration</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input placeholder="MM/AA" {...field} />
+                                  <Calendar className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="cvv"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>CVV</FormLabel>
+                              <FormControl>
+                                <Input placeholder="123" type="password" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </TabsContent>
                     
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button type="submit" className="w-full" disabled={isProcessing}>
-                          {isProcessing ? "Processing..." : `Pay €${plan === 'monthly' ? '9.99' : '99.99'}`}
+                    <TabsContent value="paypal" className="mt-4">
+                      <div className="text-center py-6">
+                        <p className="mb-4">Vous serez redirigé vers PayPal pour compléter votre paiement de manière sécurisée.</p>
+                        <Button className="w-full">
+                          <DollarSign className="mr-2 h-4 w-4" />
+                          Payer avec PayPal
                         </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Confirm Your Subscription</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            You are about to subscribe to the Guardia {plan} plan for €{plan === 'monthly' ? '9.99/month' : '99.99/year'}.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => onSubmit(form.getValues())}>
-                            Confirm Payment
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </form>
-                </Form>
-              </TabsContent>
-              
-              <TabsContent value="paypal" className="mt-4">
-                <div className="text-center">
-                  <p className="mb-4">You will be redirected to PayPal to complete your payment.</p>
-                  <Button className="w-full">
-                    <DollarSign className="mr-2 h-4 w-4" />
-                    Pay with PayPal
-                  </Button>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="mollie" className="mt-4">
+                      <div className="text-center py-6">
+                        <p className="mb-4">Choisissez parmi plusieurs méthodes de paiement via Mollie, incluant Bancontact.</p>
+                        <Button className="w-full">
+                          Continuer avec Mollie (Bancontact)
+                        </Button>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                 </div>
-              </TabsContent>
-              
-              <TabsContent value="mollie" className="mt-4">
-                <div className="text-center">
-                  <p className="mb-4">Choose from multiple payment methods through Mollie.</p>
-                  <Button className="w-full">
-                    Continue with Mollie
-                  </Button>
-                </div>
-              </TabsContent>
-            </Tabs>
+                
+                <FormField
+                  control={form.control}
+                  name="termsAccepted"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>
+                          J'accepte les <a href="#" className="text-security-primary hover:underline">Conditions Générales</a> et la <a href="#" className="text-security-primary hover:underline">Politique de Confidentialité</a>
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button type="submit" className="w-full" disabled={isProcessing}>
+                      {isProcessing ? "Traitement en cours..." : `S'abonner et payer ${plan === 'monthly' ? '9,99€' : '99,99€'}`}
+                      <Lock className="ml-2 h-4 w-4" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Confirmez votre abonnement</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Vous êtes sur le point de vous abonner au plan Guardia {plan === 'monthly' ? 'mensuel à 9,99€/mois' : 'annuel à 99,99€/an (2 mois offerts)'}.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => onSubmit(form.getValues())}>
+                        Confirmer le paiement
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </form>
+            </Form>
           </CardContent>
         </Card>
 
         <div className="bg-gray-100 p-4 rounded-lg mb-8">
-          <h3 className="font-semibold mb-2">Privacy Notice (GDPR Compliant)</h3>
-          <p className="text-sm text-gray-600">
-            Your payment information is securely processed and we do not store your full card details on our servers. 
-            By proceeding with the payment, you agree to our Terms of Service and Privacy Policy. 
-            You can cancel your subscription at any time from your account settings.
-          </p>
+          <div className="flex items-start">
+            <Shield className="text-security-primary mt-1 mr-3 h-5 w-5" />
+            <div>
+              <h3 className="font-semibold mb-2">Protection des données (RGPD)</h3>
+              <p className="text-sm text-gray-600">
+                Conformément au Règlement Général sur la Protection des Données (RGPD), vos informations de paiement sont 
+                traitées de manière sécurisée et nous ne stockons pas les détails complets de votre carte sur nos serveurs. 
+                En procédant au paiement, vous acceptez nos Conditions Générales et notre Politique de Confidentialité. 
+                Vous pouvez annuler votre abonnement à tout moment depuis vos paramètres.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
