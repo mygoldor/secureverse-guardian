@@ -15,7 +15,7 @@ const TermsOfService = () => {
           <p className="text-gray-500 mt-2">Dernière mise à jour : 1 juin 2023</p>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 text-gray-800">
           <TermsContent />
         </div>
       </main>

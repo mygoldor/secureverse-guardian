@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 
 const TermsContent: React.FC = () => {
   return (
-    <div className="prose prose-sm max-w-none">
+    <div className="prose prose-sm max-w-none text-left">
       <p className="mb-6">
         Bienvenue chez <strong>Guardia</strong>. Les présentes Conditions Générales d'Utilisation (CGU) régissent l'accès et l'utilisation de nos services, y compris notre plateforme en ligne, notre application et nos services associés (collectivement appelés "Services"). En accédant à ou en utilisant les Services, vous acceptez les présentes Conditions. Si vous n'acceptez pas ces conditions, vous devez immédiatement cesser d'utiliser nos Services.
       </p>
