@@ -1,12 +1,11 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Shield, Search, AlertTriangle } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import ScanProgressIndicator from './ScanProgressIndicator';
 
 interface FileScannerProps {
   selectFile: () => Promise<string | null>;
@@ -111,13 +110,10 @@ const FileScanner: React.FC<FileScannerProps> = ({
       </div>
       
       {isScanning && (
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span>{t('scanning')}</span>
-            <span>{scanProgress}%</span>
-          </div>
-          <Progress value={scanProgress} />
-        </div>
+        <ScanProgressIndicator 
+          progress={scanProgress}
+          statusMessage={t('scanning')}
+        />
       )}
       
       <div className="flex space-x-2">
