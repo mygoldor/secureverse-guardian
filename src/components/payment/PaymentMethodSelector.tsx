@@ -10,6 +10,7 @@ interface PaymentMethodSelectorProps {
 const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({ value, onChange }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {/* Stripe (Credit Card) option */}
       <div
         className={`border rounded-lg p-4 flex flex-col items-center cursor-pointer transition-all ${
           value === 'stripe' ? 'border-security-primary bg-blue-50' : 'border-gray-200'
@@ -21,6 +22,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({ value, on
         <span className="text-xs text-gray-500 mt-1">Visa/Mastercard</span>
       </div>
 
+      {/* Mollie (Bancontact) option */}
       <div
         className={`border rounded-lg p-4 flex flex-col items-center cursor-pointer transition-all ${
           value === 'mollie' ? 'border-security-primary bg-blue-50' : 'border-gray-200'
@@ -32,6 +34,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({ value, on
         <span className="text-xs text-gray-500 mt-1">Mollie</span>
       </div>
 
+      {/* PayPal option */}
       <div
         className={`border rounded-lg p-4 flex flex-col items-center cursor-pointer transition-all ${
           value === 'paypal' ? 'border-security-primary bg-blue-50' : 'border-gray-200'
