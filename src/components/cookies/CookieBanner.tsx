@@ -81,14 +81,7 @@ const CookieBanner: React.FC = () => {
                   {t('accept')}
                 </Button>
               </div>
-              <Button
-                variant="ghost" 
-                size="sm"
-                className="text-xs w-full mt-1"
-                onClick={() => setShowDetails(true)}
-              >
-                {t('cookie_management')} ⚙️
-              </Button>
+              {/* The "Cookie Management" button has been removed from here */}
             </div>
           ) : (
             // Compact version for other pages
@@ -111,14 +104,7 @@ const CookieBanner: React.FC = () => {
                 >
                   {t('accept')}
                 </Button>
-                <Button
-                  variant="ghost" 
-                  size="sm"
-                  className="text-[10px] h-5 px-1.5"
-                  onClick={() => setShowDetails(true)}
-                >
-                  ⚙️
-                </Button>
+                {/* The settings/gear button has been removed from here */}
               </div>
             </>
           )}
