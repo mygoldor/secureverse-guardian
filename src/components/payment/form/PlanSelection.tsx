@@ -4,6 +4,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Control } from 'react-hook-form';
 import { FormValues } from '../PaymentForm';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PlanSelectionProps {
   control: Control<FormValues>;
@@ -11,13 +12,15 @@ interface PlanSelectionProps {
 }
 
 const PlanSelection: React.FC<PlanSelectionProps> = ({ control, onPlanChange }) => {
+  const { t } = useLanguage();
+  
   return (
     <FormField
       control={control}
       name="plan"
       render={({ field, fieldState }) => (
         <FormItem className="space-y-3">
-          <FormLabel>Sélection du plan</FormLabel>
+          <FormLabel>{t('plan_selection')}</FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={(value) => {
@@ -29,11 +32,11 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({ control, onPlanChange }) 
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="monthly" id="monthly" />
-                <label htmlFor="monthly" className="cursor-pointer">Mensuel - 9,99€/mois</label>
+                <label htmlFor="monthly" className="cursor-pointer">{t('monthly_plan')} - {t('monthly_price')}</label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yearly" id="yearly" />
-                <label htmlFor="yearly" className="cursor-pointer">Annuel - 99,99€/an (2 mois offerts)</label>
+                <label htmlFor="yearly" className="cursor-pointer">{t('yearly_plan')} - {t('yearly_price')} ({t('save_with_yearly')})</label>
               </div>
             </RadioGroup>
           </FormControl>

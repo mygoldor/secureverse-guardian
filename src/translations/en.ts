@@ -66,6 +66,15 @@ const en: TranslationKeys = {
   current_plan: 'Your current plan',
   select_plan: 'Select',
   contact_sales: 'Contact Sales',
+  plan_selection: 'Plan Selection',
+  monthly_plan: 'Monthly Plan',
+  yearly_plan: 'Annual Plan',
+  monthly_price: '$9.99/month',
+  yearly_price: '$99.99/year',
+  monthly_plan_description: 'Perfect for users who prefer monthly flexibility without long-term commitment.',
+  yearly_plan_description: 'Our most popular offer with significant savings for an annual commitment.',
+  save_with_yearly: 'Save 2 months free',
+  choose_plan: 'Choose this plan',
   
   // CTA section
   cta_title: 'Ready to secure your digital life?',
@@ -78,6 +87,11 @@ const en: TranslationKeys = {
   privacy: 'Privacy Policy',
   cookies: 'Cookie Policy',
   legal: 'Legal Notice',
+  cookie_management: 'Cookie Management',
+  legal_mentions: 'Legal Mentions',
+  privacy_policy: 'Privacy Policy',
+  terms_of_use: 'Terms of Use',
+  company_address: '123 Cybersecurity Avenue, 75001 Paris',
   
   // Dashboard page
   dashboard: 'Dashboard',
@@ -127,6 +141,8 @@ const en: TranslationKeys = {
   no_directory_selected: 'No directory selected',
   select_file: 'Select File',
   select_directory: 'Select Directory',
+  quarantine_complete: 'Quarantine Complete',
+  quarantine_failed: 'Quarantine Failed',
   
   // Backup and quarantine
   backup_complete: 'Backup Complete',
@@ -211,7 +227,6 @@ const en: TranslationKeys = {
   process_monitor: 'Process Monitor',
   firewall: 'Firewall',
   start_monitoring: 'Start Monitoring',
-  stop_monitoring: 'Stop Monitoring',
   process_name: 'Process Name',
   cpu_usage: 'CPU Usage',
   memory_usage: 'Memory Usage',

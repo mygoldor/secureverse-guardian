@@ -65,6 +65,15 @@ export type TranslationKeys = {
   current_plan: string;
   select_plan: string;
   contact_sales: string;
+  plan_selection: string;
+  monthly_plan: string;
+  yearly_plan: string;
+  monthly_price: string;
+  yearly_price: string;
+  monthly_plan_description: string;
+  yearly_plan_description: string;
+  save_with_yearly: string;
+  choose_plan: string;
   
   // CTA section
   cta_title: string;
@@ -77,6 +86,11 @@ export type TranslationKeys = {
   privacy: string;
   cookies: string;
   legal: string;
+  cookie_management: string;
+  legal_mentions: string;
+  privacy_policy: string;
+  terms_of_use: string;
+  company_address: string;
   
   // Dashboard page
   dashboard: string;
@@ -126,6 +140,8 @@ export type TranslationKeys = {
   no_directory_selected: string;
   select_file: string;
   select_directory: string;
+  quarantine_complete: string;
+  quarantine_failed: string;
   
   // Backup and quarantine
   backup_complete: string;
@@ -210,7 +226,6 @@ export type TranslationKeys = {
   process_monitor: string;
   firewall: string;
   start_monitoring: string;
-  stop_monitoring: string;
   process_name: string;
   cpu_usage: string;
   memory_usage: string;

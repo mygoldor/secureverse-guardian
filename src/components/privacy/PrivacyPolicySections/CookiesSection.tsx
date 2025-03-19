@@ -1,11 +1,14 @@
 
 import React from 'react';
 import PrivacyPolicySection from '../PrivacyPolicySection';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const CookiesSection: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
-    <PrivacyPolicySection title="9. Cookies and tracking">
-      <p className="mb-3">Guardia uses cookies only to:</p>
+    <PrivacyPolicySection title={`9. ${t('cookie_management')}`}>
+      <p className="mb-3">Guardia {t('cookies')}:</p>
       <ul className="list-disc pl-5 mb-4">
         <li>Ensure proper website functioning (essential cookies)</li>
         <li>Remember your preferences (functional cookies)</li>

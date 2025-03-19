@@ -66,6 +66,15 @@ const fr: TranslationKeys = {
   current_plan: 'Votre forfait actuel',
   select_plan: 'Sélectionner',
   contact_sales: 'Contacter commercial',
+  plan_selection: 'Sélection du plan',
+  monthly_plan: 'Plan mensuel',
+  yearly_plan: 'Plan annuel',
+  monthly_price: '9,99€/mois',
+  yearly_price: '99,99€/an',
+  monthly_plan_description: 'Parfait pour les utilisateurs qui préfèrent une flexibilité mensuelle sans engagement à long terme.',
+  yearly_plan_description: 'Notre offre la plus populaire avec une réduction importante pour un engagement annuel.',
+  save_with_yearly: 'Économisez 2 mois offerts',
+  choose_plan: 'Choisir ce plan',
   
   // CTA section
   cta_title: 'Prêt à sécuriser votre vie numérique ?',
@@ -78,6 +87,11 @@ const fr: TranslationKeys = {
   privacy: 'Politique de confidentialité',
   cookies: 'Politique des cookies',
   legal: 'Mentions légales',
+  cookie_management: 'Gestion des cookies',
+  legal_mentions: 'Mentions légales',
+  privacy_policy: 'Politique de confidentialité',
+  terms_of_use: 'Conditions d\'utilisation',
+  company_address: '123 Avenue de la Cybersécurité, 75001 Paris',
   
   // Dashboard page
   dashboard: 'Tableau de bord',
@@ -127,6 +141,8 @@ const fr: TranslationKeys = {
   no_directory_selected: 'Aucun répertoire sélectionné',
   select_file: 'Sélectionner fichier',
   select_directory: 'Sélectionner répertoire',
+  quarantine_complete: 'Mise en quarantaine terminée',
+  quarantine_failed: 'Échec de la mise en quarantaine',
   
   // Backup and quarantine
   backup_complete: 'Sauvegarde terminée',
@@ -211,7 +227,6 @@ const fr: TranslationKeys = {
   process_monitor: 'Moniteur de processus',
   firewall: 'Pare-feu',
   start_monitoring: 'Démarrer la surveillance',
-  stop_monitoring: 'Arrêter la surveillance',
   process_name: 'Nom du processus',
   cpu_usage: 'Utilisation CPU',
   memory_usage: 'Utilisation mémoire',
