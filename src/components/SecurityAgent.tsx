@@ -2,14 +2,15 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, FileSearch, HardDrive, Network, Clock } from 'lucide-react';
+import { Shield, FileSearch, HardDrive, Network, Clock, Activity } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-// Import the new component modules
+// Import the component modules
 import FileScan from './security/FileScan';
 import BackupManager from './security/BackupManager';
 import NetworkScanner from './security/NetworkScanner';
 import LogViewer from './security/LogViewer';
+import ProcessMonitor from './security/ProcessMonitor';
 
 declare global {
   interface Window {
@@ -17,11 +18,21 @@ declare global {
       selectFile: () => Promise<string | null>;
       selectDirectory: () => Promise<string | null>;
       scanFile: (filePath: string) => Promise<any>;
+      scanDirectory?: (directoryPath: string) => Promise<any>;
       quarantineFile: (filePath: string) => Promise<any>;
       backupFiles: (directory: string) => Promise<any>;
+      listQuarantinedFiles?: () => Promise<string[]>;
+      restoreFile?: (fileName: string) => Promise<any>;
+      deleteFile?: (fileName: string) => Promise<any>;
+      scanQuarantinedFile?: (fileName: string) => Promise<any>;
       scanNetwork: () => Promise<any>;
+      getBlockedIPs?: () => Promise<string[]>;
+      blockIP?: (ip: string) => Promise<any>;
+      unblockIP?: (ip: string) => Promise<any>;
       getSecurityLogs: (lines: number) => Promise<{logs: string[]}>;
       getSuspiciousProcesses: () => Promise<{processes: any[]}>;
+      killProcess?: (pid: number) => Promise<any>;
+      onThreatDetected?: (callback: (data: any) => void) => void;
     };
   }
 }
@@ -53,6 +64,10 @@ const SecurityAgent = () => {
               <Network className="h-4 w-4 mr-2" />
               {t('network')}
             </TabsTrigger>
+            <TabsTrigger value="processes" className="flex-1">
+              <Activity className="h-4 w-4 mr-2" />
+              {t('processes')}
+            </TabsTrigger>
             <TabsTrigger value="logs" className="flex-1">
               <Clock className="h-4 w-4 mr-2" />
               {t('logs')}
@@ -63,7 +78,9 @@ const SecurityAgent = () => {
             {window.electron && (
               <FileScan 
                 selectFile={window.electron.selectFile}
+                selectDirectory={window.electron.selectDirectory}
                 scanFile={window.electron.scanFile}
+                scanDirectory={window.electron.scanDirectory}
                 quarantineFile={window.electron.quarantineFile}
               />
             )}
@@ -74,6 +91,10 @@ const SecurityAgent = () => {
               <BackupManager
                 selectDirectory={window.electron.selectDirectory}
                 backupFiles={window.electron.backupFiles}
+                listQuarantinedFiles={window.electron.listQuarantinedFiles}
+                restoreFile={window.electron.restoreFile}
+                deleteFile={window.electron.deleteFile}
+                scanQuarantinedFile={window.electron.scanQuarantinedFile}
               />
             )}
           </TabsContent>
@@ -82,6 +103,21 @@ const SecurityAgent = () => {
             {window.electron && (
               <NetworkScanner
                 scanNetwork={window.electron.scanNetwork}
+                getBlockedIPs={window.electron.getBlockedIPs}
+                blockIP={window.electron.blockIP}
+                unblockIP={window.electron.unblockIP}
+              />
+            )}
+          </TabsContent>
+          
+          <TabsContent value="processes">
+            {window.electron && (
+              <ProcessMonitor 
+                monitorProcesses={window.electron.getSuspiciousProcesses}
+                killProcess={window.electron.killProcess}
+                getBlockedIPs={window.electron.getBlockedIPs}
+                blockIP={window.electron.blockIP}
+                unblockIP={window.electron.unblockIP}
               />
             )}
           </TabsContent>

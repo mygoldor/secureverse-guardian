@@ -1,14 +1,27 @@
-
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
 const { spawn } = require('child_process');
 const axios = require('axios');
 const fs = require('fs');
+const os = require('os');
 
 // Keep a global reference of the window object and the Python process
 let mainWindow;
 let pythonProcess = null;
+
+// Configuration
+const QUARANTINE_DIR = path.join(app.getPath('userData'), 'quarantine');
+const BACKUP_DIR = path.join(app.getPath('userData'), 'backup');
+
+// Ensure directories exist
+function ensureDirectoriesExist() {
+  [QUARANTINE_DIR, BACKUP_DIR].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+}
 
 function startPythonBackend() {
   // Check if Python is installed
@@ -89,6 +102,7 @@ function createWindow() {
 
 // Create window and start Python backend when Electron is ready
 app.whenReady().then(() => {
+  ensureDirectoriesExist();
   createWindow();
   startPythonBackend();
   
@@ -123,6 +137,19 @@ app.whenReady().then(() => {
     } catch (error) {
       console.error('Scan file error:', error);
       return { status: 'Erreur', message: error.toString() };
+    }
+  });
+  
+  // Handle directory scanning
+  ipcMain.handle('scan-directory', async (event, directoryPath) => {
+    try {
+      const response = await axios.post('http://localhost:5000/scan-directory', {
+        directory_path: directoryPath
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Scan directory error:', error);
+      return { status: 'Erreur', message: error.toString(), filesScanned: 0, threatsFound: 0 };
     }
   });
   
@@ -163,7 +190,57 @@ app.whenReady().then(() => {
     }
   });
 
-  // Handle security logs retrieval - ensure we use one parameter
+  // Handle list quarantined files
+  ipcMain.handle('list-quarantined-files', async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/list-quarantined-files');
+      return response.data.files || [];
+    } catch (error) {
+      console.error('List quarantined files error:', error);
+      return [];
+    }
+  });
+
+  // Handle restore file from quarantine
+  ipcMain.handle('restore-file', async (event, fileName) => {
+    try {
+      const response = await axios.post('http://localhost:5000/restore-file', {
+        file_name: fileName
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Restore file error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+
+  // Handle delete file from quarantine
+  ipcMain.handle('delete-file', async (event, fileName) => {
+    try {
+      const response = await axios.post('http://localhost:5000/delete-file', {
+        file_name: fileName
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Delete file error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+  
+  // Handle scan quarantined file
+  ipcMain.handle('scan-quarantined-file', async (event, fileName) => {
+    try {
+      const response = await axios.post('http://localhost:5000/scan-quarantined-file', {
+        file_name: fileName
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Scan quarantined file error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+
+  // Handle security logs retrieval
   ipcMain.handle('get-security-logs', async (event, lines) => {
     try {
       const response = await axios.get(`http://localhost:5000/security-logs?lines=${lines || 50}`);
@@ -182,6 +259,56 @@ app.whenReady().then(() => {
     } catch (error) {
       console.error('Get suspicious processes error:', error);
       return { processes: [] };
+    }
+  });
+  
+  // Handle process termination
+  ipcMain.handle('kill-process', async (event, pid) => {
+    try {
+      const response = await axios.post('http://localhost:5000/kill-process', {
+        pid: pid
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Kill process error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+  
+  // Handle get blocked IPs
+  ipcMain.handle('get-blocked-ips', async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/blocked-ips');
+      return response.data.ips || [];
+    } catch (error) {
+      console.error('Get blocked IPs error:', error);
+      return [];
+    }
+  });
+  
+  // Handle block IP
+  ipcMain.handle('block-ip', async (event, ip) => {
+    try {
+      const response = await axios.post('http://localhost:5000/block-ip', {
+        ip: ip
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Block IP error:', error);
+      return { status: 'Erreur', message: error.toString() };
+    }
+  });
+  
+  // Handle unblock IP
+  ipcMain.handle('unblock-ip', async (event, ip) => {
+    try {
+      const response = await axios.post('http://localhost:5000/unblock-ip', {
+        ip: ip
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Unblock IP error:', error);
+      return { status: 'Erreur', message: error.toString() };
     }
   });
 });

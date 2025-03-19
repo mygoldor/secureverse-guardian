@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Shield, AlertTriangle, Search, FileHeart } from 'lucide-react';
+import { Shield, AlertTriangle, Search, FileHeart, Folder } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface FileScanProps {
   selectFile: () => Promise<string | null>;
@@ -29,7 +30,7 @@ const FileScan: React.FC<FileScanProps> = ({
   const [scanResult, setScanResult] = useState<any | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
-  const [scanMode, setScanMode] = useState<'file' | 'directory'>('file');
+  const [scanTab, setScanTab] = useState('file');
   const { toast } = useToast();
   const { t } = useLanguage();
 
@@ -38,7 +39,6 @@ const FileScan: React.FC<FileScanProps> = ({
     if (filePath) {
       setSelectedFile(filePath);
       setScanResult(null);
-      setScanMode('file');
     }
   };
 
@@ -49,7 +49,6 @@ const FileScan: React.FC<FileScanProps> = ({
     if (directoryPath) {
       setSelectedDirectory(directoryPath);
       setScanResult(null);
-      setScanMode('directory');
     }
   };
 
@@ -167,27 +166,98 @@ const FileScan: React.FC<FileScanProps> = ({
         <CardTitle>{t('file_scanner')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label>{t('selected_file')}</Label>
-            <div className="flex space-x-2">
-              <Input 
-                value={selectedFile || ''}
-                readOnly
-                placeholder={t('no_file_selected')}
-                className="flex-grow"
-              />
-              <Button 
-                onClick={handleSelectFile}
-                className="whitespace-nowrap"
-              >
-                <Search className="h-4 w-4 mr-2" />
-                {t('select_file')}
-              </Button>
-            </div>
-          </div>
+        <Tabs value={scanTab} onValueChange={setScanTab}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="file">{t('file_scan')}</TabsTrigger>
+            <TabsTrigger value="directory" disabled={!scanDirectory}>{t('directory_scan')}</TabsTrigger>
+          </TabsList>
           
-          {selectDirectory && (
+          <TabsContent value="file" className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label>{t('selected_file')}</Label>
+              <div className="flex space-x-2">
+                <Input 
+                  value={selectedFile || ''}
+                  readOnly
+                  placeholder={t('no_file_selected')}
+                  className="flex-grow"
+                />
+                <Button 
+                  onClick={handleSelectFile}
+                  className="whitespace-nowrap"
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  {t('select_file')}
+                </Button>
+              </div>
+            </div>
+            
+            {isScanning && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>{t('scanning')}</span>
+                  <span>{scanProgress}%</span>
+                </div>
+                <Progress value={scanProgress} />
+              </div>
+            )}
+            
+            <div className="flex space-x-2">
+              <Button
+                onClick={handleScanFile}
+                disabled={!selectedFile || isScanning}
+                className="flex-grow"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                {isScanning ? t('scanning') : t('scan_file')}
+              </Button>
+              
+              {scanResult && scanResult.status !== 'OK' && (
+                <Button
+                  onClick={handleQuarantineFile}
+                  variant="destructive"
+                >
+                  {t('quarantine_file')}
+                </Button>
+              )}
+            </div>
+            
+            {scanResult && (
+              <div className={`p-4 rounded-md ${
+                scanResult.status === 'OK' 
+                  ? 'bg-green-50 border border-green-200' 
+                  : 'bg-red-50 border border-red-200'
+              }`}>
+                <div className="flex items-start">
+                  <div className={`rounded-full p-2 ${
+                    scanResult.status === 'OK' ? 'bg-green-100' : 'bg-red-100'
+                  } mr-3`}>
+                    {scanResult.status === 'OK' ? (
+                      <Shield className="h-5 w-5 text-green-600" />
+                    ) : (
+                      <AlertTriangle className="h-5 w-5 text-red-600" />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="font-medium">{scanResult.status === 'OK' ? t('file_safe') : t('file_unsafe')}</h4>
+                    <p className="text-sm mt-1">{t('file')}: {scanResult.file_path}</p>
+                    {scanResult.raisons && scanResult.raisons.length > 0 && (
+                      <div className="mt-2">
+                        <p className="text-sm font-medium">{t('reasons')}:</p>
+                        <ul className="text-sm list-disc list-inside">
+                          {scanResult.raisons.map((reason: string, index: number) => (
+                            <li key={index}>{reason}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="directory" className="space-y-4 pt-4">
             <div className="space-y-2">
               <Label>{t('selected_directory')}</Label>
               <div className="flex space-x-2">
@@ -201,108 +271,54 @@ const FileScan: React.FC<FileScanProps> = ({
                   onClick={handleSelectDirectory}
                   className="whitespace-nowrap"
                 >
-                  <FileHeart className="h-4 w-4 mr-2" />
+                  <Folder className="h-4 w-4 mr-2" />
                   {t('select_directory')}
                 </Button>
               </div>
             </div>
-          )}
-        </div>
-        
-        {isScanning && (
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>{t('scanning')}</span>
-              <span>{scanProgress}%</span>
-            </div>
-            <Progress value={scanProgress} />
-          </div>
-        )}
-        
-        <div className="flex space-x-2">
-          {scanMode === 'file' ? (
-            <Button
-              onClick={handleScanFile}
-              disabled={!selectedFile || isScanning}
-              className="flex-grow"
-            >
-              {isScanning ? t('scanning') : t('scan_file')}
-            </Button>
-          ) : (
+            
+            {isScanning && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>{t('scanning_directory')}</span>
+                  <span>{scanProgress}%</span>
+                </div>
+                <Progress value={scanProgress} />
+              </div>
+            )}
+            
             <Button
               onClick={handleScanDirectory}
               disabled={!selectedDirectory || isScanning || !scanDirectory}
-              className="flex-grow"
+              className="w-full"
             >
+              <FileHeart className="h-4 w-4 mr-2" />
               {isScanning ? t('scanning') : t('scan_directory')}
             </Button>
-          )}
-          
-          {scanResult && scanMode === 'file' && scanResult.status !== 'OK' && (
-            <Button
-              onClick={handleQuarantineFile}
-              variant="destructive"
-            >
-              {t('quarantine_file')}
-            </Button>
-          )}
-        </div>
-        
-        {scanResult && scanMode === 'file' && (
-          <div className={`p-4 rounded-md ${
-            scanResult.status === 'OK' 
-              ? 'bg-green-50 border border-green-200' 
-              : 'bg-red-50 border border-red-200'
-          }`}>
-            <div className="flex items-start">
-              <div className={`rounded-full p-2 ${
-                scanResult.status === 'OK' ? 'bg-green-100' : 'bg-red-100'
-              } mr-3`}>
-                {scanResult.status === 'OK' ? (
-                  <Shield className="h-5 w-5 text-green-600" />
-                ) : (
-                  <AlertTriangle className="h-5 w-5 text-red-600" />
-                )}
-              </div>
-              <div>
-                <h4 className="font-medium">{scanResult.status === 'OK' ? t('file_safe') : t('file_unsafe')}</h4>
-                <p className="text-sm mt-1">{t('file')}: {scanResult.file_path}</p>
-                {scanResult.raisons && scanResult.raisons.length > 0 && (
-                  <div className="mt-2">
-                    <p className="text-sm font-medium">{t('reasons')}:</p>
-                    <ul className="text-sm list-disc list-inside">
-                      {scanResult.raisons.map((reason: string, index: number) => (
-                        <li key={index}>{reason}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {scanResult && scanMode === 'directory' && (
-          <div className="p-4 rounded-md border">
-            <h4 className="font-medium">{t('scan_results')}</h4>
-            <div className="mt-2 space-y-2">
-              <p>{t('files_scanned')}: {scanResult.filesScanned || 0}</p>
-              <p>{t('threats_found')}: {scanResult.threatsFound || 0}</p>
-              {scanResult.threatsFound > 0 && scanResult.threatsList && (
-                <div>
-                  <p className="font-medium">{t('detected_threats')}:</p>
-                  <ul className="list-disc list-inside">
-                    {scanResult.threatsList.map((threat: any, index: number) => (
-                      <li key={index}>
-                        {threat.path} - {threat.reason}
-                      </li>
-                    ))}
-                  </ul>
+            
+            {scanResult && scanTab === 'directory' && (
+              <div className="p-4 rounded-md border">
+                <h4 className="font-medium">{t('scan_results')}</h4>
+                <div className="mt-2 space-y-2">
+                  <p>{t('files_scanned')}: {scanResult.filesScanned || 0}</p>
+                  <p>{t('threats_found')}: {scanResult.threatsFound || 0}</p>
+                  {scanResult.threatsFound > 0 && scanResult.threatsList && (
+                    <div>
+                      <p className="font-medium">{t('detected_threats')}:</p>
+                      <ul className="list-disc list-inside">
+                        {scanResult.threatsList.map((threat: any, index: number) => (
+                          <li key={index}>
+                            {threat.path} - {threat.reason}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
-        )}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

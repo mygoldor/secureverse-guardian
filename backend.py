@@ -7,9 +7,10 @@ import time
 import shutil
 import socket
 import threading
-from flask_cors import CORS
-import subprocess
 import platform
+import psutil
+import subprocess
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for requests from Electron
@@ -20,6 +21,7 @@ QUARANTINE_DIR = "guardia_quarantine/"
 BACKUP_DIR = "guardia_backup/"
 LOG_FILE = "guardia_security.log"
 BLACKLISTED_DOMAINS = ["malicious.com", "phishing-site.com"]  # Domain blacklist
+BLOCKED_IPS = set()  # Set to store blocked IPs
 
 # Initialize directories
 os.makedirs(QUARANTINE_DIR, exist_ok=True)
@@ -30,9 +32,20 @@ if not os.path.exists(THREAT_DB_PATH):
     with open(THREAT_DB_PATH, "w") as f:
         json.dump({"malware_hashes": []}, f)
 
+# Initialize log file if it doesn't exist
+if not os.path.exists(LOG_FILE):
+    with open(LOG_FILE, "w") as f:
+        f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Guardia Security initialized\n")
+
 # --------------------- SECURITY FUNCTIONS ---------------------
 
-# Network scanning function (from original code)
+# Log security events
+def log_threat(message):
+    with open(LOG_FILE, "a") as log:
+        log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
+    print(message)
+
+# Network scanning function
 def scan_reseau():
     devices = []
     
@@ -56,7 +69,33 @@ def scan_reseau():
     
     return devices
 
-# Check file integrity (from original code)
+# Block an IP address
+def block_ip(ip):
+    if ip in BLOCKED_IPS:
+        return {"status": "Already blocked", "message": f"IP {ip} is already blocked"}
+    
+    try:
+        # Simulated IP blocking - in a real app this would use system firewall commands
+        BLOCKED_IPS.add(ip)
+        log_threat(f"IP blocked: {ip}")
+        return {"status": "OK", "message": f"IP {ip} blocked successfully"}
+    except Exception as e:
+        return {"status": "Error", "message": str(e)}
+
+# Unblock an IP address
+def unblock_ip(ip):
+    if ip not in BLOCKED_IPS:
+        return {"status": "Not blocked", "message": f"IP {ip} is not in the blocked list"}
+    
+    try:
+        # Simulated IP unblocking
+        BLOCKED_IPS.remove(ip)
+        log_threat(f"IP unblocked: {ip}")
+        return {"status": "OK", "message": f"IP {ip} unblocked successfully"}
+    except Exception as e:
+        return {"status": "Error", "message": str(e)}
+
+# Check file integrity
 def verifier_fichier(file_path):
     if not os.path.exists(file_path):
         return {"status": "Erreur", "message": "Fichier introuvable"}
@@ -71,7 +110,7 @@ def verifier_fichier(file_path):
     except Exception as e:
         return {"status": "Erreur", "message": str(e)}
 
-# Scan file for threats (enhanced from original code)
+# Scan file for threats
 def scanner_fichier(file_path):
     if not os.path.exists(file_path):
         return {"status": "Erreur", "message": "Fichier introuvable"}
@@ -124,6 +163,49 @@ def scanner_fichier(file_path):
         "raisons": raison
     }
 
+# Scan directory for threats
+def scan_directory(directory_path):
+    if not os.path.exists(directory_path):
+        return {"status": "Erreur", "message": "Directory not found"}
+    
+    results = {
+        "status": "OK",
+        "filesScanned": 0,
+        "threatsFound": 0,
+        "threatsList": []
+    }
+    
+    try:
+        # Walk through directory (non-recursive for safety)
+        for item in os.listdir(directory_path):
+            item_path = os.path.join(directory_path, item)
+            
+            # Only scan files, not directories
+            if os.path.isfile(item_path):
+                results["filesScanned"] += 1
+                
+                # Scan the file
+                scan_result = scanner_fichier(item_path)
+                
+                # If the file is suspicious, add it to the threats list
+                if scan_result["status"] != "OK":
+                    results["threatsFound"] += 1
+                    results["threatsList"].append({
+                        "path": item_path,
+                        "reason": ", ".join(scan_result.get("raisons", ["Unknown"]))
+                    })
+        
+        log_threat(f"Directory scan completed: {directory_path}, found {results['threatsFound']} threats")
+        return results
+    except Exception as e:
+        log_threat(f"Directory scan error: {str(e)}")
+        return {
+            "status": "Erreur",
+            "message": str(e),
+            "filesScanned": results["filesScanned"],
+            "threatsFound": results["threatsFound"]
+        }
+
 # Quarantine a suspicious file
 def quarantine_file(file_path):
     if not os.path.exists(file_path):
@@ -142,7 +224,65 @@ def quarantine_file(file_path):
     except Exception as e:
         return {"status": "Erreur", "message": str(e)}
 
-# Backup files (simplified from the security agent code)
+# Scan a file in quarantine
+def scan_quarantined_file(file_name):
+    file_path = os.path.join(QUARANTINE_DIR, file_name)
+    if not os.path.exists(file_path):
+        return {"status": "Erreur", "message": "Fichier introuvable dans la quarantaine"}
+    
+    return scanner_fichier(file_path)
+
+# Restore a file from quarantine
+def restore_file(file_name):
+    quarantine_path = os.path.join(QUARANTINE_DIR, file_name)
+    if not os.path.exists(quarantine_path):
+        return {"status": "Erreur", "message": "Fichier introuvable dans la quarantaine"}
+    
+    try:
+        # Create a restore directory if it doesn't exist
+        restore_dir = os.path.join(os.path.expanduser("~"), "GuardiaRestore")
+        os.makedirs(restore_dir, exist_ok=True)
+        
+        # Move the file from quarantine to the restore directory
+        dest_path = os.path.join(restore_dir, file_name)
+        shutil.move(quarantine_path, dest_path)
+        
+        log_threat(f"File restored from quarantine: {file_name} to {dest_path}")
+        return {
+            "status": "OK",
+            "message": f"File restored to {dest_path}"
+        }
+    except Exception as e:
+        return {"status": "Erreur", "message": str(e)}
+
+# Delete a file from quarantine
+def delete_file(file_name):
+    quarantine_path = os.path.join(QUARANTINE_DIR, file_name)
+    if not os.path.exists(quarantine_path):
+        return {"status": "Erreur", "message": "Fichier introuvable dans la quarantaine"}
+    
+    try:
+        os.remove(quarantine_path)
+        log_threat(f"File deleted from quarantine: {file_name}")
+        return {
+            "status": "OK",
+            "message": f"File permanently deleted: {file_name}"
+        }
+    except Exception as e:
+        return {"status": "Erreur", "message": str(e)}
+
+# List files in quarantine
+def list_quarantined_files():
+    try:
+        if not os.path.exists(QUARANTINE_DIR):
+            return []
+        
+        return [f for f in os.listdir(QUARANTINE_DIR) if os.path.isfile(os.path.join(QUARANTINE_DIR, f))]
+    except Exception as e:
+        log_threat(f"Error listing quarantined files: {str(e)}")
+        return []
+
+# Backup files
 def backup_files(directory):
     if not os.path.exists(directory):
         return {"status": "Erreur", "message": "Directory not found"}
@@ -168,12 +308,6 @@ def backup_files(directory):
     except Exception as e:
         return {"status": "Erreur", "message": str(e)}
 
-# Log security events
-def log_threat(message):
-    with open(LOG_FILE, "a") as log:
-        log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
-    print(message)
-
 # Get security logs
 def get_security_logs(lines=50):
     if not os.path.exists(LOG_FILE):
@@ -186,28 +320,71 @@ def get_security_logs(lines=50):
 # Simulated process monitoring
 def get_suspicious_processes():
     suspicious = []
+    normal = []
     
-    # This is just a simulation, as we can't access system processes through the web
-    # In a real app, this would use psutil or system commands to list processes
-    suspicious.append({
-        "name": "example_suspicious.exe",
-        "pid": 1234,
-        "cpu_usage": "2.5%",
-        "memory_usage": "15MB",
-        "status": "Simulated"
-    })
+    try:
+        # Use psutil to get real processes
+        for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent', 'memory_percent']):
+            process_info = proc.info
+            
+            # Simulated check for suspicious processes
+            # In a real app, you would have more sophisticated detection
+            if process_info['name'] in [
+                'cmd.exe', 'powershell.exe', 'python.exe',  # Example of potentially suspicious processes
+                'winlogon.exe', 'csrss.exe', 'svchost.exe'  # System processes (often legitimate but can be spoofed)
+            ]:
+                suspicious.append({
+                    "name": process_info['name'],
+                    "pid": process_info['pid'],
+                    "cpu_usage": f"{process_info['cpu_percent']:.1f}%",
+                    "memory_usage": f"{process_info['memory_percent']:.1f}%",
+                    "status": "Suspicious"
+                })
+            else:
+                # Add some regular processes for demonstration
+                if len(normal) < 5:  # Limit to 5 normal processes
+                    normal.append({
+                        "name": process_info['name'],
+                        "pid": process_info['pid'],
+                        "cpu_usage": f"{process_info['cpu_percent']:.1f}%",
+                        "memory_usage": f"{process_info['memory_percent']:.1f}%",
+                        "status": "Normal"
+                    })
+    except Exception as e:
+        log_threat(f"Error monitoring processes: {str(e)}")
+        # Add a simulated process for demo purposes if real monitoring fails
+        suspicious.append({
+            "name": "malware.exe",
+            "pid": 1234,
+            "cpu_usage": "2.5%",
+            "memory_usage": "15MB",
+            "status": "Suspicious"
+        })
     
-    return suspicious
+    # Combine suspicious and normal processes
+    return suspicious + normal
+
+# Terminate a process
+def kill_process(pid):
+    try:
+        process = psutil.Process(pid)
+        process.terminate()
+        log_threat(f"Process terminated: {pid}")
+        return {"status": "OK", "message": f"Process {pid} terminated successfully"}
+    except psutil.NoSuchProcess:
+        return {"status": "Erreur", "message": f"Process with PID {pid} not found"}
+    except Exception as e:
+        return {"status": "Erreur", "message": str(e)}
 
 # --------------------- API ENDPOINTS ---------------------
 
-# Network scanning endpoint (from original code)
+# Network scanning endpoint
 @app.route("/scan-reseau", methods=["GET"])
 def api_scan_reseau():
     result = scan_reseau()
     return jsonify(result)
 
-# File verification endpoint (from original code)
+# File verification endpoint
 @app.route("/verifier-fichier", methods=["POST"])
 def api_verifier_fichier():
     data = request.json
@@ -215,7 +392,7 @@ def api_verifier_fichier():
     result = verifier_fichier(file_path)
     return jsonify(result)
 
-# File scanning endpoint (from original code, enhanced)
+# File scanning endpoint
 @app.route("/scanner-fichier", methods=["POST"])
 def api_scanner_fichier():
     data = request.json
@@ -223,7 +400,15 @@ def api_scanner_fichier():
     result = scanner_fichier(file_path)
     return jsonify(result)
 
-# Quarantine file endpoint (new)
+# Directory scanning endpoint
+@app.route("/scan-directory", methods=["POST"])
+def api_scan_directory():
+    data = request.json
+    directory_path = data.get("directory_path")
+    result = scan_directory(directory_path)
+    return jsonify(result)
+
+# Quarantine file endpoint
 @app.route("/quarantine-file", methods=["POST"])
 def api_quarantine_file():
     data = request.json
@@ -231,7 +416,37 @@ def api_quarantine_file():
     result = quarantine_file(file_path)
     return jsonify(result)
 
-# Backup files endpoint (new)
+# List quarantined files endpoint
+@app.route("/list-quarantined-files", methods=["GET"])
+def api_list_quarantined_files():
+    files = list_quarantined_files()
+    return jsonify({"files": files})
+
+# Scan quarantined file endpoint
+@app.route("/scan-quarantined-file", methods=["POST"])
+def api_scan_quarantined_file():
+    data = request.json
+    file_name = data.get("file_name")
+    result = scan_quarantined_file(file_name)
+    return jsonify(result)
+
+# Restore file endpoint
+@app.route("/restore-file", methods=["POST"])
+def api_restore_file():
+    data = request.json
+    file_name = data.get("file_name")
+    result = restore_file(file_name)
+    return jsonify(result)
+
+# Delete file endpoint
+@app.route("/delete-file", methods=["POST"])
+def api_delete_file():
+    data = request.json
+    file_name = data.get("file_name")
+    result = delete_file(file_name)
+    return jsonify(result)
+
+# Backup files endpoint
 @app.route("/backup-files", methods=["POST"])
 def api_backup_files():
     data = request.json
@@ -239,20 +454,49 @@ def api_backup_files():
     result = backup_files(directory)
     return jsonify(result)
 
-# Security logs endpoint (new)
+# Security logs endpoint
 @app.route("/security-logs", methods=["GET"])
 def api_security_logs():
     lines = request.args.get("lines", default=50, type=int)
     logs = get_security_logs(lines)
     return jsonify({"logs": logs})
 
-# Suspicious processes endpoint (new)
+# Suspicious processes endpoint
 @app.route("/suspicious-processes", methods=["GET"])
 def api_suspicious_processes():
     processes = get_suspicious_processes()
     return jsonify({"processes": processes})
 
-# Status endpoint (from original code)
+# Kill process endpoint
+@app.route("/kill-process", methods=["POST"])
+def api_kill_process():
+    data = request.json
+    pid = data.get("pid")
+    result = kill_process(pid)
+    return jsonify(result)
+
+# Blocked IPs endpoint
+@app.route("/blocked-ips", methods=["GET"])
+def api_blocked_ips():
+    return jsonify({"ips": list(BLOCKED_IPS)})
+
+# Block IP endpoint
+@app.route("/block-ip", methods=["POST"])
+def api_block_ip():
+    data = request.json
+    ip = data.get("ip")
+    result = block_ip(ip)
+    return jsonify(result)
+
+# Unblock IP endpoint
+@app.route("/unblock-ip", methods=["POST"])
+def api_unblock_ip():
+    data = request.json
+    ip = data.get("ip")
+    result = unblock_ip(ip)
+    return jsonify(result)
+
+# Status endpoint
 @app.route("/status", methods=["GET"])
 def api_status():
     return jsonify({"status": "running"})
