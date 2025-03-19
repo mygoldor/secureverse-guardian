@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Shield } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -14,8 +15,8 @@ const Footer = () => {
           
           <div className="flex flex-col md:flex-row md:items-center md:space-x-6 space-y-2 md:space-y-0">
             <a href="#" className="text-sm text-security-muted hover:text-security-primary transition-colors">Help & Support</a>
-            <a href="#" className="text-sm text-security-muted hover:text-security-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="text-sm text-security-muted hover:text-security-primary transition-colors">Terms of Service</a>
+            <Link to="/privacy" className="text-sm text-security-muted hover:text-security-primary transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="text-sm text-security-muted hover:text-security-primary transition-colors">Terms of Service</Link>
             <a href="#" className="text-sm text-security-muted hover:text-security-primary transition-colors">Contact Us</a>
           </div>
         </div>
