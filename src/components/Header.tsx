@@ -89,9 +89,10 @@ const Header = () => {
               <Button 
                 variant="default" 
                 size="sm" 
-                className="md:hidden flex items-center justify-center bg-security-primary hover:bg-security-secondary text-white"
+                className="md:hidden flex items-center justify-center bg-[#F97316] hover:bg-[#EA580C] text-white border-2 border-white shadow-md"
+                style={{ minWidth: '44px', minHeight: '44px' }}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[80%] sm:w-[350px]">
