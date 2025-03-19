@@ -32,42 +32,35 @@ const CookieBanner: React.FC = () => {
 
   return (
     <>
-      {/* Compact mini banner */}
+      {/* Ultra-compact mini banner */}
       {showBanner && !showDetails && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-2 px-3 shadow-md border-t border-gray-200 dark:border-gray-800 z-50">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <Cookie className="h-3.5 w-3.5 text-security-primary" />
-              <p className="text-xs text-gray-600 dark:text-gray-300 mr-2">
-                {t('cookies')}
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Button
-                variant="ghost" 
-                size="sm"
-                className="text-xs h-6 px-2"
-                onClick={() => setShowDetails(true)}
-              >
-                {t('cookie_management')}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-xs h-6 px-2 border-destructive text-destructive hover:bg-destructive/10"
-                onClick={rejectAllCookies}
-              >
-                {t('reject')}
-              </Button>
-              <Button
-                variant="default"
-                size="sm"
-                className="text-xs h-6 px-2"
-                onClick={acceptAllCookies}
-              >
-                {t('accept')}
-              </Button>
-            </div>
+        <div className="fixed bottom-1 right-1 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm py-1 px-2 shadow-sm rounded-md border border-gray-200 dark:border-gray-800 z-50 flex items-center gap-1.5">
+          <Cookie className="h-3 w-3 text-security-primary" />
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-[10px] h-5 px-1.5 border-destructive text-destructive hover:bg-destructive/10"
+              onClick={rejectAllCookies}
+            >
+              {t('reject')}
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              className="text-[10px] h-5 px-1.5"
+              onClick={acceptAllCookies}
+            >
+              {t('accept')}
+            </Button>
+            <Button
+              variant="ghost" 
+              size="sm"
+              className="text-[10px] h-5 px-1.5"
+              onClick={() => setShowDetails(true)}
+            >
+              ⚙️
+            </Button>
           </div>
         </div>
       )}
