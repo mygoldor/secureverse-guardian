@@ -75,24 +75,6 @@ const Payment = () => {
   
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-800">
-      {/* En-tête */}
-      <header className="bg-security-primary text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center">
-            <img src="/icons/guardia-icon-192.png" alt="Guardia" className="h-10 w-10 mr-2" />
-            <h1 className="text-xl font-bold">Guardia</h1>
-          </div>
-          <Button 
-            variant="ghost" 
-            className="text-white flex items-center" 
-            onClick={() => navigate('/dashboard')}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour au tableau de bord
-          </Button>
-        </div>
-      </header>
-      
       <main className="flex-grow container mx-auto py-8 px-4">
         {/* Présentation de l'abonnement */}
         <section className="mb-12 text-center">
