@@ -11,7 +11,7 @@ const TermsOfService = () => {
       <Header />
       <main className="flex-grow max-w-4xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Conditions Générales d'Utilisation</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Conditions Générales d'Utilisation (CGU)</h1>
           <p className="text-gray-500 mt-2">Dernière mise à jour : 1 juin 2023</p>
         </div>
         
