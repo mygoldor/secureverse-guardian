@@ -3,7 +3,10 @@ name: Build Guardia Security
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'src/**'  # Déclencher uniquement si des fichiers dans src/ sont modifiés
   pull_request:
     branches: [ main ]
   # Manual trigger from the Actions tab
@@ -11,126 +14,27 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    permissions:
-      contents: read
-      packages: write
-    strategy:
-      fail-fast: false  # Don't cancel all jobs if one fails
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Check out Git repository
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'npm'
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          cache: 'pip'
+      - name: Clear npm cache
+        run: npm cache clean --force
 
-      # Debug step to check workspace
-      - name: Debug workspace
-        run: |
-          ls -la
-          echo "Current directory: $(pwd)"
-          if [ -f "requirements.txt" ]; then
-            echo "requirements.txt exists"
-            cat requirements.txt
-          else
-            echo "requirements.txt does not exist"
-          fi
-        shell: bash
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f "requirements.txt" ]; then
-            pip install -r requirements.txt
-          fi
-        shell: bash
-        continue-on-error: false
-
-      # Use npm install instead of npm ci to update the lock file
-      - name: Install Node.js dependencies
-        run: |
-          echo "Using npm install to update lock file"
-          npm install
-        continue-on-error: false
-
-      - name: Build React app
+      - name: Build project
         run: npm run build
-        continue-on-error: false
 
-      - name: Debug electron-builder config
-        run: |
-          if [ -f "electron-builder.yml" ]; then
-            echo "electron-builder.yml exists"
-            cat electron-builder.yml
-          else
-            echo "electron-builder.yml does not exist"
-          fi
-        shell: bash
-
-      - name: Build Electron app
-        run: npm run electron:build
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: false
-
-      - name: List build artifacts
-        run: |
-          echo "Listing release directory:"
-          ls -la release || echo "release directory not found"
-        shell: bash
-        continue-on-error: true
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: guardia-security-${{ matrix.os }}
-          path: |
-            release/*.exe
-            release/*.msi
-            release/*.dmg
-            release/*.zip
-            release/*.AppImage
-            release/*.deb
-            release/*.rpm
-          if-no-files-found: warn
-
-  release:
-    name: Create Release
-    needs: build
-    runs-on: ubuntu-latest
-    # Only run on tags starting with 'v'
-    if: startsWith(github.ref, 'refs/tags/v')
-    permissions:
-      contents: write
-    
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            guardia-security-windows-latest/**
-            guardia-security-macos-latest/**
-            guardia-security-ubuntu-latest/**
-          draft: false
-          prerelease: false
-          fail_on_unmatched_files: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Uncomment when tests are implemented
+      # - name: Run tests
+      #   run: npm test
