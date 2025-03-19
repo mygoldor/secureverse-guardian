@@ -1,4 +1,3 @@
-
 import { TranslationKeys } from './types';
 
 const fr: TranslationKeys = {
@@ -24,6 +23,7 @@ const fr: TranslationKeys = {
   blog: 'Blog',
   testimonials: 'Témoignages',
   contact: 'Contact',
+  navigation: 'Navigation',
   
   // Hero section
   hero_title: 'Protection complète contre les menaces numériques',

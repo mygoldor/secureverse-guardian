@@ -1,4 +1,3 @@
-
 // Define the translation structure as a TypeScript type for better type safety
 export type TranslationKeys = {
   // General
@@ -23,6 +22,7 @@ export type TranslationKeys = {
   blog: string;
   testimonials: string;
   contact: string;
+  navigation: string;
   
   // Hero section
   hero_title: string;
