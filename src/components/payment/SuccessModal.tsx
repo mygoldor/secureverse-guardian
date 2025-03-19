@@ -18,6 +18,7 @@ interface SuccessModalProps {
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
   const [installationStarted, setInstallationStarted] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
   
   // Handle close function
   const handleClose = () => {
@@ -33,6 +34,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       }
     }
   };
+
+  // Detect if user is on mobile
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent;
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    setIsMobile(mobileRegex.test(userAgent));
+  }, []);
 
   // Start installation automatically
   useEffect(() => {
@@ -57,44 +65,72 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const startInstallation = () => {
     setInstallationStarted(true);
     
-    // Determine operating system
-    const userAgent = window.navigator.userAgent;
-    let downloadLink = '';
-    
-    if (userAgent.indexOf('Windows') !== -1) {
-      downloadLink = '/Guardia-Security-1.0.0-win.exe';
-      toast({
-        title: "Téléchargement démarré",
-        description: "L'installateur Windows de Guardia est en cours de téléchargement.",
-      });
-    } else if (userAgent.indexOf('Mac') !== -1) {
-      downloadLink = '/Guardia-Security-1.0.0-mac.dmg';
-      toast({
-        title: "Téléchargement démarré",
-        description: "L'installateur macOS de Guardia est en cours de téléchargement.",
-      });
-    } else if (userAgent.indexOf('Linux') !== -1) {
-      downloadLink = '/Guardia-Security-1.0.0-linux.AppImage';
-      toast({
-        title: "Téléchargement démarré",
-        description: "L'installateur Linux de Guardia est en cours de téléchargement.",
-      });
+    if (isMobile) {
+      // Handle mobile platforms
+      const userAgent = window.navigator.userAgent;
+      
+      if (userAgent.indexOf('Android') !== -1) {
+        // For Android devices
+        window.location.href = 'https://play.google.com/store/apps/details?id=com.guardia.security';
+        toast({
+          title: "Installation mobile",
+          description: "Vous êtes redirigé vers Google Play Store pour installer Guardia Security.",
+        });
+      } else if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPad') !== -1) {
+        // For iOS devices
+        window.location.href = 'https://apps.apple.com/app/guardia-security/id1234567890';
+        toast({
+          title: "Installation mobile",
+          description: "Vous êtes redirigé vers l'App Store pour installer Guardia Security.",
+        });
+      } else {
+        // For other mobile platforms
+        toast({
+          variant: "destructive",
+          title: "Appareil non reconnu",
+          description: "Veuillez télécharger manuellement l'application depuis votre store d'applications.",
+        });
+      }
     } else {
-      toast({
-        variant: "destructive",
-        title: "Système non reconnu",
-        description: "Veuillez télécharger manuellement la version correspondant à votre système d'exploitation.",
-      });
-      return;
+      // Handle desktop platforms (existing code)
+      const userAgent = window.navigator.userAgent;
+      let downloadLink = '';
+      
+      if (userAgent.indexOf('Windows') !== -1) {
+        downloadLink = '/Guardia-Security-1.0.0-win.exe';
+        toast({
+          title: "Téléchargement démarré",
+          description: "L'installateur Windows de Guardia est en cours de téléchargement.",
+        });
+      } else if (userAgent.indexOf('Mac') !== -1) {
+        downloadLink = '/Guardia-Security-1.0.0-mac.dmg';
+        toast({
+          title: "Téléchargement démarré",
+          description: "L'installateur macOS de Guardia est en cours de téléchargement.",
+        });
+      } else if (userAgent.indexOf('Linux') !== -1) {
+        downloadLink = '/Guardia-Security-1.0.0-linux.AppImage';
+        toast({
+          title: "Téléchargement démarré",
+          description: "L'installateur Linux de Guardia est en cours de téléchargement.",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Système non reconnu",
+          description: "Veuillez télécharger manuellement la version correspondant à votre système d'exploitation.",
+        });
+        return;
+      }
+      
+      // Create invisible anchor for download
+      const link = document.createElement('a');
+      link.href = downloadLink;
+      link.download = downloadLink.split('/').pop() || 'Guardia-Security-Installer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
-    
-    // Create invisible anchor for download
-    const link = document.createElement('a');
-    link.href = downloadLink;
-    link.download = downloadLink.split('/').pop() || 'Guardia-Security-Installer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   // Make sure isOpen is a boolean to prevent type errors
@@ -117,7 +153,9 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             <h4 className="font-medium text-blue-700 mb-2">Installation de Guardia</h4>
             <p className="text-sm text-blue-600 mb-2">
               {installationStarted 
-                ? "Le téléchargement a commencé. Exécutez le fichier une fois le téléchargement terminé pour installer Guardia."
+                ? isMobile 
+                  ? "Vous êtes redirigé vers le store d'applications pour installer Guardia Security." 
+                  : "Le téléchargement a commencé. Exécutez le fichier une fois le téléchargement terminé pour installer Guardia."
                 : "Téléchargement automatique en cours de préparation..."}
             </p>
             {installationStarted && (
@@ -128,7 +166,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
                 size="sm"
               >
                 <Download className="h-4 w-4 mr-2" />
-                Télécharger à nouveau
+                {isMobile ? "Télécharger sur le store" : "Télécharger à nouveau"}
               </Button>
             )}
           </div>
