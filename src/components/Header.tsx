@@ -36,7 +36,7 @@ const Header = () => {
             to="/dashboard" 
             className={`transition-colors ${isActive('/') || isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
           >
-            {/* Removed t('dashboard') here */}
+            {/* Dashboard link without text */}
           </Link>
           <Link 
             to="/protection" 
