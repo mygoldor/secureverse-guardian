@@ -10,6 +10,7 @@ import Protection from "./pages/Protection";
 import Privacy from "./pages/Privacy";
 import Performance from "./pages/Performance";
 import Settings from "./pages/Settings";
+import Payment from "./pages/Payment";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/performance" element={<Performance />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/payment" element={<Payment />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
