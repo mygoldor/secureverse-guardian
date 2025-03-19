@@ -32,20 +32,21 @@ const CookieBanner: React.FC = () => {
 
   return (
     <>
-      {/* Simple banner version */}
+      {/* Simplified smaller banner version */}
       {showBanner && !showDetails && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 p-4 shadow-lg border-t border-gray-200 dark:border-gray-800 z-50">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 px-4 py-3 shadow-lg border-t border-gray-200 dark:border-gray-800 z-50">
+          <div className="max-w-7xl mx-auto flex flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <Cookie className="h-5 w-5 text-security-primary" />
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <Cookie className="h-4 w-4 text-security-primary" />
+              <p className="text-xs text-gray-600 dark:text-gray-300">
                 {t('cookies')}
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-row items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
+                className="text-xs h-7 px-2"
                 onClick={() => setShowDetails(true)}
               >
                 {t('cookie_management')}
@@ -53,6 +54,7 @@ const CookieBanner: React.FC = () => {
               <Button
                 variant="outline"
                 size="sm"
+                className="text-xs h-7 px-2"
                 onClick={rejectAllCookies}
               >
                 {t('reject')}
@@ -60,6 +62,7 @@ const CookieBanner: React.FC = () => {
               <Button
                 variant="default"
                 size="sm"
+                className="text-xs h-7 px-2"
                 onClick={acceptAllCookies}
               >
                 {t('accept')}
