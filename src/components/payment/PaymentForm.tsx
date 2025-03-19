@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff, CreditCard, Lock, Mail, User } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { Link } from 'react-router-dom';
 import {
@@ -66,9 +66,16 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom complet</FormLabel>
+              <FormLabel className="flex items-center gap-1.5">
+                <User size={16} className="text-security-primary" />
+                Nom complet
+              </FormLabel>
               <FormControl>
-                <Input placeholder="Votre nom" {...field} />
+                <Input 
+                  placeholder="Votre nom" 
+                  {...field} 
+                  className="bg-white focus-visible:ring-security-primary"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -80,9 +87,17 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Adresse e-mail</FormLabel>
+              <FormLabel className="flex items-center gap-1.5">
+                <Mail size={16} className="text-security-primary" />
+                Adresse e-mail
+              </FormLabel>
               <FormControl>
-                <Input placeholder="exemple@gmail.com" type="email" {...field} />
+                <Input 
+                  placeholder="exemple@gmail.com" 
+                  type="email" 
+                  {...field} 
+                  className="bg-white focus-visible:ring-security-primary"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -94,19 +109,24 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
+              <FormLabel className="flex items-center gap-1.5">
+                <Lock size={16} className="text-security-primary" />
+                Mot de passe
+              </FormLabel>
               <div className="relative">
                 <FormControl>
                   <Input 
                     type={showPassword ? "text" : "password"} 
                     placeholder="Minimum 8 caractères" 
                     {...field} 
+                    className="bg-white focus-visible:ring-security-primary pr-10"
                   />
                 </FormControl>
                 <button 
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                   onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -125,12 +145,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-security-primary data-[state=checked]:border-security-primary"
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel className="text-sm font-normal">
                   J'accepte les{" "}
-                  <Link to="/terms" className="text-security-primary hover:underline">
+                  <Link to="/terms" className="text-security-primary font-medium hover:underline">
                     Conditions Générales d'Utilisation
                   </Link>
                 </FormLabel>
@@ -142,7 +163,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
         
         <Button 
           type="submit" 
-          className="w-full bg-security-primary hover:bg-security-secondary"
+          className="w-full bg-security-primary hover:bg-security-secondary mt-2 transition-all duration-300 ease-in-out"
           disabled={isProcessing}
         >
           {isProcessing ? (
@@ -151,9 +172,17 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ isProcessing, onSubmit }) => 
               Traitement en cours...
             </>
           ) : (
-            "S'abonner maintenant"
+            <>
+              <CreditCard className="mr-2 h-4 w-4" />
+              S'abonner maintenant
+            </>
           )}
         </Button>
+        
+        <div className="flex items-center justify-center mt-3 pt-3 text-xs text-muted-foreground">
+          <Lock className="h-3 w-3 mr-1" />
+          Paiement sécurisé avec cryptage SSL 256-bit
+        </div>
       </form>
     </Form>
   );
