@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Clock, Check, AlertCircle, CloudCheck } from 'lucide-react';
+import { Shield, Clock, Check, AlertCircle, Cloud } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const SecuritySummary = () => {
@@ -46,7 +46,7 @@ const SecuritySummary = () => {
       <Card className="bg-[#E6F7FF]">
         <CardContent className="pt-6">
           <div className="flex items-center space-x-3">
-            <CloudCheck className="h-6 w-6 text-security-primary" />
+            <Cloud className="h-6 w-6 text-security-primary" />
             <h3 className="font-medium text-security-foreground">Sauvegarde automatique</h3>
           </div>
           <div className="mt-3 flex items-center">
