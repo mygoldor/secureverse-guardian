@@ -13,39 +13,49 @@ jobs:
   build:
     name: Build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: write
     strategy:
+      fail-fast: false  # Don't cancel all jobs if one fails
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18  # Updated from 16 to 18
           cache: 'npm'
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.10'  # Specified exact version
           cache: 'pip'
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
+        continue-on-error: false
 
       - name: Install Node.js dependencies
         run: npm ci
+        continue-on-error: false
 
       - name: Build React app
         run: npm run build
+        continue-on-error: false
 
       - name: Build Electron app
         run: npm run electron:build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: false
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
@@ -58,7 +68,8 @@ jobs:
             release/*.zip
             release/*.AppImage
             release/*.deb
-          if-no-files-found: ignore
+            release/*.rpm
+          if-no-files-found: warn
 
   release:
     name: Create Release
@@ -66,6 +77,8 @@ jobs:
     runs-on: ubuntu-latest
     # Only run on tags starting with 'v'
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
     
     steps:
       - name: Download all artifacts
@@ -80,5 +93,6 @@ jobs:
             guardia-security-ubuntu-latest/**
           draft: false
           prerelease: false
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
