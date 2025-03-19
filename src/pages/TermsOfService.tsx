@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Header from '@/components/Header';
 import { Separator } from '@/components/ui/separator';
 import TermsContent from '@/components/terms/TermsContent';
 import Footer from '@/components/Footer';
@@ -8,7 +7,6 @@ import Footer from '@/components/Footer';
 const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
       <main className="flex-grow max-w-4xl mx-auto px-4 py-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Conditions Générales d'Utilisation (CGU)</h1>
