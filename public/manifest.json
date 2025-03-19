@@ -22,38 +22,7 @@
       "purpose": "any maskable"
     }
   ],
-  "related_applications": [
-    {
-      "platform": "windows",
-      "url": "ms-windows-store://pdp/?productid=guardia-security"
-    },
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.guardia.security",
-      "id": "com.guardia.security"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://apps.apple.com/app/guardia-security/id1234567890"
-    }
-  ],
   "prefer_related_applications": false,
-  "file_handlers": [
-    {
-      "action": "/scan",
-      "accept": {
-        "application/octet-stream": [".exe", ".dll", ".doc", ".docx", ".pdf"]
-      },
-      "icons": [
-        {
-          "src": "/icons/guardia-icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ],
-      "launch_type": "single-client"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Analyse rapide",
@@ -68,6 +37,22 @@
       "description": "Voir le tableau de bord de sécurité",
       "url": "/dashboard",
       "icons": [{ "src": "/icons/guardia-icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/scan",
+      "accept": {
+        "application/octet-stream": [".exe", ".dll", ".doc", ".docx", ".pdf"]
+      },
+      "icons": [
+        {
+          "src": "/icons/guardia-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ],
+      "launch_type": "single-client"
     }
   ]
 }

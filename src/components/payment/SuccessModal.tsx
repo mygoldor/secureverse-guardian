@@ -92,38 +92,59 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     };
   }, []);
 
-  // Function to start installation
+  // Function to install PWA
+  const installPWA = async () => {
+    if (!deferredPrompt) {
+      // If the deferred prompt isn't available, show manual instructions based on browser
+      const userAgent = navigator.userAgent;
+      let instructions = '';
+      
+      if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+        // Safari on iOS
+        instructions = "Touchez l'icône de partage, puis 'Sur l'écran d'accueil'";
+      } else if (/Firefox/i.test(userAgent)) {
+        instructions = "Appuyez sur les trois points du menu puis 'Installer'";
+      } else if (/Edge/i.test(userAgent)) {
+        instructions = "Appuyez sur les trois points du menu puis 'Installer'";
+      } else {
+        instructions = "Utilisez le menu de votre navigateur et sélectionnez 'Ajouter à l'écran d'accueil'";
+      }
+      
+      toast({
+        title: "Installation manuelle",
+        description: instructions,
+      });
+      return;
+    }
+
+    // Show the install prompt
+    deferredPrompt.prompt();
+    
+    // Wait for the user to respond to the prompt
+    const choiceResult = await deferredPrompt.userChoice;
+    
+    if (choiceResult.outcome === 'accepted') {
+      toast({
+        title: "Installation réussie",
+        description: "Guardia a été ajouté à votre écran d'accueil.",
+      });
+    } else {
+      toast({
+        title: "Installation annulée",
+        description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
+      });
+    }
+    
+    // Clear the deferredPrompt variable as it can only be used once
+    setDeferredPrompt(null);
+  };
+
+  // Function to start installation for desktop
   const startInstallation = () => {
     setInstallationStarted(true);
     
-    if (isMobile) {
-      // Handle mobile platforms
-      const userAgent = window.navigator.userAgent;
-      
-      if (userAgent.indexOf('Android') !== -1) {
-        // For Android devices
-        window.location.href = 'https://play.google.com/store/apps/details?id=com.guardia.security';
-        toast({
-          title: "Installation mobile",
-          description: "Vous êtes redirigé vers Google Play Store pour installer Guardia Security.",
-        });
-      } else if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPad') !== -1) {
-        // For iOS devices
-        window.location.href = 'https://apps.apple.com/app/guardia-security/id1234567890';
-        toast({
-          title: "Installation mobile",
-          description: "Vous êtes redirigé vers l'App Store pour installer Guardia Security.",
-        });
-      } else {
-        // For other mobile platforms
-        toast({
-          variant: "destructive",
-          title: "Appareil non reconnu",
-          description: "Veuillez télécharger manuellement l'application depuis votre store d'applications.",
-        });
-      }
-    } else {
-      // Handle desktop platforms (existing code)
+    if (!isMobile) {
+      // Handle desktop platforms
       const userAgent = window.navigator.userAgent;
       let downloadLink = '';
       
@@ -164,39 +185,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  // Function to install PWA
-  const installPWA = async () => {
-    if (!deferredPrompt) {
-      // If the deferred prompt isn't available, show alternative instructions
-      toast({
-        title: "Installation manuelle",
-        description: "Pour installer l'application, utilisez le menu de votre navigateur et sélectionnez 'Ajouter à l'écran d'accueil'.",
-      });
-      return;
-    }
-
-    // Show the install prompt
-    deferredPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
-    const choiceResult = await deferredPrompt.userChoice;
-    
-    if (choiceResult.outcome === 'accepted') {
-      toast({
-        title: "Installation réussie",
-        description: "Guardia a été ajouté à votre écran d'accueil.",
-      });
-    } else {
-      toast({
-        title: "Installation annulée",
-        description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
-      });
-    }
-    
-    // Clear the deferredPrompt variable as it can only be used once
-    setDeferredPrompt(null);
-  };
-
   // Make sure isOpen is a boolean to prevent type errors
   const isModalOpen = Boolean(isOpen);
 
@@ -213,29 +201,29 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
           <p>Merci pour votre abonnement à Guardia !</p>
           <p>Un email de confirmation a été envoyé à votre adresse avec un lien de validation.</p>
           
-          <div className="bg-blue-50 p-4 rounded-lg my-4">
-            <h4 className="font-medium text-blue-700 mb-2">Installation de Guardia</h4>
-            <p className="text-sm text-blue-600 mb-2">
-              {installationStarted 
-                ? isMobile 
-                  ? "Vous êtes redirigé vers le store d'applications pour installer Guardia Security." 
-                  : "Le téléchargement a commencé. Exécutez le fichier une fois le téléchargement terminé pour installer Guardia."
-                : "Téléchargement automatique en cours de préparation..."}
-            </p>
-            {installationStarted && (
-              <Button 
-                onClick={startInstallation} 
-                className="mt-2" 
-                variant="outline"
-                size="sm"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                {isMobile ? "Télécharger sur le store" : "Télécharger à nouveau"}
-              </Button>
-            )}
-          </div>
+          {!isMobile && (
+            <div className="bg-blue-50 p-4 rounded-lg my-4">
+              <h4 className="font-medium text-blue-700 mb-2">Installation de Guardia</h4>
+              <p className="text-sm text-blue-600 mb-2">
+                {installationStarted 
+                  ? "Le téléchargement a commencé. Exécutez le fichier une fois le téléchargement terminé pour installer Guardia."
+                  : "Téléchargement automatique en cours de préparation..."}
+              </p>
+              {installationStarted && (
+                <Button 
+                  onClick={startInstallation} 
+                  className="mt-2" 
+                  variant="outline"
+                  size="sm"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Télécharger à nouveau
+                </Button>
+              )}
+            </div>
+          )}
           
-          {/* Add to Home Screen option for mobile */}
+          {/* Add to Home Screen option for all mobile users */}
           {isMobile && (
             <div className="bg-green-50 p-4 rounded-lg my-4">
               <h4 className="font-medium text-green-700 mb-2">
