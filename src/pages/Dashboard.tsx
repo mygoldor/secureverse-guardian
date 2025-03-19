@@ -26,7 +26,7 @@ const Dashboard = () => {
           </section>
           
           <section className="mb-8">
-            <h2 className="text-xl font-bold mb-4 text-[#003366]">{t('analyse_rapide')}</h2>
+            <h2 className="text-xl font-bold mb-4 text-[#003366]">{t('quick_scan')}</h2>
             <QuickScan />
           </section>
           
