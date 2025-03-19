@@ -16,14 +16,14 @@ const CookieBannerCompact: React.FC<CookieBannerCompactProps> = ({
   const { t } = useLanguage();
 
   return (
-    <>
+    <div className="flex items-center gap-2">
       <Cookie className="h-3 w-3 text-security-primary" />
       <div className="flex items-center gap-1">
         <Button
           variant="outline"
           size="sm"
           className="text-[10px] h-5 px-1.5 border-destructive text-destructive hover:bg-destructive/10"
-          onClick={onReject}
+          onClick={() => onReject()}
         >
           {t('reject')}
         </Button>
@@ -31,12 +31,12 @@ const CookieBannerCompact: React.FC<CookieBannerCompactProps> = ({
           variant="default"
           size="sm"
           className="text-[10px] h-5 px-1.5"
-          onClick={onAccept}
+          onClick={() => onAccept()}
         >
           {t('accept')}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

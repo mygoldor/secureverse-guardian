@@ -47,6 +47,17 @@ const CookieBanner: React.FC = () => {
     saveCookiePreferences(localPreferences);
   };
 
+  // Define handlers for accept and reject buttons
+  const handleAcceptCookies = () => {
+    console.log("Accepting cookies");
+    acceptAllCookies();
+  };
+
+  const handleRejectCookies = () => {
+    console.log("Rejecting cookies");
+    rejectAllCookies();
+  };
+
   return (
     <>
       {/* Banner with different styling for landing page */}
@@ -58,13 +69,13 @@ const CookieBanner: React.FC = () => {
         }`}>
           {isLandingPage ? (
             <CookieBannerFull 
-              onAccept={acceptAllCookies}
-              onReject={rejectAllCookies}
+              onAccept={handleAcceptCookies}
+              onReject={handleRejectCookies}
             />
           ) : (
             <CookieBannerCompact
-              onAccept={acceptAllCookies}
-              onReject={rejectAllCookies}
+              onAccept={handleAcceptCookies}
+              onReject={handleRejectCookies}
             />
           )}
         </div>
@@ -77,8 +88,8 @@ const CookieBanner: React.FC = () => {
         preferences={localPreferences}
         onPreferenceChange={handlePreferenceChange}
         onSavePreferences={handleSavePreferences}
-        onAcceptAll={acceptAllCookies}
-        onRejectAll={rejectAllCookies}
+        onAcceptAll={handleAcceptCookies}
+        onRejectAll={handleRejectCookies}
       />
     </>
   );
