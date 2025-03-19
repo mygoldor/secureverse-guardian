@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +90,33 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-security-background text-security-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .security-card {
+    @apply bg-white rounded-xl shadow-md border border-gray-100 transition-all hover:shadow-lg;
+  }
+  
+  .security-gradient {
+    @apply bg-gradient-to-br from-security-primary via-security-secondary to-security-accent;
+  }
+  
+  .status-pulse {
+    @apply relative flex justify-center items-center;
+  }
+  
+  .status-pulse::before {
+    @apply content-[''] absolute w-full h-full rounded-full animate-pulse-ring;
+  }
+  
+  .security-icon {
+    @apply p-2 rounded-full;
+  }
+  
+  .security-button {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
   }
 }
