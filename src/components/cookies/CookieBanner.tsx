@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -7,10 +6,13 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Cookie, Info, ShieldCheck } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const CookieBanner: React.FC = () => {
   const { t } = useLanguage();
   const { showBanner, setShowBanner, cookiePreferences, acceptAllCookies, rejectAllCookies, saveCookiePreferences } = useCookieConsent();
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
   
   const [showDetails, setShowDetails] = useState(false);
   const [localPreferences, setLocalPreferences] = useState(cookiePreferences);
@@ -32,36 +34,84 @@ const CookieBanner: React.FC = () => {
 
   return (
     <>
-      {/* Ultra-compact mini banner */}
+      {/* Banner with different styling for landing page */}
       {showBanner && !showDetails && (
-        <div className="fixed bottom-1 right-1 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm py-1 px-2 shadow-sm rounded-md border border-gray-200 dark:border-gray-800 z-50 flex items-center gap-1.5">
-          <Cookie className="h-3 w-3 text-security-primary" />
-          <div className="flex items-center gap-1">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-[10px] h-5 px-1.5 border-destructive text-destructive hover:bg-destructive/10"
-              onClick={rejectAllCookies}
-            >
-              {t('reject')}
-            </Button>
-            <Button
-              variant="default"
-              size="sm"
-              className="text-[10px] h-5 px-1.5"
-              onClick={acceptAllCookies}
-            >
-              {t('accept')}
-            </Button>
-            <Button
-              variant="ghost" 
-              size="sm"
-              className="text-[10px] h-5 px-1.5"
-              onClick={() => setShowDetails(true)}
-            >
-              ⚙️
-            </Button>
-          </div>
+        <div className={`fixed z-50 backdrop-blur-sm border ${
+          isLandingPage 
+            ? "bottom-10 left-4 bg-white/95 dark:bg-gray-900/95 p-3 shadow-md rounded-lg border-gray-200 dark:border-gray-800 w-60"
+            : "bottom-1 right-1 bg-white/80 dark:bg-gray-900/80 py-1 px-2 shadow-sm rounded-md border-gray-200 dark:border-gray-800 flex items-center gap-1.5"
+        }`}>
+          {isLandingPage ? (
+            // Bigger, more square banner for landing page
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1.5">
+                  <Cookie className="h-4 w-4 text-security-primary" />
+                  <span className="text-sm font-medium">{t('cookies')}</span>
+                </div>
+              </div>
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">
+                {t('cookie_preferences_description').substring(0, 80)}...
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs border-destructive text-destructive hover:bg-destructive/10"
+                  onClick={rejectAllCookies}
+                >
+                  {t('reject')}
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="text-xs"
+                  onClick={acceptAllCookies}
+                >
+                  {t('accept')}
+                </Button>
+              </div>
+              <Button
+                variant="ghost" 
+                size="sm"
+                className="text-xs w-full mt-1"
+                onClick={() => setShowDetails(true)}
+              >
+                {t('cookie_management')} ⚙️
+              </Button>
+            </div>
+          ) : (
+            // Compact version for other pages
+            <>
+              <Cookie className="h-3 w-3 text-security-primary" />
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-[10px] h-5 px-1.5 border-destructive text-destructive hover:bg-destructive/10"
+                  onClick={rejectAllCookies}
+                >
+                  {t('reject')}
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="text-[10px] h-5 px-1.5"
+                  onClick={acceptAllCookies}
+                >
+                  {t('accept')}
+                </Button>
+                <Button
+                  variant="ghost" 
+                  size="sm"
+                  className="text-[10px] h-5 px-1.5"
+                  onClick={() => setShowDetails(true)}
+                >
+                  ⚙️
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       )}
       
@@ -110,6 +160,8 @@ const CookieBanner: React.FC = () => {
                   </p>
                 </div>
               </div>
+              
+              {/* cookie types checkboxes */}
               
               {/* Functional cookies */}
               <div className="flex items-start space-x-3">
