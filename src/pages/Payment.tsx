@@ -96,7 +96,7 @@ const Payment = () => {
         
         {/* Formulaire de paiement */}
         <section className="max-w-2xl mx-auto mb-12">
-          <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+          <div className="bg-green-50 shadow-md rounded-lg p-6 border border-gray-200">
             <h3 className="text-xl font-semibold mb-6 text-center">Formulaire de paiement et création de compte</h3>
             <PaymentForm 
               selectedPlan={selectedPlan} 
