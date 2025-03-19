@@ -21,7 +21,6 @@ const LandingHeader = () => {
         </Link>
         
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#hero" className="text-white hover:text-gray-300 transition-colors">{t('home')}</a>
           <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
           <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
           <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
