@@ -55,30 +55,62 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
   // Update form when selectedPlan changes
   useEffect(() => {
-    form.setValue('plan', selectedPlan);
-  }, [selectedPlan, form]);
-
-  const onSubmit = (data: FormValues) => {
-    setIsSubmitting(true);
-    
-    // Check if email is already in use (simulation)
-    if (data.email === 'test@example.com') {
+    try {
+      if (selectedPlan) {
+        form.setValue('plan', selectedPlan);
+      }
+    } catch (error) {
+      console.error('Error updating plan value:', error);
       toast({
         variant: "destructive",
-        title: "Erreur de validation",
-        description: "Cette adresse e-mail est déjà utilisée.",
+        title: "Erreur",
+        description: "Un problème est survenu lors de la mise à jour du plan.",
       });
-      setIsSubmitting(false);
-      return;
     }
-    
-    // Simulate payment processing
-    console.log('Processing payment...', data);
-    
-    setTimeout(() => {
+  }, [selectedPlan, form, toast]);
+
+  const onSubmit = (data: FormValues) => {
+    try {
+      setIsSubmitting(true);
+      
+      // Check if email is already in use (simulation)
+      if (data.email === 'test@example.com') {
+        toast({
+          variant: "destructive",
+          title: "Erreur de validation",
+          description: "Cette adresse e-mail est déjà utilisée.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Simulate payment processing
+      console.log('Processing payment...', data);
+      
+      setTimeout(() => {
+        setIsSubmitting(false);
+        
+        // Check if the callback exists before calling it
+        if (typeof onPaymentSuccess === 'function') {
+          onPaymentSuccess();
+        } else {
+          console.error('onPaymentSuccess is not a function');
+          toast({
+            variant: "destructive",
+            title: "Erreur",
+            description: "Impossible de finaliser le paiement. Veuillez réessayer.",
+          });
+        }
+      }, 2000);
+    } catch (error) {
+      console.error('Payment processing error:', error);
       setIsSubmitting(false);
-      onPaymentSuccess();
-    }, 2000);
+      toast({
+        variant: "destructive",
+        title: "Erreur de paiement",
+        description: "Une erreur s'est produite lors du traitement du paiement. Veuillez réessayer.",
+      });
+    }
   };
 
   return (

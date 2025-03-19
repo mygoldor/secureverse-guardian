@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,24 +8,70 @@ import PaymentForm from '@/components/payment/PaymentForm';
 import PlanOption from '@/components/payment/PlanOption';
 import SuccessModal from '@/components/payment/SuccessModal';
 import Footer from '@/components/Footer';
+import { useToast } from '@/hooks/use-toast';
 
 const Payment = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Add component loading state
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   const handlePaymentSuccess = () => {
-    setShowSuccessModal(true);
-    // Simulate email sending
-    console.log('Sending confirmation email...');
-    
-    // Close modal and redirect after 5 seconds
-    setTimeout(() => {
-      setShowSuccessModal(false);
-      navigate('/dashboard');
-    }, 5000);
+    try {
+      setShowSuccessModal(true);
+      // Simulate email sending
+      console.log('Sending confirmation email...');
+      
+      // Close modal and redirect after 5 seconds
+      const redirectTimer = setTimeout(() => {
+        setShowSuccessModal(false);
+        navigate('/dashboard');
+      }, 5000);
+      
+      return () => clearTimeout(redirectTimer);
+    } catch (error) {
+      console.error('Error in payment success handler:', error);
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Un problème est survenu lors de la finalisation de votre abonnement.",
+      });
+    }
   };
+  
+  const handlePlanChange = (plan: 'monthly' | 'yearly') => {
+    try {
+      setSelectedPlan(plan);
+    } catch (error) {
+      console.error('Error changing plan:', error);
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Impossible de changer de plan. Veuillez réessayer.",
+      });
+    }
+  };
+  
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-security-primary"></div>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-800">
@@ -58,7 +104,7 @@ const Payment = () => {
               price="9,99€"
               period="/mois"
               isSelected={selectedPlan === 'monthly'}
-              onSelect={() => setSelectedPlan('monthly')}
+              onSelect={() => handlePlanChange('monthly')}
             />
             
             <PlanOption
@@ -66,7 +112,7 @@ const Payment = () => {
               price="99,99€"
               period="/an"
               isSelected={selectedPlan === 'yearly'}
-              onSelect={() => setSelectedPlan('yearly')}
+              onSelect={() => handlePlanChange('yearly')}
               discount="2 mois offerts"
             />
           </div>
@@ -100,7 +146,7 @@ const Payment = () => {
             <h3 className="text-xl font-semibold mb-6 text-center">Formulaire de paiement et création de compte</h3>
             <PaymentForm 
               selectedPlan={selectedPlan} 
-              onPlanChange={setSelectedPlan}
+              onPlanChange={handlePlanChange}
               onPaymentSuccess={handlePaymentSuccess}
             />
           </div>

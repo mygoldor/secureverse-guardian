@@ -14,8 +14,15 @@ interface SuccessModalProps {
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
+  // Add a safe default for onClose in case it's not provided
+  const handleClose = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex justify-center mb-4">
