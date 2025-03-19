@@ -47,7 +47,7 @@ const SecurityAgent = () => {
   const loadSecurityLogs = async () => {
     if (window.electron) {
       try {
-        // Fixing the error - passing only one argument (20) to getSecurityLogs
+        // Passing only one argument (20) to getSecurityLogs
         const response = await window.electron.getSecurityLogs(20);
         setSecurityLogs(response.logs || []);
       } catch (error) {
