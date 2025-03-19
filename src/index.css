@@ -124,18 +124,20 @@
     @apply px-4 py-2 rounded-lg font-medium transition-colors;
   }
   
-  /* Custom menu button style as specified by user */
+  /* Updated menu button style with better visibility */
   .menu-button {
-    display: block; /* S'assurer qu'il est bien affiché */
+    display: block;
     position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1000; /* Le mettre au premier plan */
-    background-color: #007bff; /* Couleur du bouton */
+    top: 15px;
+    left: 15px;
+    z-index: 9999; /* Higher z-index to ensure it's always on top */
+    background-color: #007bff;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 12px;
+    border-radius: 8px;
     cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid white;
   }
 }
 
@@ -178,6 +180,6 @@
   }
   
   .menu-button {
-    display: none; /* Masquer le bouton menu sur les grands écrans */
+    display: none; /* Hide menu button on larger screens */
   }
 }

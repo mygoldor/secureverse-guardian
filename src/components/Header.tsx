@@ -25,72 +25,72 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-white border-b border-gray-100 shadow-sm py-3 px-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Link to="/dashboard">
-            <div className="flex items-center space-x-2">
-              <img 
-                src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
-                alt="Guardia" 
-                className="h-10 w-auto"
-              />
-              <span className="font-bold text-2xl text-security-primary">Guardia</span>
-            </div>
-          </Link>
+    <>
+      <header className="w-full bg-white border-b border-gray-100 shadow-sm py-3 px-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Link to="/dashboard">
+              <div className="flex items-center space-x-2">
+                <img 
+                  src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
+                  alt="Guardia" 
+                  className="h-10 w-auto"
+                />
+                <span className="font-bold text-2xl text-security-primary">Guardia</span>
+              </div>
+            </Link>
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-6">
+            <Link 
+              to="/dashboard" 
+              className={`transition-colors ${isActive('/') || isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+            >
+              Dashboard
+            </Link>
+            <Link 
+              to="/protection" 
+              className={`transition-colors ${isActive('/protection') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+            >
+              Protection
+            </Link>
+            <Link 
+              to="/privacy" 
+              className={`transition-colors ${isActive('/privacy') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+            >
+              Privacy
+            </Link>
+            <Link 
+              to="/performance" 
+              className={`transition-colors ${isActive('/performance') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+            >
+              Performance
+            </Link>
+            <Link 
+              to="/settings" 
+              className={`transition-colors ${isActive('/settings') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+            >
+              Settings
+            </Link>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <LanguageSelector />
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-security-danger"></span>
+            </Button>
+            <Button className="hidden md:inline-flex bg-security-primary hover:bg-security-secondary text-white">
+              {t('quick_scan')}
+            </Button>
+          </div>
         </div>
-        
-        <div className="hidden md:flex items-center space-x-6">
-          <Link 
-            to="/dashboard" 
-            className={`transition-colors ${isActive('/') || isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-          >
-            Dashboard
-          </Link>
-          <Link 
-            to="/protection" 
-            className={`transition-colors ${isActive('/protection') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-          >
-            Protection
-          </Link>
-          <Link 
-            to="/privacy" 
-            className={`transition-colors ${isActive('/privacy') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-          >
-            Privacy
-          </Link>
-          <Link 
-            to="/performance" 
-            className={`transition-colors ${isActive('/performance') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-          >
-            Performance
-          </Link>
-          <Link 
-            to="/settings" 
-            className={`transition-colors ${isActive('/settings') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-          >
-            Settings
-          </Link>
-        </div>
-        
-        <div className="flex items-center space-x-3">
-          <LanguageSelector />
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-security-danger"></span>
-          </Button>
-          <Button className="hidden md:inline-flex bg-security-primary hover:bg-security-secondary text-white">
-            {t('quick_scan')}
-          </Button>
-        </div>
-      </div>
+      </header>
 
-      {/* Mobile menu using Sheet component and custom CSS */}
+      {/* Mobile menu using Sheet component - moved outside header for better visibility */}
       <Sheet>
         <SheetTrigger asChild>
-          <button 
-            className="menu-button md:hidden"
-          >
+          <button className="menu-button md:hidden">
             <Menu className="h-6 w-6" />
           </button>
         </SheetTrigger>
@@ -135,7 +135,7 @@ const Header = () => {
           </div>
         </SheetContent>
       </Sheet>
-    </header>
+    </>
   );
 };
 
