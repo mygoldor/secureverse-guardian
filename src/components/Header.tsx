@@ -86,8 +86,8 @@ const Header = () => {
           {/* Mobile menu using Sheet component */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
+              <Button variant="outline" size="icon" className="md:hidden flex items-center justify-center">
+                <Menu className="h-6 w-6 text-security-primary" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[80%] sm:w-[350px]">

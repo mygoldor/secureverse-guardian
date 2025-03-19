@@ -1,5 +1,7 @@
+
 import React, { useState } from 'react';
 import { Shield, RefreshCcw, Lock, Eye } from 'lucide-react';
+import Header from '@/components/Header';
 import ProtectionCard from '@/components/ProtectionCard';
 import SecurityAgent from '@/components/SecurityAgent';
 
@@ -20,6 +22,7 @@ const Protection = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-security-foreground">Protection</h1>
