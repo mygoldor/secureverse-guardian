@@ -1,3 +1,4 @@
+
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -162,7 +163,7 @@ app.whenReady().then(() => {
     }
   });
 
-  // Handle security logs retrieval
+  // Handle security logs retrieval - ensure we use one parameter
   ipcMain.handle('get-security-logs', async (event, lines) => {
     try {
       const response = await axios.get(`http://localhost:5000/security-logs?lines=${lines || 50}`);
