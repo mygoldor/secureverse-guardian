@@ -22,7 +22,7 @@ const LanguageSelector = () => {
     <div className="language-selector">
       <Select
         value={language}
-        onValueChange={(value) => setLanguage(value as 'fr' | 'en')}
+        onValueChange={(value) => setLanguage(value as 'fr' | 'en' | 'es' | 'de' | 'it')}
       >
         <SelectTrigger 
           className={`w-[130px] ${
@@ -39,6 +39,9 @@ const LanguageSelector = () => {
         <SelectContent>
           <SelectItem value="fr">Français</SelectItem>
           <SelectItem value="en">English</SelectItem>
+          <SelectItem value="es">Español</SelectItem>
+          <SelectItem value="de">Deutsch</SelectItem>
+          <SelectItem value="it">Italiano</SelectItem>
         </SelectContent>
       </Select>
     </div>
