@@ -6,6 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import DataExportModal from '@/components/privacy/DataExportModal';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -18,6 +19,8 @@ const Settings = () => {
     dataCollection: false,
     biometricAuth: true,
   });
+
+  const [dataExportModalOpen, setDataExportModalOpen] = useState(false);
 
   const handleToggleSetting = (key: keyof typeof settings) => {
     setSettings(prev => {
@@ -35,9 +38,7 @@ const Settings = () => {
   };
 
   const handleExportData = () => {
-    toast.success('Data export requested', {
-      description: 'Your personal data export will be prepared and sent to your email within 48 hours.',
-    });
+    setDataExportModalOpen(true);
   };
 
   const handleDeleteData = () => {
@@ -184,6 +185,11 @@ const Settings = () => {
           </div>
         </div>
       </main>
+      
+      <DataExportModal 
+        open={dataExportModalOpen} 
+        onOpenChange={setDataExportModalOpen} 
+      />
     </div>
   );
 };
