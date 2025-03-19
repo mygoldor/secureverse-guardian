@@ -16,6 +16,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Payment from "./pages/Payment";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/performance" element={<Performance />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
