@@ -22,10 +22,10 @@ const Privacy = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-8 text-gray-800">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-security-foreground">Privacy</h1>
-          <p className="text-security-muted mt-2">Manage how your data is collected and used in compliance with GDPR regulations.</p>
+          <h1 className="text-3xl font-bold text-gray-900">Privacy</h1>
+          <p className="text-gray-500 mt-2">Manage how your data is collected and used in compliance with GDPR regulations.</p>
         </div>
         
         <PrivacySettings 

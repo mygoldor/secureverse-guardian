@@ -16,7 +16,7 @@ import ContactSection from './PrivacyPolicySections/ContactSection';
 
 const PrivacyPolicy: React.FC = () => {
   return (
-    <div className="mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+    <div className="mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-100 text-gray-800">
       <PrivacyPolicyHeader lastUpdated="June 1, 2023" />
       <Separator className="my-6" />
       <CompanyInfoSection />
