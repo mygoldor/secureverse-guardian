@@ -11,7 +11,6 @@ import Protection from "./pages/Protection";
 import Privacy from "./pages/Privacy";
 import Performance from "./pages/Performance";
 import Settings from "./pages/Settings";
-import Payment from "./pages/Payment";
 import TermsOfService from "./pages/TermsOfService";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
@@ -35,7 +34,6 @@ const App = () => (
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/performance" element={<Performance />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/payment" element={<Payment />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
