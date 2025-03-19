@@ -1,15 +1,17 @@
 
-import React, { useState } from 'react';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
+import React, { useState, useEffect } from 'react';
+import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import PaymentMethodSelector from './PaymentMethodSelector';
+
+// Import refactored components
+import PlanSelection from './form/PlanSelection';
+import PersonalInfo from './form/PersonalInfo';
+import PaymentOptions from './form/PaymentOptions';
+import TermsAgreement from './form/TermsAgreement';
+import SubmitButton from './form/SubmitButton';
 
 interface PaymentFormProps {
   selectedPlan: 'monthly' | 'yearly';
@@ -28,7 +30,7 @@ const formSchema = z.object({
   }),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ 
   selectedPlan, 
@@ -51,7 +53,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   });
 
   // Update form when selectedPlan changes
-  React.useEffect(() => {
+  useEffect(() => {
     form.setValue('plan', selectedPlan);
   }, [selectedPlan, form]);
 
@@ -81,123 +83,23 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Sélection du plan */}
-        <FormField
-          control={form.control}
-          name="plan"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Sélection du plan</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                    onPlanChange(value as 'monthly' | 'yearly');
-                  }}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="monthly" id="monthly" />
-                    <label htmlFor="monthly" className="cursor-pointer">Mensuel - 9,99€/mois</label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="yearly" id="yearly" />
-                    <label htmlFor="yearly" className="cursor-pointer">Annuel - 99,99€/an (2 mois offerts)</label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        {/* Plan Selection Component */}
+        <PlanSelection 
+          control={form.control} 
+          onPlanChange={onPlanChange} 
         />
         
-        {/* Informations personnelles */}
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nom</FormLabel>
-              <FormControl>
-                <Input placeholder="Votre nom" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Personal Information Component */}
+        <PersonalInfo control={form.control} />
         
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Adresse e-mail</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="votre@email.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Payment Options Component */}
+        <PaymentOptions control={form.control} />
         
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Terms Agreement Component */}
+        <TermsAgreement control={form.control} />
         
-        {/* Sélection du mode de paiement */}
-        <FormField
-          control={form.control}
-          name="paymentMethod"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mode de paiement</FormLabel>
-              <FormControl>
-                <PaymentMethodSelector 
-                  value={field.value} 
-                  onChange={field.onChange} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        {/* Conditions générales */}
-        <FormField
-          control={form.control}
-          name="termsAccepted"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>
-                  J'accepte les Conditions Générales
-                </FormLabel>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? 'Traitement...' : "S'abonner maintenant"}
-        </Button>
+        {/* Submit Button Component */}
+        <SubmitButton isSubmitting={isSubmitting} />
       </form>
     </Form>
   );
