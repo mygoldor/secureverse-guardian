@@ -298,7 +298,27 @@ const es: TranslationKeys = {
   passwords_dont_match_desc: 'Por favor asegúrese de que ambas contraseñas sean idénticas',
   signup_success: 'Registro exitoso',
   signup_success_desc: 'Su cuenta ha sido creada. Redirigiendo al panel de control...',
+  
+  // Security alerts
+  phishing_attempt_detected: "Intento de phishing detectado",
+  suspicious_login_detected: "Se detectó un intento de inicio de sesión sospechoso en su cuenta",
+  today_time: "Hoy, {time}",
+  yesterday_time: "Ayer, {time}",
+  days_ago: "Hace {days} días",
+  change_password: "Cambiar su contraseña",
+  potential_malware: "Software potencialmente malicioso",
+  suspicious_program_detected: "Se detectó un programa sospechoso en su dispositivo",
+  scan_and_quarantine: "Escanear y poner en cuarentena",
+  security_update_available: "Actualización de seguridad disponible",
+  important_security_update: "Hay una actualización de seguridad importante disponible para su sistema",
+  update_now: "Actualizar ahora",
+  high_priority: "Alta prioridad",
+  medium_priority: "Prioridad media",
+  low_priority: "Prioridad baja",
+  learn_more: "Saber más",
+  resolved: "Resuelto",
+  no_active_alerts: "Sin alertas activas",
+  system_secure: "Su sistema está actualmente seguro",
 };
 
 export default es;
-

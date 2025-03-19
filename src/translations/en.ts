@@ -298,6 +298,27 @@ const en: TranslationKeys = {
   passwords_dont_match_desc: 'Please ensure both passwords are identical',
   signup_success: 'Sign Up Successful',
   signup_success_desc: 'Your account has been created. Redirecting to dashboard...',
+  
+  // Security alerts
+  phishing_attempt_detected: "Phishing Attempt Detected",
+  suspicious_login_detected: "A suspicious login attempt was detected on your account",
+  today_time: "Today, {time}",
+  yesterday_time: "Yesterday, {time}",
+  days_ago: "{days} days ago",
+  change_password: "Change your password",
+  potential_malware: "Potential Malicious Software",
+  suspicious_program_detected: "A suspicious program was detected on your device",
+  scan_and_quarantine: "Scan and quarantine",
+  security_update_available: "Security Update Available",
+  important_security_update: "An important security update is available for your system",
+  update_now: "Update now",
+  high_priority: "High Priority",
+  medium_priority: "Medium Priority",
+  low_priority: "Low Priority",
+  learn_more: "Learn More",
+  resolved: "Resolved",
+  no_active_alerts: "No Active Alerts",
+  system_secure: "Your system is currently secure",
 };
 
 export default en;

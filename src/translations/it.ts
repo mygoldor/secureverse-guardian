@@ -298,6 +298,6 @@ const it: TranslationKeys = {
   passwords_dont_match_desc: 'Assicurati che entrambe le password siano identiche',
   signup_success: 'Registrazione completata',
   signup_success_desc: 'Il tuo account è stato creato. Reindirizzamento alla dashboard...',
-};
+  
 
-export default it;
+

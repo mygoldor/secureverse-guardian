@@ -297,4 +297,25 @@ export type TranslationKeys = {
   passwords_dont_match_desc: string;
   signup_success: string;
   signup_success_desc: string;
+  
+  // Security alerts
+  phishing_attempt_detected: string;
+  suspicious_login_detected: string;
+  today_time: string;
+  yesterday_time: string;
+  days_ago: string;
+  change_password: string;
+  potential_malware: string;
+  suspicious_program_detected: string;
+  scan_and_quarantine: string;
+  security_update_available: string;
+  important_security_update: string;
+  update_now: string;
+  high_priority: string;
+  medium_priority: string;
+  low_priority: string;
+  learn_more: string;
+  resolved: string;
+  no_active_alerts: string;
+  system_secure: string;
 };
