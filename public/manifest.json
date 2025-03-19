@@ -2,20 +2,24 @@
 {
   "name": "Guardia Security",
   "short_name": "Guardia",
+  "description": "Protection avancée contre les menaces en ligne pour tous vos appareils",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#003366",
   "theme_color": "#003366",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/icons/guardia-icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/guardia-icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "related_applications": [
@@ -33,6 +37,7 @@
       "url": "https://apps.apple.com/app/guardia-security/id1234567890"
     }
   ],
+  "prefer_related_applications": false,
   "file_handlers": [
     {
       "action": "/scan",
@@ -47,6 +52,22 @@
         }
       ],
       "launch_type": "single-client"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Analyse rapide",
+      "short_name": "Analyser",
+      "description": "Lancer une analyse rapide de sécurité",
+      "url": "/protection?action=scan",
+      "icons": [{ "src": "/icons/guardia-icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Tableau de bord",
+      "short_name": "Dashboard",
+      "description": "Voir le tableau de bord de sécurité",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/guardia-icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

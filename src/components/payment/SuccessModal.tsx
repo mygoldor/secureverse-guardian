@@ -1,12 +1,12 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { CheckCircle, Download } from 'lucide-react';
+import { CheckCircle, Download, Plus, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,10 +15,22 @@ interface SuccessModalProps {
   onClose: () => void;
 }
 
+// PWA installation event interface
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
-  const [installationStarted, setInstallationStarted] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [installationStarted, setInstallationStarted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [canInstallPWA, setCanInstallPWA] = useState(false);
   
   // Handle close function
   const handleClose = () => {
@@ -40,6 +52,25 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     const userAgent = window.navigator.userAgent;
     const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     setIsMobile(mobileRegex.test(userAgent));
+  }, []);
+
+  // Handle PWA installation prompt
+  useEffect(() => {
+    // Capture the install prompt
+    const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      // Update UI to notify the user they can add to home screen
+      setCanInstallPWA(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
 
   // Start installation automatically
@@ -133,6 +164,39 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  // Function to install PWA
+  const installPWA = async () => {
+    if (!deferredPrompt) {
+      // If the deferred prompt isn't available, show alternative instructions
+      toast({
+        title: "Installation manuelle",
+        description: "Pour installer l'application, utilisez le menu de votre navigateur et sélectionnez 'Ajouter à l'écran d'accueil'.",
+      });
+      return;
+    }
+
+    // Show the install prompt
+    deferredPrompt.prompt();
+    
+    // Wait for the user to respond to the prompt
+    const choiceResult = await deferredPrompt.userChoice;
+    
+    if (choiceResult.outcome === 'accepted') {
+      toast({
+        title: "Installation réussie",
+        description: "Guardia a été ajouté à votre écran d'accueil.",
+      });
+    } else {
+      toast({
+        title: "Installation annulée",
+        description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
+      });
+    }
+    
+    // Clear the deferredPrompt variable as it can only be used once
+    setDeferredPrompt(null);
+  };
+
   // Make sure isOpen is a boolean to prevent type errors
   const isModalOpen = Boolean(isOpen);
 
@@ -170,6 +234,27 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
               </Button>
             )}
           </div>
+          
+          {/* Add to Home Screen option for mobile */}
+          {isMobile && (
+            <div className="bg-green-50 p-4 rounded-lg my-4">
+              <h4 className="font-medium text-green-700 mb-2">
+                <Smartphone className="h-4 w-4 inline mr-1" />
+                Ajouter à l'écran d'accueil
+              </h4>
+              <p className="text-sm text-green-600 mb-2">
+                Installez Guardia directement sur votre écran d'accueil pour un accès rapide et une expérience optimale.
+              </p>
+              <Button 
+                onClick={installPWA} 
+                className="mt-2 bg-green-600 hover:bg-green-700" 
+                size="sm"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Ajouter à l'écran d'accueil
+              </Button>
+            </div>
+          )}
           
           <p className="text-sm text-gray-500">Vous allez être redirigé vers votre tableau de bord...</p>
         </div>
