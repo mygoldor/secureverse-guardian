@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Sheet,
   SheetContent,
@@ -16,7 +17,7 @@ import {
 const Header = () => {
   const location = useLocation();
   const { t } = useLanguage();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   // Check if a path is active
   const isActive = (path: string) => {
