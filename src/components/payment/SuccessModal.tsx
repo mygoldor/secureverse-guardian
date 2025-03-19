@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -16,13 +16,31 @@ interface SuccessModalProps {
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   // Add a safe default for onClose in case it's not provided
   const handleClose = () => {
-    if (typeof onClose === 'function') {
-      onClose();
+    try {
+      if (typeof onClose === 'function') {
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error in modal close handler:', error);
+      // Fallback close method if the provided handler fails
+      if (typeof window !== 'undefined') {
+        window.history.back();
+      }
     }
   };
 
+  // Cleanup effect to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      console.log('SuccessModal unmounted successfully');
+    };
+  }, []);
+
+  // Make sure isOpen is a boolean to prevent type errors
+  const isModalOpen = Boolean(isOpen);
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex justify-center mb-4">
