@@ -1,12 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
+import { Menu, X } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const LandingHeader = () => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
   
   return (
     <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50">
@@ -20,8 +28,9 @@ const LandingHeader = () => {
           <span className="font-bold text-2xl text-white">Guardia</span>
         </Link>
         
-        <div className="flex items-center ml-20">
-          <nav className="hidden md:flex items-center space-x-10 mr-6">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center ml-20">
+          <nav className="flex items-center space-x-10 mr-6">
             <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
             <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
             <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
@@ -34,12 +43,76 @@ const LandingHeader = () => {
             <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white" onClick={() => window.location.href='/signup'}>
               {t('get_started')}
             </Button>
-            <Button variant="ghost" size="icon" className="md:hidden text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </div>
+        </div>
+        
+        {/* Mobile Menu Button */}
+        <div className="flex md:hidden items-center space-x-2">
+          <LanguageSelector />
+          <Button variant="ghost" size="icon" className="text-white" onClick={toggleMobileMenu}>
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </Button>
+        </div>
+      </div>
+      
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 top-[72px] bg-[#003366] z-40 flex flex-col p-5">
+          <nav className="flex flex-col space-y-6 mt-4">
+            <a 
+              href="#features" 
+              className="text-white text-xl hover:text-gray-300 transition-colors py-2 border-b border-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('features')}
+            </a>
+            <a 
+              href="#pricing" 
+              className="text-white text-xl hover:text-gray-300 transition-colors py-2 border-b border-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('pricing')}
+            </a>
+            <a 
+              href="#testimonials" 
+              className="text-white text-xl hover:text-gray-300 transition-colors py-2 border-b border-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('testimonials')}
+            </a>
+            <a 
+              href="#contact" 
+              className="text-white text-xl hover:text-gray-300 transition-colors py-2 border-b border-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('contact')}
+            </a>
+            <Link 
+              to="/login" 
+              className="text-white text-xl hover:text-gray-300 transition-colors py-2 border-b border-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('login')}
+            </Link>
+          </nav>
+          
+          <div className="mt-8">
+            <Button 
+              className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full py-6" 
+              onClick={() => {
+                window.location.href='/signup';
+                setMobileMenuOpen(false);
+              }}
+            >
+              {t('get_started')}
             </Button>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };
