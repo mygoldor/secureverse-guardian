@@ -19,7 +19,7 @@ const Header = () => {
     <header className="w-full bg-white border-b border-gray-100 shadow-sm py-3 px-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <Link to="/">
+          <Link to="/dashboard">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-security-primary" />
               <span className="font-bold text-2xl text-security-primary">Guardia</span>
@@ -29,14 +29,8 @@ const Header = () => {
         
         <div className="hidden md:flex items-center space-x-6">
           <Link 
-            to="/" 
-            className={`transition-colors ${isActive('/') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-          >
-            Dashboard
-          </Link>
-          <Link 
             to="/dashboard" 
-            className={`transition-colors ${isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+            className={`transition-colors ${isActive('/') || isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
           >
             {t('dashboard')}
           </Link>
