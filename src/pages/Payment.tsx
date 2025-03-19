@@ -76,6 +76,17 @@ const Payment = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <main className="flex-grow container mx-auto py-8 px-4">
+        {/* Test button for simulation */}
+        <div className="mx-auto max-w-2xl mb-4">
+          <Button 
+            onClick={handlePaymentSuccess}
+            variant="outline"
+            className="w-full bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-800"
+          >
+            Simuler un paiement réussi
+          </Button>
+        </div>
+
         {/* Présentation de l'abonnement */}
         <section className="mb-12 text-center">
           <h2 className="text-3xl font-bold mb-6 text-security-primary">Protégez vos appareils dès aujourd'hui</h2>
