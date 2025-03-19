@@ -205,28 +205,40 @@ const Landing = () => {
               <p className="text-gray-600 mb-6">Fonctionnalités complètes, mises à jour régulières et support 24/7.</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Protection complète contre les virus et malwares</strong> - Détection et suppression automatique de tous types de logiciels malveillants, y compris les ransomwares, spywares et adwares qui pourraient compromettre vos données</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Protection complète contre les virus et malwares</strong>
+                    <p>Détection et suppression automatique de tous types de logiciels malveillants, y compris les ransomwares, spywares et adwares qui pourraient compromettre vos données</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Mises à jour automatiques de sécurité</strong> - Actualisations régulières pour contrer les nouvelles menaces et vulnérabilités, garantissant une protection constante contre les dernières techniques d'attaque</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Mises à jour automatiques de sécurité</strong>
+                    <p>Actualisations régulières pour contrer les nouvelles menaces et vulnérabilités, garantissant une protection constante contre les dernières techniques d'attaque</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Support client disponible 24/7</strong> - Assistance technique par chat, email et téléphone à tout moment, avec un temps de réponse moyen de moins de 4 heures pour toute question ou problème rencontré</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Support client disponible 24/7</strong>
+                    <p>Assistance technique par chat, email et téléphone à tout moment, avec un temps de réponse moyen de moins de 4 heures pour toute question ou problème rencontré</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Protection pour 3 appareils maximum</strong> - Couvre ordinateurs, tablettes et smartphones avec synchronisation des paramètres et protection en temps réel sur tous vos appareils personnels</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Protection pour 3 appareils maximum</strong>
+                    <p>Couvre ordinateurs, tablettes et smartphones avec synchronisation des paramètres et protection en temps réel sur tous vos appareils personnels</p>
+                  </div>
                 </li>
               </ul>
               <Link to="/signup">
@@ -247,34 +259,49 @@ const Landing = () => {
               <p className="text-gray-600 mb-6">Protection premium avec des avantages exclusifs pour nos abonnés annuels.</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Protection complète contre tous types de menaces</strong> - Sécurité avancée contre virus, malwares, ransomwares et attaques zero-day avec analyse heuristique et détection comportementale pour identifier même les menaces inconnues</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Protection complète contre tous types de menaces</strong>
+                    <p>Sécurité avancée contre virus, malwares, ransomwares et attaques zero-day avec analyse heuristique et détection comportementale pour identifier même les menaces inconnues</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Mises à jour automatiques prioritaires</strong> - Recevez les dernières protections en premier et sans interruption, avec accès prioritaire aux nouvelles fonctionnalités et améliorations de sécurité avant leur déploiement général</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Mises à jour automatiques prioritaires</strong>
+                    <p>Recevez les dernières protections en premier et sans interruption, avec accès prioritaire aux nouvelles fonctionnalités et améliorations de sécurité avant leur déploiement général</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Support prioritaire avec assistance dédiée</strong> - Accès VIP avec temps de réponse garanti sous 1 heure et conseiller personnel assigné pour résoudre rapidement tous vos problèmes de sécurité</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Support prioritaire avec assistance dédiée</strong>
+                    <p>Accès VIP avec temps de réponse garanti sous 1 heure et conseiller personnel assigné pour résoudre rapidement tous vos problèmes de sécurité</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Protection pour 5 appareils maximum</strong> - Protégez toute votre famille sur ordinateurs, tablettes et smartphones avec des paramètres personnalisés pour chaque utilisateur et un tableau de bord centralisé pour gérer la sécurité de tous vos appareils</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Protection pour 5 appareils maximum</strong>
+                    <p>Protégez toute votre famille sur ordinateurs, tablettes et smartphones avec des paramètres personnalisés pour chaque utilisateur et un tableau de bord centralisé pour gérer la sécurité de tous vos appareils</p>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-[#00CC66] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-[#00CC66] mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span><strong>Économisez l'équivalent de 2 mois d'abonnement</strong> - Rapport qualité-prix optimal avec tous les avantages premium et une réduction de 16,6% par rapport au plan mensuel, soit une économie annuelle de 19,98€</span>
+                  <div className="text-gray-700">
+                    <strong className="text-[#003366] font-semibold">Économisez l'équivalent de 2 mois d'abonnement</strong>
+                    <p>Rapport qualité-prix optimal avec tous les avantages premium et une réduction de 16,6% par rapport au plan mensuel, soit une économie annuelle de 19,98€</p>
+                  </div>
                 </li>
               </ul>
               <Link to="/signup">
