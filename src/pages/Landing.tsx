@@ -1,11 +1,14 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Monitor, ShieldBan, Cloud, Search, ChartBar, ArrowRight, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Footer from '@/components/Footer';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Landing = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
@@ -17,17 +20,18 @@ const Landing = () => {
           </Link>
           
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#hero" className="text-white hover:text-gray-300 transition-colors">Accueil</a>
-            <a href="#features" className="text-white hover:text-gray-300 transition-colors">Fonctionnalités</a>
-            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">Tarifs</a>
-            <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">Témoignages</a>
-            <a href="#contact" className="text-white hover:text-gray-300 transition-colors">Contact</a>
-            <Link to="/login" className="text-white hover:text-gray-300 transition-colors">Connexion</Link>
+            <a href="#hero" className="text-white hover:text-gray-300 transition-colors">{t('home')}</a>
+            <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
+            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
+            <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
+            <a href="#contact" className="text-white hover:text-gray-300 transition-colors">{t('contact')}</a>
+            <Link to="/login" className="text-white hover:text-gray-300 transition-colors">{t('login')}</Link>
           </nav>
           
           <div className="flex items-center space-x-3">
+            <LanguageSelector />
             <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white">
-              Démarrer maintenant
+              {t('get_started')}
             </Button>
             <Button variant="ghost" size="icon" className="md:hidden text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
@@ -40,16 +44,16 @@ const Landing = () => {
       <section id="hero" className="relative py-20 md:py-32 px-4 bg-gradient-to-r from-[#003366] to-[#0099FF]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="text-left">
-            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Protégez vos données, sécurisez votre avenir avec Guardia</h1>
-            <p className="text-xl text-gray-200 mb-8">La solution de cybersécurité plug-and-play pour les particuliers et les entreprises.</p>
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{t('hero_title')}</h1>
+            <p className="text-xl text-gray-200 mb-8">{t('hero_subtitle')}</p>
             <Button className="bg-[#00CC66] hover:bg-[#00AA55] text-white text-lg px-8 py-6">
-              Découvrez Guardia <ArrowRight className="ml-2" />
+              {t('discover_guardia')} <ArrowRight className="ml-2" />
             </Button>
           </div>
           <div className="hidden md:block">
             <img 
               src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
-              alt="Sécurité informatique" 
+              alt={t('computer_security')} 
               className="rounded-lg shadow-xl" 
             />
           </div>
@@ -59,55 +63,55 @@ const Landing = () => {
       {/* Features Section */}
       <section id="features" className="py-16 md:py-24 px-4 bg-[#F9F9F9]">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#003366] text-center mb-12">Fonctionnalités clés de Guardia</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#003366] text-center mb-12">{t('key_features')}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="bg-[#0099FF] text-white p-3 rounded-full inline-block mb-4">
                 <Monitor className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-[#003366] mb-2">Surveillance en temps réel</h3>
-              <p className="text-gray-600">Détection instantanée des menaces et alertes en cas d'activité suspecte sur votre réseau.</p>
+              <h3 className="text-xl font-bold text-[#003366] mb-2">{t('real_time_monitoring')}</h3>
+              <p className="text-gray-600">{t('real_time_monitoring_desc')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="bg-[#00CC66] text-white p-3 rounded-full inline-block mb-4">
                 <ShieldBan className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-[#003366] mb-2">Protection contre les malwares</h3>
-              <p className="text-gray-600">Blocage efficace des virus, ransomwares et autres logiciels malveillants avant qu'ils n'atteignent vos données.</p>
+              <h3 className="text-xl font-bold text-[#003366] mb-2">{t('malware_protection')}</h3>
+              <p className="text-gray-600">{t('malware_protection_desc')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="bg-[#0099FF] text-white p-3 rounded-full inline-block mb-4">
                 <Cloud className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-[#003366] mb-2">Sauvegarde automatique</h3>
-              <p className="text-gray-600">Sauvegarde sécurisée de vos fichiers importants dans le cloud avec chiffrement de bout en bout.</p>
+              <h3 className="text-xl font-bold text-[#003366] mb-2">{t('auto_backup')}</h3>
+              <p className="text-gray-600">{t('auto_backup_desc')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="bg-[#00CC66] text-white p-3 rounded-full inline-block mb-4">
                 <Search className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-[#003366] mb-2">Analyse de vulnérabilité</h3>
-              <p className="text-gray-600">Détection proactive des failles de sécurité dans votre système et recommandations pour les corriger.</p>
+              <h3 className="text-xl font-bold text-[#003366] mb-2">{t('vulnerability_analysis')}</h3>
+              <p className="text-gray-600">{t('vulnerability_analysis_desc')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="bg-[#0099FF] text-white p-3 rounded-full inline-block mb-4">
                 <ChartBar className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-[#003366] mb-2">Rapports de sécurité</h3>
-              <p className="text-gray-600">Rapports détaillés et tableaux de bord personnalisés pour suivre votre niveau de sécurité.</p>
+              <h3 className="text-xl font-bold text-[#003366] mb-2">{t('security_reports')}</h3>
+              <p className="text-gray-600">{t('security_reports_desc')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="bg-[#00CC66] text-white p-3 rounded-full inline-block mb-4">
                 <Shield className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-[#003366] mb-2">Protection multi-appareils</h3>
-              <p className="text-gray-600">Sécurisez tous vos appareils avec une seule solution, compatible PC, Mac, iOS et Android.</p>
+              <h3 className="text-xl font-bold text-[#003366] mb-2">{t('multi_device_protection')}</h3>
+              <p className="text-gray-600">{t('multi_device_protection_desc')}</p>
             </div>
           </div>
         </div>
@@ -116,7 +120,7 @@ const Landing = () => {
       {/* Testimonials */}
       <section id="testimonials" className="py-16 md:py-24 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#003366] text-center mb-12">Ils nous font confiance</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#003366] text-center mb-12">{t('testimonials_title')}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-[#F5F5F5] p-6 rounded-xl shadow-sm">
@@ -274,8 +278,8 @@ const Landing = () => {
       {/* CTA / Signup */}
       <section id="contact" className="py-16 md:py-24 px-4 bg-gradient-to-r from-[#003366] to-[#0099FF]">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Prêt à protéger vos données ?</h2>
-          <p className="text-xl text-gray-200 mb-8">Inscrivez-vous maintenant et bénéficiez d'une période d'essai gratuite de 7 jours.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('ready_to_protect')}</h2>
+          <p className="text-xl text-gray-200 mb-8">{t('signup_now')}</p>
           
           <div className="bg-white p-8 rounded-xl shadow-lg">
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
