@@ -1,3 +1,4 @@
+
 const { spawn } = require('child_process');
 const axios = require('axios');
 const https = require('https');
@@ -16,8 +17,23 @@ function startPythonBackend() {
   // Check if Python is installed
   const pythonCommand = process.platform === 'win32' ? 'python' : 'python3';
   
+  // Set environment variables for certificate configuration
+  const env = {
+    ...process.env,
+    GUARDIA_USE_LETSENCRYPT: config.certificates.USE_LETSENCRYPT.toString(),
+    GUARDIA_DOMAIN: config.certificates.DOMAIN
+  };
+  
+  // Add custom certificate paths if defined
+  if (config.certificates.CERT_PATH) {
+    env.GUARDIA_CERT_PATH = config.certificates.CERT_PATH;
+  }
+  if (config.certificates.KEY_PATH) {
+    env.GUARDIA_KEY_PATH = config.certificates.KEY_PATH;
+  }
+  
   // Start the Flask backend
-  pythonProcess = spawn(pythonCommand, [config.backend.PYTHON_SCRIPT]);
+  pythonProcess = spawn(pythonCommand, [config.backend.PYTHON_SCRIPT], { env });
   
   pythonProcess.stdout.on('data', (data) => {
     console.log(`Python backend output: ${data}`);

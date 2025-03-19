@@ -1,6 +1,18 @@
 
 const { app } = require('electron');
 const path = require('path');
+const os = require('os');
+
+// Determine default Let's Encrypt paths based on OS
+function getDefaultLetsEncryptPath() {
+  if (process.platform === 'win32') {
+    return 'C:/Certbot/live/';
+  } else if (process.platform === 'darwin') {
+    return '/usr/local/etc/letsencrypt/live/';
+  } else {
+    return '/etc/letsencrypt/live/';
+  }
+}
 
 // Configuration constants
 const config = {
@@ -8,7 +20,8 @@ const config = {
   paths: {
     QUARANTINE_DIR: path.join(app.getPath('userData'), 'quarantine'),
     BACKUP_DIR: path.join(app.getPath('userData'), 'backup'),
-    ICON_PATH: path.join(__dirname, '../public/favicon.ico')
+    ICON_PATH: path.join(__dirname, '../public/favicon.ico'),
+    LETSENCRYPT_DIR: process.env.GUARDIA_LETSENCRYPT_DIR || getDefaultLetsEncryptPath()
   },
 
   // Backend configuration
@@ -21,6 +34,14 @@ const config = {
   window: {
     DEFAULT_WIDTH: 1200,
     DEFAULT_HEIGHT: 800
+  },
+  
+  // Certificate configuration
+  certificates: {
+    USE_LETSENCRYPT: process.env.GUARDIA_USE_LETSENCRYPT === 'true' || false,
+    DOMAIN: process.env.GUARDIA_DOMAIN || 'localhost',
+    CERT_PATH: process.env.GUARDIA_CERT_PATH || null,
+    KEY_PATH: process.env.GUARDIA_KEY_PATH || null
   }
 };
 

@@ -52,6 +52,42 @@ def generate_self_signed_cert(cert_file, key_file):
         print(f"Error generating certificate: {e}")
         return False
 
+def find_letsencrypt_cert():
+    """Look for Let's Encrypt certificates in common locations"""
+    # Common Let's Encrypt certificate locations
+    possible_locations = [
+        # Linux common locations
+        ('/etc/letsencrypt/live/', 'fullchain.pem', 'privkey.pem'),
+        # macOS common locations
+        ('/usr/local/etc/letsencrypt/live/', 'fullchain.pem', 'privkey.pem'),
+        # Windows common locations (with Certbot installed)
+        ('C:/Certbot/live/', 'fullchain.pem', 'privkey.pem')
+    ]
+    
+    # Add domain-specific locations
+    domains = ['localhost', 'guardia.local', os.environ.get('GUARDIA_DOMAIN', '')]
+    
+    for base_path, cert_name, key_name in possible_locations:
+        for domain in domains:
+            if domain:
+                domain_path = os.path.join(base_path, domain)
+                cert_path = os.path.join(domain_path, cert_name)
+                key_path = os.path.join(domain_path, key_name)
+                
+                if os.path.exists(cert_path) and os.path.exists(key_path):
+                    print(f"Found Let's Encrypt certificate for {domain}: {cert_path}")
+                    return cert_path, key_path
+    
+    # Check custom certificate path if specified
+    custom_cert = os.environ.get('GUARDIA_CERT_PATH')
+    custom_key = os.environ.get('GUARDIA_KEY_PATH')
+    
+    if custom_cert and custom_key and os.path.exists(custom_cert) and os.path.exists(custom_key):
+        print(f"Using custom certificate: {custom_cert}")
+        return custom_cert, custom_key
+    
+    return None, None
+
 if __name__ == "__main__":
     port = 5000
     
@@ -65,12 +101,19 @@ if __name__ == "__main__":
     cert_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "certs")
     os.makedirs(cert_dir, exist_ok=True)
     
-    # Certificate and key paths
-    cert_file = os.path.join(cert_dir, "guardia.crt")
-    key_file = os.path.join(cert_dir, "guardia.key")
+    # First try to find Let's Encrypt certificates
+    lets_encrypt_cert, lets_encrypt_key = find_letsencrypt_cert()
     
-    # Generate certificate if needed
-    cert_exists = generate_self_signed_cert(cert_file, key_file)
+    if lets_encrypt_cert and lets_encrypt_key:
+        print(f"Using Let's Encrypt certificate: {lets_encrypt_cert}")
+        cert_file = lets_encrypt_cert
+        key_file = lets_encrypt_key
+        cert_exists = True
+    else:
+        # Fall back to self-signed certificates
+        cert_file = os.path.join(cert_dir, "guardia.crt")
+        key_file = os.path.join(cert_dir, "guardia.key")
+        cert_exists = generate_self_signed_cert(cert_file, key_file)
     
     print(f"Starting Guardia Security backend on port {port} with {'HTTPS' if cert_exists else 'HTTP'}...")
     
