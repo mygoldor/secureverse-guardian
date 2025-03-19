@@ -95,7 +95,7 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={t('enter_your_password')}
                 required
-                className="w-full pr-10"
+                className="w-full pr-10 text-foreground"
               />
               <button 
                 type="button"
@@ -117,7 +117,7 @@ const Signup = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder={t('confirm_your_password')}
                 required
-                className="w-full pr-10"
+                className="w-full pr-10 text-foreground"
               />
               <button 
                 type="button"
