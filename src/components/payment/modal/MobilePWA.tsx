@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from 'react';
 import { Smartphone, Loader2, Check, AlertCircle } from 'lucide-react';
-import InstallPWAButton, { BeforeInstallPromptEvent } from './InstallPWAButton';
+import InstallPWAButton from './InstallPWAButton';
+import { BeforeInstallPromptEvent } from './types/installPwa';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,22 +18,18 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Check if the app is already installed
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
       || (window.navigator as any).standalone === true;
     
     if (isStandalone) {
-      // App is already installed, show 100% progress
       setProgressValue(100);
       setInstallComplete(true);
       sessionStorage.setItem('installationChoiceMade', 'true');
       
-      // Redirect to dashboard after a small delay
       setTimeout(() => {
         navigate('/dashboard');
       }, 2000);
     } else if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
-      // If prompt was available before but now it's null, it might mean installation happened
       sessionStorage.setItem('installationChoiceMade', 'true');
       setInstalling(false);
       setProgressValue(100);
@@ -58,14 +54,13 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
     }
   }, [installing, progressValue]);
 
-  // Force completion after a timeout even if no installation is detected
   useEffect(() => {
     if (installing && progressValue >= 95 && progressValue < 100) {
       const timeout = setTimeout(() => {
         setProgressValue(100);
         setInstallComplete(true);
         sessionStorage.setItem('installationChoiceMade', 'true');
-      }, 5000); // 5 seconds max wait time
+      }, 5000);
       
       return () => clearTimeout(timeout);
     }
@@ -78,26 +73,20 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
     setInstallError(false);
     
     try {
-      // Start the installation process
       onDownload();
       
-      // If no prompt available, complete installation after a delay
       if (!deferredPrompt) {
         setTimeout(() => {
           setProgressValue(100);
           setInstallComplete(true);
           setInstalling(false);
           
-          // Redirect to dashboard after a small delay
-          setTimeout(() => {
-            navigate('/dashboard');
-          }, 2000);
+          navigate('/dashboard');
         }, 3000);
       }
     } catch (error) {
       console.error("Installation error:", error);
       setInstallError(true);
-      // Still mark as complete to allow user to continue
       setProgressValue(100);
       setInstallComplete(true);
       sessionStorage.setItem('installationChoiceMade', 'true');
