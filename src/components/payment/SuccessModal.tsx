@@ -66,7 +66,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const handleFooterButtonClick = () => {
     if (!userMadeChoice) {
       toast({
-        variant: "warning",
+        variant: "destructive",
         title: "Choix requis",
         description: "Veuillez choisir une option d'installation avant de continuer.",
       });
@@ -82,7 +82,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         if (!open && !userMadeChoice) {
           // Prevent closing if no choice made
           toast({
-            variant: "warning",
+            variant: "destructive",
             title: "Choix requis",
             description: "Veuillez choisir une option d'installation avant de continuer.",
           });
@@ -97,7 +97,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         if (!userMadeChoice) {
           e.preventDefault();
           toast({
-            variant: "warning",
+            variant: "destructive",
             title: "Choix requis",
             description: "Veuillez choisir une option d'installation avant de continuer.",
           });
@@ -106,7 +106,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         if (!userMadeChoice) {
           e.preventDefault();
           toast({
-            variant: "warning",
+            variant: "destructive",
             title: "Choix requis",
             description: "Veuillez choisir une option d'installation avant de continuer.",
           });
@@ -136,7 +136,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             />
           </div>
           
-          {downloadStarted && installationTab === 'download' && (
+          {showSecurityInfo && (
             <SecurityInfoAlert 
               showSecurityInfo={showSecurityInfo}
               toggleSecurityInfo={toggleSecurityInfo}
