@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardia Security - Hors ligne</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      background-color: #f0f4f8;
+      color: #334155;
+    }
+    .container {
+      max-width: 90%;
+      width: 480px;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #003366;
+    }
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .button {
+      display: inline-block;
+      background-color: #003366;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    .button:hover {
+      background-color: #002244;
+    }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="/icons/guardia-icon-192.png" alt="Guardia Logo" class="logo">
+    <h1>Vous êtes actuellement hors ligne</h1>
+    <p>Guardia Security a besoin d'une connexion internet pour fonctionner correctement. Veuillez vérifier votre connexion et réessayer.</p>
+    <a href="/" class="button">Réessayer</a>
+    
+    <div class="footer">
+      <p>Certaines fonctionnalités de Guardia sont disponibles hors ligne. Vous pourrez accéder aux analyses précédentes et aux rapports enregistrés une fois la connexion rétablie.</p>
+    </div>
+  </div>
+</body>
+</html>

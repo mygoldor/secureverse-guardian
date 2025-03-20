@@ -1,78 +1,100 @@
 
 # Guardia Security - Build & Distribution Guide
 
-This document provides instructions for building and distributing the Guardia Security application.
+Ce document fournit des instructions pour la construction et la distribution de l'application Guardia Security, y compris les options pour l'application native et l'application web progressive (PWA).
 
-## Prerequisites
+## Prérequis
 
-- Node.js 14 or higher
-- Python 3.6 or higher
-- npm or yarn package manager
+- Node.js 14 ou supérieur
+- Python 3.6 ou supérieur
+- npm ou yarn comme gestionnaire de packages
 
-## Development Build
+## Build de développement
 
-To run Guardia in development mode:
+Pour exécuter Guardia en mode développement:
 
 ```bash
-# Install dependencies (first time only)
+# Installer les dépendances (première fois uniquement)
 npm install
 
-# Start the development server
+# Démarrer le serveur de développement
 npm run electron:dev
 ```
 
-## Production Build
+## Build de production
 
-To build Guardia for production and distribution:
+### Application native
+
+Pour construire Guardia pour la distribution en tant qu'application native:
 
 ```bash
-# Build the React application
+# Construire l'application React
 npm run build
 
-# Package the entire application for distribution
+# Empaqueter l'application complète pour la distribution
 npm run electron:build
 ```
 
-The packaged applications will be available in the `release` directory, ready for distribution. Depending on your operating system, you'll find:
+Les applications empaquetées seront disponibles dans le répertoire `release`, prêtes pour la distribution. Selon votre système d'exploitation, vous trouverez:
 
-- Windows: `.exe` installer and/or `.msi` package
-- macOS: `.dmg` disk image and/or `.zip` archive
-- Linux: `.AppImage` and/or `.deb` package
+- Windows: installateur `.exe` et/ou package `.msi`
+- macOS: image disque `.dmg` et/ou archive `.zip`
+- Linux: package `.AppImage` et/ou `.deb`
 
-## Code Signing
+### Application Web Progressive (PWA)
 
-### Why Sign Your Application
+Guardia est également disponible en tant qu'Application Web Progressive, permettant aux utilisateurs d'installer l'application depuis leur navigateur sans passer par les magasins d'applications.
 
-Code signing your application is an important security step that:
-- Verifies the authenticity of your application
-- Removes browser and OS security warnings
-- Builds trust with your users
-- Prevents tampering with your application
+Pour déployer la version PWA:
 
-### How to Sign Your Application
+```bash
+# Construire l'application React avec support PWA
+npm run build
 
-#### 1. Obtain a Code Signing Certificate
+# Déployer sur votre serveur web
+# (Utilisez votre méthode de déploiement préférée)
+```
 
-Purchase a code signing certificate from a trusted Certificate Authority (CA):
+#### Prérequis pour les PWA:
+
+- Un certificat SSL valide pour servir le contenu en HTTPS
+- Configuration correcte des en-têtes HTTP pour le service worker
+- Support du service worker par le navigateur de l'utilisateur
+
+## Signature de code
+
+### Pourquoi signer votre application
+
+La signature de code de votre application est une étape de sécurité importante qui:
+- Vérifie l'authenticité de votre application
+- Supprime les avertissements de sécurité des navigateurs et des systèmes d'exploitation
+- Crée de la confiance avec vos utilisateurs
+- Empêche la falsification de votre application
+
+### Comment signer votre application
+
+#### 1. Obtenir un certificat de signature de code
+
+Achetez un certificat de signature de code auprès d'une autorité de certification (CA) de confiance:
 - [DigiCert](https://www.digicert.com/code-signing/)
 - [Sectigo](https://sectigo.com/ssl-certificates-tls/code-signing)
 - [GlobalSign](https://www.globalsign.com/en/code-signing-certificate)
 
-#### 2. Configure electron-builder for Code Signing
+#### 2. Configurer electron-builder pour la signature de code
 
-Add the following to your `electron-builder.yml` configuration:
+Ajoutez ce qui suit à votre configuration `electron-builder.yml`:
 
 ```yaml
-# For Windows
+# Pour Windows
 win:
-  # ... existing configuration
+  # ... configuration existante
   certificateFile: "./path/to/certificate.pfx"
   certificatePassword: "${CERTIFICATE_PASSWORD}"
   signAndEditExecutable: true
 
-# For macOS
+# Pour macOS
 mac:
-  # ... existing configuration
+  # ... configuration existante
   hardenedRuntime: true
   gatekeeperAssess: false
   entitlements: "./build/entitlements.mac.plist"
@@ -80,39 +102,75 @@ mac:
   identity: "Developer ID Application: Your Company Name (YOUR_TEAM_ID)"
 ```
 
-#### 3. Secure Certificate Password
+#### 3. Sécuriser le mot de passe du certificat
 
-For CI/CD environments, store your certificate password as a secure environment variable.
+Pour les environnements CI/CD, stockez le mot de passe de votre certificat en tant que variable d'environnement sécurisée.
 
-#### 4. Build with Code Signing
+#### 4. Builder avec la signature de code
 
 ```bash
-# On Windows
+# Sur Windows
 set CERTIFICATE_PASSWORD=your-password
 npm run electron:build
 
-# On macOS/Linux
+# Sur macOS/Linux
 export CERTIFICATE_PASSWORD=your-password
 npm run electron:build
 ```
 
-## Verification
+## Distribution Web et PWA
 
-To verify your build:
+### Configuration du Service Worker
 
-1. Navigate to the `release` directory
-2. Install the application using the appropriate installer for your platform
-3. Run the installed application and confirm all functionality works correctly
-4. Verify that the digital signature is valid by checking the file properties
+Le service worker est configuré pour:
+- Mettre en cache les ressources clés pour un fonctionnement hors ligne
+- Gérer les notifications push
+- Fournir une expérience fiable même avec une connectivité intermittente
 
-## Troubleshooting
+### Options d'installation
 
-If you encounter any issues with the build process:
+Guardia offre plusieurs options d'installation:
 
-- Ensure all dependencies are installed correctly
-- Verify that Python is in your PATH
-- Check that the Python dependencies in `requirements.txt` are installed
-- For code signing issues, verify that your certificate is valid and properly configured
+1. **Application native**: Installation traditionnelle via un installateur (.exe, .dmg, etc.)
+2. **PWA**: Installation directement depuis le navigateur
+3. **Raccourcis desktop**: Création de raccourcis pour accéder rapidement à l'application
 
-For advanced troubleshooting, consult the electron-builder documentation at: https://www.electron.build/
+### Raccourcis Bureau
 
+Des raccourcis sont générés pour tous les systèmes d'exploitation principaux:
+- Windows: fichiers `.url`
+- macOS: fichiers `.webloc`
+- Linux: fichiers `.desktop`
+
+Pour distribuer ces raccourcis:
+
+```bash
+# Inclus dans la build complète ou
+# Généré dynamiquement par l'application web
+```
+
+## Vérification
+
+Pour vérifier votre build:
+
+1. Naviguez vers le répertoire `release`
+2. Installez l'application en utilisant l'installateur approprié pour votre plateforme
+3. Exécutez l'application installée et confirmez que toutes les fonctionnalités fonctionnent correctement
+4. Vérifiez que la signature numérique est valide en vérifiant les propriétés du fichier
+
+## Dépannage
+
+Si vous rencontrez des problèmes avec le processus de build:
+
+- Assurez-vous que toutes les dépendances sont correctement installées
+- Vérifiez que Python est dans votre PATH
+- Vérifiez que les dépendances Python dans `requirements.txt` sont installées
+- Pour les problèmes de signature de code, vérifiez que votre certificat est valide et correctement configuré
+
+### Problèmes de PWA
+
+- Le service worker ne s'installe pas: Assurez-vous que vous servez le contenu en HTTPS
+- L'installation ne fonctionne pas: Vérifiez que le manifeste contient toutes les informations requises
+- Les notifications ne fonctionnent pas: Vérifiez les permissions du navigateur
+
+Pour un dépannage avancé, consultez la documentation d'electron-builder à: https://www.electron.build/

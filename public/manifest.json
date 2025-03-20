@@ -3,7 +3,7 @@
   "name": "Guardia Security",
   "short_name": "Guardia",
   "description": "Protection avancée contre les menaces en ligne pour tous vos appareils",
-  "start_url": "/",
+  "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#003366",
   "theme_color": "#003366",
@@ -54,5 +54,45 @@
       ],
       "launch_type": "single-client"
     }
-  ]
+  ],
+  "capture_links": "new-client",
+  "scope": "/",
+  "related_applications": [],
+  "categories": ["security", "utilities", "productivity"],
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Tableau de bord Guardia"
+    },
+    {
+      "src": "/screenshots/security-scan.png", 
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Analyse de sécurité"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "share_target": {
+    "action": "/scan",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "fileToScan",
+          "accept": ["application/octet-stream", "application/pdf", ".exe", ".dll", ".doc", ".docx", ".pdf"]
+        }
+      ]
+    }
+  }
 }
