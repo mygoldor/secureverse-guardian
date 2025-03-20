@@ -4,6 +4,7 @@ import { Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
+import { useNavigate } from 'react-router-dom';
 
 interface InstallPWAButtonProps {
   deferredPrompt: BeforeInstallPromptEvent | null;
@@ -24,6 +25,7 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
   const { toast } = useToast();
   const { isIOS, isAndroid } = useDeviceDetection();
   const [isInstalling, setIsInstalling] = useState(false);
+  const navigate = useNavigate();
   
   const installPWA = async () => {
     // Immediately mark as having made a choice - since clicking this button is a choice
@@ -69,6 +71,12 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
       
       // Call the onInstall callback even for manual installation
       onInstall();
+      
+      // Ensure we redirect after a delay
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 5000);
+      
       setIsInstalling(false);
       return;
     }
@@ -91,6 +99,12 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
           description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
         });
       }
+      
+      // Ensure we redirect after a delay regardless of outcome
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 3000);
+      
     } catch (error) {
       console.error('Error during PWA installation:', error);
       toast({
@@ -98,6 +112,11 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
         title: "Erreur d'installation",
         description: "Une erreur s'est produite lors de l'installation. Vous pouvez continuer vers votre tableau de bord.",
       });
+      
+      // Still redirect to dashboard on error after a delay
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 3000);
     } finally {
       // In any case, turn off the progress indicator
       setIsInstalling(false);

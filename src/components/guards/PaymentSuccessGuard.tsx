@@ -28,13 +28,31 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
       });
       navigate('/payment');
     } else if (hasUserMadeChoice) {
-      navigate('/dashboard');
+      // Force redirect to dashboard with a small delay to ensure state updates
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 300);
     } else {
       setIsVerified(true);
     }
     
     setIsLoading(false);
   }, [navigate, toast]);
+
+  // Check periodically if the installation choice was made in another component
+  useEffect(() => {
+    if (isVerified) {
+      const checkInterval = setInterval(() => {
+        const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
+        if (hasUserMadeChoice) {
+          clearInterval(checkInterval);
+          navigate('/dashboard');
+        }
+      }, 1000);
+      
+      return () => clearInterval(checkInterval);
+    }
+  }, [isVerified, navigate]);
 
   useEffect(() => {
     // Handle page navigation attempts
