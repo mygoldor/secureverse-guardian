@@ -17,6 +17,9 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     const hasSuccessfulPayment = sessionStorage.getItem('paymentSuccessful') === 'true';
     const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
     
+    // For testing purposes, you can temporarily enable this line
+    // sessionStorage.setItem('paymentSuccessful', 'true');
+    
     if (!hasSuccessfulPayment) {
       toast({
         variant: "destructive",

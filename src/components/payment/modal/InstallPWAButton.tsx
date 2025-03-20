@@ -32,6 +32,9 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
     // Set installing state to true to show progress indicator
     setIsInstalling(true);
     
+    // Force a small delay to ensure the UI updates before proceeding
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     if (!deferredPrompt) {
       // If the deferred prompt isn't available, show manual instructions based on browser
       const userAgent = navigator.userAgent;
@@ -41,8 +44,15 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
         // iOS-specific instructions
         instructions = "Touchez l'icône de partage, puis 'Sur l'écran d'accueil'";
       } else if (isAndroid) {
-        // Android-specific instructions
-        instructions = "Touchez les trois points du menu puis 'Ajouter à l'écran d'accueil'";
+        if (/Chrome/i.test(userAgent)) {
+          instructions = "Touchez les trois points du menu puis 'Ajouter à l'écran d'accueil'";
+        } else if (/Firefox/i.test(userAgent)) {
+          instructions = "Touchez les trois points du menu puis 'Installer'";
+        } else if (/Samsung/i.test(userAgent)) {
+          instructions = "Touchez le bouton de menu puis 'Ajouter page à'";
+        } else {
+          instructions = "Touchez le menu de votre navigateur puis 'Ajouter à l'écran d'accueil'";
+        }
       } else if (/Firefox/i.test(userAgent)) {
         instructions = "Appuyez sur les trois points du menu puis 'Installer'";
       } else if (/Edge/i.test(userAgent)) {
@@ -54,6 +64,7 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
       toast({
         title: "Installation manuelle",
         description: instructions,
+        duration: 7000,
       });
       
       // Call the onInstall callback even for manual installation
@@ -98,7 +109,7 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
   return (
     <Button 
       onClick={installPWA} 
-      className="mt-2 bg-green-600 hover:bg-green-700" 
+      className="mt-2 bg-green-600 hover:bg-green-700 w-full" 
       size="sm"
       disabled={isInstalling}
     >

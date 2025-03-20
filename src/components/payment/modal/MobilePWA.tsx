@@ -12,12 +12,24 @@ interface MobilePWAProps {
 const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => {
   const [installing, setInstalling] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
+  const [installComplete, setInstallComplete] = useState(false);
   
   useEffect(() => {
-    if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
+    // Check if the app is already installed
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+      || (window.navigator as any).standalone === true;
+    
+    if (isStandalone) {
+      // App is already installed, show 100% progress
+      setProgressValue(100);
+      setInstallComplete(true);
+      sessionStorage.setItem('installationChoiceMade', 'true');
+    } else if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
+      // If prompt was available before but now it's null, it might mean installation happened
       sessionStorage.setItem('installationChoiceMade', 'true');
       setInstalling(false);
       setProgressValue(100);
+      setInstallComplete(true);
     }
     
     if (deferredPrompt !== null) {
@@ -26,16 +38,35 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
   }, [deferredPrompt]);
   
   useEffect(() => {
-    if (installing) {
+    if (installing && progressValue < 95) {
       const interval = setInterval(() => {
         setProgressValue((prevValue) => {
-          return prevValue < 90 ? prevValue + 5 : prevValue;
+          const newValue = prevValue + (Math.random() * 5);
+          return newValue < 95 ? newValue : 95;
         });
       }, 300);
       
       return () => clearInterval(interval);
     }
-  }, [installing]);
+  }, [installing, progressValue]);
+
+  const handleInstallClick = () => {
+    sessionStorage.setItem('installationChoiceMade', 'true');
+    setInstalling(true);
+    setProgressValue(10);
+    
+    // Start the installation process
+    onDownload();
+    
+    // If no prompt available, complete installation after a delay
+    if (!deferredPrompt) {
+      setTimeout(() => {
+        setProgressValue(100);
+        setInstallComplete(true);
+        setInstalling(false);
+      }, 3000);
+    }
+  };
 
   return (
     <div className="bg-green-50 p-4 rounded-lg my-4">
@@ -57,22 +88,19 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
         </div>
       )}
       
-      {deferredPrompt === null && progressValue === 100 && (
+      {(progressValue >= 100 || installComplete) && (
         <div className="bg-green-100 p-2 rounded text-green-800 text-sm mb-2">
           <Progress value={100} className="h-2 mb-2" indicatorClassName="bg-green-600" />
           Installation réussie ! L'application est maintenant disponible sur votre écran d'accueil.
         </div>
       )}
       
-      <InstallPWAButton 
-        deferredPrompt={deferredPrompt} 
-        onInstall={() => {
-          sessionStorage.setItem('installationChoiceMade', 'true');
-          setInstalling(true);
-          setProgressValue(10);
-          onDownload();
-        }}
-      />
+      {progressValue < 100 && !installComplete && (
+        <InstallPWAButton 
+          deferredPrompt={deferredPrompt} 
+          onInstall={handleInstallClick}
+        />
+      )}
     </div>
   );
 };
