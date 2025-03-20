@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
@@ -14,11 +13,23 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     isMobile ? 'pwa' : 'download'
   );
   const [shortcutCreated, setShortcutCreated] = useState(false);
+  const [userMadeChoice, setUserMadeChoice] = useState(false);
+  
+  useEffect(() => {
+    const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
+    setUserMadeChoice(choiceMade);
+  }, []);
   
   const handleClose = () => {
     try {
-      if (typeof onClose === 'function') {
-        onClose();
+      const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
+      
+      if (hasUserMadeChoice) {
+        if (typeof onClose === 'function') {
+          onClose();
+        }
+      } else {
+        console.log('Please make an installation choice before continuing');
       }
     } catch (error) {
       console.error('Error in modal close handler:', error);
@@ -65,6 +76,13 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     
     if (!isMobile && installationTab === 'download') {
       startInstallation();
+      
+      if (!downloadError) {
+        setTimeout(() => {
+          sessionStorage.setItem('installationChoiceMade', 'true');
+          setUserMadeChoice(true);
+        }, 2000);
+      }
     }
   };
 
@@ -73,6 +91,8 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     setInstallationAttempted(false);
     setShowHelpLink(false);
     setShowSecurityInfo(false);
+    sessionStorage.removeItem('installationChoiceMade');
+    setUserMadeChoice(false);
   };
 
   const handleHelpClick = () => {
@@ -88,6 +108,9 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
       const fileName = createPlatformShortcut();
       setShortcutCreated(true);
       console.log(`Shortcut created: ${fileName}`);
+      
+      sessionStorage.setItem('installationChoiceMade', 'true');
+      setUserMadeChoice(true);
     } catch (error) {
       console.error('Error creating shortcut:', error);
       setShortcutCreated(false);
@@ -105,6 +128,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     shortcutCreated,
     downloadStarted,
     downloadError,
+    userMadeChoice,
     handleClose,
     handleDownload,
     handleReset,
@@ -112,13 +136,16 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     toggleSecurityInfo,
     handleCreateShortcut,
     setInstallationTab: (tab: string) => {
-      // Ensure tab is one of the allowed values
       if (tab === 'download' || tab === 'pwa' || tab === 'shortcut') {
         setInstallationTab(tab);
       }
     },
     startInstallation: async (): Promise<void> => {
       startInstallation();
+      
+      sessionStorage.setItem('installationChoiceMade', 'true');
+      setUserMadeChoice(true);
+      
       return Promise.resolve();
     }
   };

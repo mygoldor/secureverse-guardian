@@ -11,6 +11,7 @@ import SuccessHeader from './modal/SuccessHeader';
 import InstallationTabs from './modal/InstallationTabs';
 import SecurityInfoAlert from './modal/SecurityInfoAlert';
 import HelpLink from './modal/HelpLink';
+import { useToast } from '@/hooks/use-toast';
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface SuccessModalProps {
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
+  const { toast } = useToast();
   const {
     isMobile,
     deferredPrompt,
@@ -27,6 +29,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     shortcutCreated,
     downloadStarted,
     downloadError,
+    userMadeChoice,
     handleClose,
     handleDownload,
     handleReset,
@@ -39,9 +42,32 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
 
   // Make sure isOpen is a boolean to prevent type errors
   const isModalOpen = Boolean(isOpen);
+  
+  const handleFooterButtonClick = () => {
+    if (!userMadeChoice) {
+      toast({
+        variant: "warning",
+        title: "Choix requis",
+        description: "Veuillez choisir une option d'installation avant de continuer.",
+      });
+    } else {
+      handleClose();
+    }
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={handleClose}>
+    <Dialog open={isModalOpen} onOpenChange={(open) => {
+      if (!open && !userMadeChoice) {
+        // Prevent closing if no choice made
+        toast({
+          variant: "warning",
+          title: "Choix requis",
+          description: "Veuillez choisir une option d'installation avant de continuer.",
+        });
+        return;
+      }
+      handleClose();
+    }}>
       <DialogContent className="sm:max-w-md">
         <SuccessHeader />
         
@@ -73,7 +99,11 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             />
           )}
           
-          <p className="text-sm text-gray-500">Vous allez être redirigé vers votre tableau de bord...</p>
+          <p className="text-sm text-gray-500">
+            {userMadeChoice 
+              ? "Vous allez être redirigé vers votre tableau de bord..."
+              : "Veuillez choisir une option d'installation pour continuer."}
+          </p>
           
           <HelpLink 
             showHelpLink={showHelpLink}
@@ -85,9 +115,12 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         <DialogFooter className="sm:justify-center">
           <Button
             variant="outline"
-            onClick={handleClose}
+            onClick={handleFooterButtonClick}
+            className={!userMadeChoice ? "opacity-70" : ""}
           >
-            Continuer vers le tableau de bord
+            {userMadeChoice 
+              ? "Continuer vers le tableau de bord"
+              : "Veuillez choisir une option d'installation"}
           </Button>
         </DialogFooter>
       </DialogContent>
