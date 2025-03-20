@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Download, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Download, AlertTriangle, RefreshCw, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -21,6 +21,7 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
   const { toast } = useToast();
   const [downloadUrl, setDownloadUrl] = useState('');
   const [fileCheckInProgress, setFileCheckInProgress] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
   
   useEffect(() => {
     // Get the user's operating system for desktop platforms
@@ -34,7 +35,12 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
     } else if (userAgent.indexOf('Linux') !== -1) {
       setDownloadUrl('/downloads/Guardia-Security-1.0.0-linux.AppImage');
     }
-  }, []);
+    
+    // Show instructions automatically after download starts
+    if (installationStarted && !downloadError) {
+      setShowInstructions(true);
+    }
+  }, [installationStarted, downloadError]);
   
   const handleDownload = () => {
     if (onReset) {
@@ -63,6 +69,9 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
           
           // Call parent's onDownload callback
           onDownload();
+          
+          // Show instructions after download starts
+          setShowInstructions(true);
         } else {
           // File doesn't exist
           console.error('Download file not found:', downloadUrl);
@@ -90,6 +99,7 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
     if (onReset) {
       onReset();
     }
+    setShowInstructions(false);
     handleDownload();
   };
 
@@ -105,6 +115,29 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
             Le fichier d'installation n'est pas encore disponible. Veuillez réessayer plus tard ou contacter le support.
           </AlertDescription>
         </Alert>
+      ) : installationStarted && showInstructions ? (
+        <div className="space-y-3">
+          <p className="text-sm text-blue-600">
+            Le téléchargement a commencé. Suivez ces étapes pour installer Guardia:
+          </p>
+          <ol className="text-sm text-blue-700 list-decimal pl-5 space-y-2">
+            <li>
+              <strong>Attention au message de sécurité</strong>: Votre navigateur peut afficher un avertissement du type "guardia-security n'est pas fréquemment téléchargé".
+              <div className="bg-amber-50 p-2 rounded border border-amber-200 mt-1">
+                <div className="flex items-start">
+                  <Shield className="h-4 w-4 text-amber-600 mr-2 mt-0.5" />
+                  <span className="text-amber-700 text-xs">
+                    Cliquez sur "Conserver" puis "Exécuter quand même" car il s'agit de notre application officielle.
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li><strong>Localisez le fichier</strong> téléchargé dans votre dossier de téléchargements.</li>
+            <li><strong>Exécutez le fichier</strong> en double-cliquant dessus.</li>
+            <li>Si un avertissement de sécurité apparaît, cliquez sur <strong>"Plus d'informations"</strong> puis <strong>"Exécuter quand même"</strong>.</li>
+            <li>Suivez les instructions d'installation à l'écran.</li>
+          </ol>
+        </div>
       ) : (
         <p className="text-sm text-blue-600 mb-2">
           {installationStarted 
@@ -113,30 +146,42 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
         </p>
       )}
       
-      <Button 
-        onClick={downloadError ? handleRetry : handleDownload}
-        className="mt-2" 
-        variant={downloadError ? "destructive" : "outline"}
-        size="sm"
-        disabled={fileCheckInProgress}
-      >
-        {fileCheckInProgress ? (
-          <>
-            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-            Vérification...
-          </>
-        ) : downloadError ? (
-          <>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Réessayer le téléchargement
-          </>
-        ) : (
-          <>
-            <Download className="h-4 w-4 mr-2" />
-            {installationStarted ? "Télécharger à nouveau" : "Télécharger maintenant"}
-          </>
+      <div className="flex space-x-2 mt-3">
+        <Button 
+          onClick={downloadError ? handleRetry : handleDownload}
+          className="" 
+          variant={downloadError ? "destructive" : "outline"}
+          size="sm"
+          disabled={fileCheckInProgress}
+        >
+          {fileCheckInProgress ? (
+            <>
+              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+              Vérification...
+            </>
+          ) : downloadError ? (
+            <>
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Réessayer
+            </>
+          ) : (
+            <>
+              <Download className="h-4 w-4 mr-2" />
+              {installationStarted ? "Télécharger à nouveau" : "Télécharger"}
+            </>
+          )}
+        </Button>
+        
+        {installationStarted && !showInstructions && (
+          <Button 
+            onClick={() => setShowInstructions(true)}
+            variant="secondary"
+            size="sm"
+          >
+            Voir les instructions
+          </Button>
         )}
-      </Button>
+      </div>
     </div>
   );
 };

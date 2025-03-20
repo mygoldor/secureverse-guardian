@@ -6,8 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from '@/components/ui/dialog';
-import { CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, ExternalLink } from 'lucide-react';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import MobilePWA from './modal/MobilePWA';
@@ -22,6 +24,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { isMobile } = useDeviceDetection();
   const { deferredPrompt, startInstallation, downloadStarted, downloadError, resetDownload } = usePWAInstall();
   const [installationAttempted, setInstallationAttempted] = useState(false);
+  const [showHelpLink, setShowHelpLink] = useState(false);
   
   // Handle close function
   const handleClose = () => {
@@ -50,6 +53,17 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen, isMobile, installationAttempted]);
 
+  // Show help link after some time
+  useEffect(() => {
+    if (downloadStarted) {
+      const timer = setTimeout(() => {
+        setShowHelpLink(true);
+      }, 10000); // Show help link after 10 seconds
+      
+      return () => clearTimeout(timer);
+    }
+  }, [downloadStarted]);
+
   // Cleanup effect to prevent memory leaks
   useEffect(() => {
     return () => {
@@ -70,6 +84,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const handleReset = () => {
     resetDownload();
     setInstallationAttempted(false);
+    setShowHelpLink(false);
+  };
+
+  // Handle help button click
+  const handleHelpClick = () => {
+    // Open help documentation in a new tab
+    window.open('/help/installation-guide', '_blank');
   };
 
   // Make sure isOpen is a boolean to prevent type errors
@@ -105,7 +126,29 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
           )}
           
           <p className="text-sm text-gray-500">Vous allez être redirigé vers votre tableau de bord...</p>
+          
+          {/* Show help link after some time or if there's an error */}
+          {(showHelpLink || downloadError) && (
+            <div className="mt-4 text-center">
+              <Button 
+                variant="link" 
+                onClick={handleHelpClick}
+                className="text-blue-600"
+              >
+                <ExternalLink className="h-4 w-4 mr-1" />
+                Besoin d'aide pour l'installation ?
+              </Button>
+            </div>
+          )}
         </div>
+        <DialogFooter className="sm:justify-center">
+          <Button
+            variant="outline"
+            onClick={handleClose}
+          >
+            Continuer vers le tableau de bord
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
