@@ -1,7 +1,6 @@
 
 import React, { useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import DesktopDownload from './DesktopDownload';
 import MobilePWA from './MobilePWA';
 import ShortcutInstall from './ShortcutInstall';
 
@@ -37,32 +36,20 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
   // Update user choice status based on current installation state
   useEffect(() => {
     if (
-      (installationTab === 'download' && downloadStarted && !downloadError) ||
+      (installationTab === 'pwa' && deferredPrompt === null) ||
       (installationTab === 'shortcut' && shortcutCreated)
     ) {
       sessionStorage.setItem('installationChoiceMade', 'true');
       setUserMadeChoice(true);
     }
-  }, [installationTab, downloadStarted, downloadError, shortcutCreated, setUserMadeChoice]);
+  }, [installationTab, deferredPrompt, shortcutCreated, setUserMadeChoice]);
 
   return (
     <Tabs defaultValue={installationTab} value={installationTab} onValueChange={setInstallationTab}>
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="download">Télécharger</TabsTrigger>
+      <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="pwa" disabled={!isMobile && !deferredPrompt}>Installer PWA</TabsTrigger>
         <TabsTrigger value="shortcut">Raccourci</TabsTrigger>
       </TabsList>
-      
-      <TabsContent value="download">
-        <DesktopDownload 
-          installationStarted={downloadStarted} 
-          downloadError={downloadError}
-          onDownload={() => {
-            handleDownload();
-          }}
-          onReset={handleReset}
-        />
-      </TabsContent>
       
       <TabsContent value="pwa">
         <MobilePWA 

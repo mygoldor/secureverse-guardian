@@ -10,8 +10,8 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
   const [installationAttempted, setInstallationAttempted] = useState(false);
   const [showHelpLink, setShowHelpLink] = useState(false);
   const [showSecurityInfo, setShowSecurityInfo] = useState(false);
-  const [installationTab, setInstallationTab] = useState<'download' | 'pwa' | 'shortcut'>(
-    isMobile ? 'pwa' : 'download'
+  const [installationTab, setInstallationTab] = useState<'pwa' | 'shortcut'>(
+    isMobile || deferredPrompt ? 'pwa' : 'shortcut'
   );
   const [shortcutCreated, setShortcutCreated] = useState(false);
   const [userMadeChoice, setUserMadeChoice] = useState(false);
@@ -55,58 +55,6 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
       }
     } catch (error) {
       console.error('Error in modal close handler:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen && !installationAttempted && isDesktop && installationTab === 'download') {
-      const timer = setTimeout(() => {
-        handleDownload();
-      }, 1500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, isMobile, isDesktop, installationAttempted, installationTab]);
-
-  useEffect(() => {
-    if (downloadStarted) {
-      const timer = setTimeout(() => {
-        setShowHelpLink(true);
-      }, 10000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [downloadStarted]);
-
-  useEffect(() => {
-    if (downloadStarted && !isMobile) {
-      setShowSecurityInfo(true);
-    }
-  }, [downloadStarted, isMobile]);
-
-  useEffect(() => {
-    return () => {
-      if (userMadeChoice) {
-        console.log('SuccessModal unmounted successfully');
-      } else {
-        console.log('SuccessModal unmounted without installation choice');
-      }
-    };
-  }, [userMadeChoice]);
-
-  const handleDownload = () => {
-    setInstallationAttempted(true);
-    
-    if (!isMobile && installationTab === 'download') {
-      startInstallation();
-      
-      // Set choice made after a delay to ensure download starts
-      if (!downloadError) {
-        setTimeout(() => {
-          sessionStorage.setItem('installationChoiceMade', 'true');
-          setUserMadeChoice(true);
-        }, 2000);
-      }
     }
   };
 
@@ -154,14 +102,14 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     downloadError,
     userMadeChoice,
     handleClose,
-    handleDownload,
+    handleDownload: () => {}, // Keep this empty function to avoid breaking the interface
     handleReset,
     handleHelpClick,
     toggleSecurityInfo,
     handleCreateShortcut,
     setUserMadeChoice,
     setInstallationTab: (tab: string) => {
-      if (tab === 'download' || tab === 'pwa' || tab === 'shortcut') {
+      if (tab === 'pwa' || tab === 'shortcut') {
         setInstallationTab(tab);
       }
     },
