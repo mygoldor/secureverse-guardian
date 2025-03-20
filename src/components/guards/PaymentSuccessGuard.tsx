@@ -18,7 +18,11 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     const hasSuccessfulPayment = sessionStorage.getItem('paymentSuccessful') === 'true';
     const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
     
-    console.log('PaymentSuccessGuard checks:', { hasSuccessfulPayment, hasUserMadeChoice });
+    console.log('PaymentSuccessGuard checks:', { 
+      hasSuccessfulPayment, 
+      hasUserMadeChoice,
+      timeChecked: new Date().toISOString() 
+    });
     
     if (!hasSuccessfulPayment) {
       toast({
@@ -39,25 +43,45 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     setIsLoading(false);
   }, [navigate, toast]);
 
-  // Prevent navigation if no choice made
+  // We need to handle browser navigation/refresh to prevent users from escaping the choice
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
       if (isVerified && !hasUserMadeChoice) {
+        const message = 'Vous devez choisir une option d\'installation avant de quitter.';
         e.preventDefault();
-        e.returnValue = 'Vous devez choisir une option d\'installation avant de quitter.';
-        return e.returnValue;
+        e.returnValue = message;
+        return message;
+      }
+    };
+
+    // Handle attempts to navigate away using browser controls
+    const handlePopState = () => {
+      const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
+      if (isVerified && !hasUserMadeChoice) {
+        // Push the current state back to prevent navigation
+        window.history.pushState(null, '', window.location.pathname);
+        toast({
+          variant: "destructive",
+          title: "Action requise",
+          description: "Veuillez choisir une option d'installation avant de continuer.",
+        });
       }
     };
 
     if (isVerified) {
       window.addEventListener('beforeunload', handleBeforeUnload);
+      window.addEventListener('popstate', handlePopState);
+      
+      // Push a state to ensure we can catch back button presses
+      window.history.pushState(null, '', window.location.pathname);
     }
     
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
     };
-  }, [isVerified]);
+  }, [isVerified, toast]);
 
   if (isLoading) {
     return (

@@ -44,13 +44,20 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   // Make sure isOpen is a boolean to prevent type errors
   const isModalOpen = Boolean(isOpen);
   
-  // Force modal to stay open
+  // Force modal to stay open and log state changes
   useEffect(() => {
+    console.log('Modal state:', { 
+      isModalOpen, 
+      userMadeChoice,
+      sessionStorageChoice: sessionStorage.getItem('installationChoiceMade'),
+      timestamp: new Date().toISOString() 
+    });
+    
     const preventClosing = (e: BeforeUnloadEvent) => {
       if (isModalOpen && !userMadeChoice) {
         e.preventDefault();
-        e.returnValue = '';
-        return '';
+        e.returnValue = 'Vous devez choisir une option d\'installation avant de quitter.';
+        return e.returnValue;
       }
     };
 
@@ -70,15 +77,42 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         title: "Choix requis",
         description: "Veuillez choisir une option d'installation avant de continuer.",
       });
-    } else {
-      handleClose();
+      return;
+    }
+    
+    console.log('Footer button clicked with userMadeChoice:', userMadeChoice);
+    if (handleClose()) {
+      console.log('Modal closing via footer button');
     }
   };
+
+  // Prevent ESC key from closing the modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isModalOpen && !userMadeChoice) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        toast({
+          variant: "destructive",
+          title: "Choix requis",
+          description: "Veuillez choisir une option d'installation avant de continuer.",
+        });
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown, true);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true);
+    };
+  }, [isModalOpen, userMadeChoice, toast]);
 
   return (
     <Dialog 
       open={isModalOpen} 
       onOpenChange={(open) => {
+        console.log('Dialog onOpenChange:', { open, userMadeChoice });
         if (!open && !userMadeChoice) {
           // Prevent closing if no choice made
           toast({
@@ -86,7 +120,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             title: "Choix requis",
             description: "Veuillez choisir une option d'installation avant de continuer.",
           });
-          return;
+          return false;
         }
         if (!open && userMadeChoice) {
           handleClose();

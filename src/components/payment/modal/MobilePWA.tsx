@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Smartphone } from 'lucide-react';
 import InstallPWAButton, { BeforeInstallPromptEvent } from './InstallPWAButton';
 
@@ -9,6 +9,21 @@ interface MobilePWAProps {
 }
 
 const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => {
+  // If the deferredPrompt is null after being non-null (installation happened)
+  // make sure to update session storage
+  useEffect(() => {
+    // We can check if deferredPrompt is null and was previously non-null
+    if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
+      console.log('MobilePWA: deferredPrompt is now null after being available, marking choice as made');
+      sessionStorage.setItem('installationChoiceMade', 'true');
+    }
+    
+    // Track if prompt was available
+    if (deferredPrompt !== null) {
+      sessionStorage.setItem('promptWasAvailable', 'true');
+    }
+  }, [deferredPrompt]);
+
   return (
     <div className="bg-green-50 p-4 rounded-lg my-4">
       <h4 className="font-medium text-green-700 mb-2">
@@ -20,7 +35,10 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
       </p>
       <InstallPWAButton 
         deferredPrompt={deferredPrompt} 
-        onInstall={onDownload}
+        onInstall={() => {
+          console.log('Install PWA button clicked');
+          onDownload();
+        }}
       />
     </div>
   );

@@ -23,6 +23,10 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
   const { toast } = useToast();
   
   const installPWA = async () => {
+    // Immediately mark as having made a choice - since clicking this button is a choice
+    console.log('PWA installation started, marking choice as made');
+    sessionStorage.setItem('installationChoiceMade', 'true');
+    
     if (!deferredPrompt) {
       // If the deferred prompt isn't available, show manual instructions based on browser
       const userAgent = navigator.userAgent;

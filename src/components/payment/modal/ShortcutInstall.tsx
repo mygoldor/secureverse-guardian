@@ -12,6 +12,15 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
   shortcutCreated, 
   onCreateShortcut 
 }) => {
+  // When the component renders and shows shortcut created
+  // make sure the session storage is updated
+  React.useEffect(() => {
+    if (shortcutCreated) {
+      console.log('ShortcutInstall: shortcut created, updating session storage');
+      sessionStorage.setItem('installationChoiceMade', 'true');
+    }
+  }, [shortcutCreated]);
+
   return (
     <div className="bg-purple-50 p-3 rounded-md mb-3">
       <h4 className="font-medium text-purple-800 mb-2 flex items-center">
@@ -28,7 +37,10 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
         </div>
       ) : (
         <Button 
-          onClick={onCreateShortcut}
+          onClick={() => {
+            console.log('Create shortcut button clicked');
+            onCreateShortcut();
+          }}
           variant="outline"
           className="bg-purple-100 border-purple-300 text-purple-800 hover:bg-purple-200"
         >
