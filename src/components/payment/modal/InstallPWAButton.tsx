@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface InstallPWAButtonProps {
   deferredPrompt: BeforeInstallPromptEvent | null;
+  onInstall: () => void;
 }
 
 // PWA installation event interface
@@ -18,7 +19,7 @@ export interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt }) => {
+const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onInstall }) => {
   const { toast } = useToast();
   
   const installPWA = async () => {
@@ -42,6 +43,9 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt }) =
         title: "Installation manuelle",
         description: instructions,
       });
+      
+      // Call the onInstall callback even for manual installation
+      onInstall();
       return;
     }
 
@@ -62,6 +66,9 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt }) =
         description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
       });
     }
+    
+    // Call the onInstall callback in any case
+    onInstall();
   };
 
   return (

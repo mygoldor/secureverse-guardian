@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
@@ -110,7 +111,15 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     handleHelpClick,
     toggleSecurityInfo,
     handleCreateShortcut,
-    setInstallationTab,
-    startInstallation
+    setInstallationTab: (tab: string) => {
+      // Ensure tab is one of the allowed values
+      if (tab === 'download' || tab === 'pwa' || tab === 'shortcut') {
+        setInstallationTab(tab);
+      }
+    },
+    startInstallation: async (): Promise<void> => {
+      startInstallation();
+      return Promise.resolve();
+    }
   };
 };

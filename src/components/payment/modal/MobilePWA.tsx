@@ -5,9 +5,10 @@ import InstallPWAButton, { BeforeInstallPromptEvent } from './InstallPWAButton';
 
 interface MobilePWAProps {
   deferredPrompt: BeforeInstallPromptEvent | null;
+  onDownload: () => void;
 }
 
-const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt }) => {
+const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => {
   return (
     <div className="bg-green-50 p-4 rounded-lg my-4">
       <h4 className="font-medium text-green-700 mb-2">
@@ -17,7 +18,10 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt }) => {
       <p className="text-sm text-green-600 mb-2">
         Installez Guardia directement sur votre écran d'accueil pour un accès rapide et une expérience optimale.
       </p>
-      <InstallPWAButton deferredPrompt={deferredPrompt} />
+      <InstallPWAButton 
+        deferredPrompt={deferredPrompt} 
+        onInstall={onDownload}
+      />
     </div>
   );
 };

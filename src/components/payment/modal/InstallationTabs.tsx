@@ -47,7 +47,7 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
       
       <TabsContent value="download">
         <DesktopDownload 
-          downloadStarted={downloadStarted} 
+          installationStarted={downloadStarted} 
           downloadError={downloadError}
           onDownload={() => {
             handleDownload();
@@ -60,7 +60,7 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
       <TabsContent value="pwa">
         <MobilePWA 
           deferredPrompt={deferredPrompt}
-          onInstall={() => {
+          onDownload={() => {
             startInstallation();
             handleUserChoice();
           }}
