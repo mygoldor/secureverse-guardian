@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { BeforeInstallPromptEvent } from '@/components/payment/modal/InstallPWAButton';
 import { useToast } from '@/hooks/use-toast';
+import { useDeviceDetection } from '@/hooks/use-device-detection';
 
 export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
@@ -9,6 +10,7 @@ export function usePWAInstall() {
   const [downloadStarted, setDownloadStarted] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const { toast } = useToast();
+  const { isMobile } = useDeviceDetection();
 
   // Handle PWA installation prompt
   useEffect(() => {
@@ -31,6 +33,24 @@ export function usePWAInstall() {
 
   // Function to initiate desktop download
   const startInstallation = () => {
+    // For mobile devices, we'll handle differently
+    if (isMobile) {
+      // For mobile, we'll just mark it as a success since they'll use the PWA
+      setDownloadStarted(true);
+      setDownloadError(false);
+      
+      if (!deferredPrompt) {
+        // Guide for manual installation
+        toast({
+          title: "Installation manuelle requise",
+          description: "Veuillez suivre les instructions pour installer Guardia sur votre appareil mobile.",
+        });
+        // Mark as installation choice made to allow navigation
+        sessionStorage.setItem('installationChoiceMade', 'true');
+      }
+      return;
+    }
+    
     // Get the user's operating system for desktop platforms
     const userAgent = window.navigator.userAgent;
     let downloadUrl = '';
@@ -53,6 +73,8 @@ export function usePWAInstall() {
         description: "Veuillez télécharger manuellement la version correspondant à votre système d'exploitation.",
       });
       setDownloadError(true);
+      // Still mark as choice made to allow navigation
+      sessionStorage.setItem('installationChoiceMade', 'true');
       return;
     }
     
@@ -81,15 +103,18 @@ export function usePWAInstall() {
             description: "L'installateur de Guardia est en cours de téléchargement.",
           });
         } else {
-          // File doesn't exist
+          // File doesn't exist but we don't want to block user progress
           console.error('Download file not found:', downloadUrl);
           setDownloadError(true);
           
           toast({
             variant: "destructive",
-            title: "Fichier non disponible",
-            description: "Le fichier d'installation n'est pas encore disponible. Veuillez réessayer plus tard.",
+            title: "Installation alternative",
+            description: "L'installateur n'est pas disponible actuellement. Vous serez redirigé vers votre tableau de bord.",
           });
+          
+          // Still mark as made a choice to allow navigation
+          sessionStorage.setItem('installationChoiceMade', 'true');
         }
       })
       .catch(error => {
@@ -98,9 +123,12 @@ export function usePWAInstall() {
         
         toast({
           variant: "destructive",
-          title: "Erreur de téléchargement",
-          description: "Une erreur s'est produite lors de la vérification du fichier. Veuillez réessayer plus tard.",
+          title: "Installation alternative",
+          description: "Une erreur s'est produite. Vous pouvez continuer vers votre tableau de bord.",
         });
+        
+        // Still mark as made a choice to allow navigation
+        sessionStorage.setItem('installationChoiceMade', 'true');
       });
   };
 

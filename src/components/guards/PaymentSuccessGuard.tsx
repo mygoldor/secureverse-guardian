@@ -34,6 +34,7 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
   }, [navigate, toast]);
 
   useEffect(() => {
+    // Handle page navigation attempts
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
       if (isVerified && !hasUserMadeChoice) {
@@ -44,6 +45,7 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
       }
     };
 
+    // Prevent back button navigation
     const handlePopState = () => {
       const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
       if (isVerified && !hasUserMadeChoice) {

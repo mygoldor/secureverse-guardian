@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useDeviceDetection } from '@/hooks/use-device-detection';
 
 interface InstallPWAButtonProps {
   deferredPrompt: BeforeInstallPromptEvent | null;
@@ -21,11 +22,11 @@ export interface BeforeInstallPromptEvent extends Event {
 
 const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onInstall }) => {
   const { toast } = useToast();
+  const { isIOS, isAndroid } = useDeviceDetection();
   const [isInstalling, setIsInstalling] = useState(false);
   
   const installPWA = async () => {
     // Immediately mark as having made a choice - since clicking this button is a choice
-    console.log('PWA installation started, marking choice as made');
     sessionStorage.setItem('installationChoiceMade', 'true');
     
     // Set installing state to true to show progress indicator
@@ -36,9 +37,12 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
       const userAgent = navigator.userAgent;
       let instructions = '';
       
-      if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
-        // Safari on iOS
+      if (isIOS) {
+        // iOS-specific instructions
         instructions = "Touchez l'icône de partage, puis 'Sur l'écran d'accueil'";
+      } else if (isAndroid) {
+        // Android-specific instructions
+        instructions = "Touchez les trois points du menu puis 'Ajouter à l'écran d'accueil'";
       } else if (/Firefox/i.test(userAgent)) {
         instructions = "Appuyez sur les trois points du menu puis 'Installer'";
       } else if (/Edge/i.test(userAgent)) {
@@ -81,7 +85,7 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
       toast({
         variant: "destructive",
         title: "Erreur d'installation",
-        description: "Une erreur s'est produite lors de l'installation.",
+        description: "Une erreur s'est produite lors de l'installation. Vous pouvez continuer vers votre tableau de bord.",
       });
     } finally {
       // In any case, turn off the progress indicator
