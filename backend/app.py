@@ -1,13 +1,14 @@
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 
 from backend.network import get_blocked_ips, scan_reseau, block_ip, unblock_ip
 from backend.file_ops import (
-    scanner_fichier, scan_directory, quarantine_file, scan_quarantined_file, 
-    restore_file, delete_file, list_quarantined_files, backup_files
+    quarantine_file, scan_quarantined_file, restore_file, 
+    delete_file, list_quarantined_files, backup_files
 )
+from backend.threat_scanner import scanner_fichier, scan_directory
 from backend.processes import get_suspicious_processes, kill_process
 from backend.logger import get_security_logs, log_threat
 
@@ -33,7 +34,6 @@ def api_scan_reseau():
 # File verification endpoint
 @app.route("/verifier-fichier", methods=["POST"])
 def api_verifier_fichier():
-    from flask import request
     data = request.json
     file_path = data.get("file_path")
     result = verifier_fichier(file_path)
@@ -42,7 +42,6 @@ def api_verifier_fichier():
 # File scanning endpoint
 @app.route("/scanner-fichier", methods=["POST"])
 def api_scanner_fichier():
-    from flask import request
     data = request.json
     file_path = data.get("file_path")
     result = scanner_fichier(file_path)
@@ -51,7 +50,6 @@ def api_scanner_fichier():
 # Directory scanning endpoint
 @app.route("/scan-directory", methods=["POST"])
 def api_scan_directory():
-    from flask import request
     data = request.json
     directory_path = data.get("directory_path")
     result = scan_directory(directory_path)
@@ -60,7 +58,6 @@ def api_scan_directory():
 # Quarantine file endpoint
 @app.route("/quarantine-file", methods=["POST"])
 def api_quarantine_file():
-    from flask import request
     data = request.json
     file_path = data.get("file_path")
     result = quarantine_file(file_path)
@@ -75,7 +72,6 @@ def api_list_quarantined_files():
 # Scan quarantined file endpoint
 @app.route("/scan-quarantined-file", methods=["POST"])
 def api_scan_quarantined_file():
-    from flask import request
     data = request.json
     file_name = data.get("file_name")
     result = scan_quarantined_file(file_name)
@@ -84,7 +80,6 @@ def api_scan_quarantined_file():
 # Restore file endpoint
 @app.route("/restore-file", methods=["POST"])
 def api_restore_file():
-    from flask import request
     data = request.json
     file_name = data.get("file_name")
     result = restore_file(file_name)
@@ -93,7 +88,6 @@ def api_restore_file():
 # Delete file endpoint
 @app.route("/delete-file", methods=["POST"])
 def api_delete_file():
-    from flask import request
     data = request.json
     file_name = data.get("file_name")
     result = delete_file(file_name)
@@ -102,7 +96,6 @@ def api_delete_file():
 # Backup files endpoint
 @app.route("/backup-files", methods=["POST"])
 def api_backup_files():
-    from flask import request
     data = request.json
     directory = data.get("directory")
     result = backup_files(directory)
@@ -111,7 +104,6 @@ def api_backup_files():
 # Security logs endpoint
 @app.route("/security-logs", methods=["GET"])
 def api_security_logs():
-    from flask import request
     lines = request.args.get("lines", default=50, type=int)
     logs = get_security_logs(lines)
     return jsonify({"logs": logs})
@@ -125,7 +117,6 @@ def api_suspicious_processes():
 # Kill process endpoint
 @app.route("/kill-process", methods=["POST"])
 def api_kill_process():
-    from flask import request
     data = request.json
     pid = data.get("pid")
     result = kill_process(pid)
@@ -139,7 +130,6 @@ def api_blocked_ips():
 # Block IP endpoint
 @app.route("/block-ip", methods=["POST"])
 def api_block_ip():
-    from flask import request
     data = request.json
     ip = data.get("ip")
     result = block_ip(ip)
@@ -148,7 +138,6 @@ def api_block_ip():
 # Unblock IP endpoint
 @app.route("/unblock-ip", methods=["POST"])
 def api_unblock_ip():
-    from flask import request
     data = request.json
     ip = data.get("ip")
     result = unblock_ip(ip)

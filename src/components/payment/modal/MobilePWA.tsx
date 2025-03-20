@@ -67,7 +67,6 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
       <InstallPWAButton 
         deferredPrompt={deferredPrompt} 
         onInstall={() => {
-          sessionStorage.removeItem('installationChoiceMade');
           sessionStorage.setItem('installationChoiceMade', 'true');
           setInstalling(true);
           setProgressValue(10);

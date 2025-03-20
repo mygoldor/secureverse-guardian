@@ -27,7 +27,6 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     } else if (hasUserMadeChoice) {
       navigate('/dashboard');
     } else {
-      sessionStorage.removeItem('installationChoiceMade');
       setIsVerified(true);
     }
     
