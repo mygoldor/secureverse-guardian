@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, CheckCircle } from 'lucide-react';
 
@@ -14,7 +14,7 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
 }) => {
   // When the component renders and shows shortcut created
   // make sure the session storage is updated
-  React.useEffect(() => {
+  useEffect(() => {
     if (shortcutCreated) {
       console.log('ShortcutInstall: shortcut created, updating session storage');
       sessionStorage.setItem('installationChoiceMade', 'true');
@@ -38,7 +38,8 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
       ) : (
         <Button 
           onClick={() => {
-            console.log('Create shortcut button clicked');
+            console.log('Create shortcut button clicked, setting installationChoiceMade to true');
+            sessionStorage.setItem('installationChoiceMade', 'true');
             onCreateShortcut();
           }}
           variant="outline"
