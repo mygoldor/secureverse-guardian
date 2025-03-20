@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Bell, Download, X, HelpCircle, Smartphone, Laptop } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,28 +13,22 @@ const InstallAppBanner: React.FC = () => {
   const { deferredPrompt, canInstallPWA, startInstallation } = usePWAInstall();
   const { isMobile, isIOS, isAndroid, isSafari, isChrome, isFirefox, isEdge } = useDeviceDetection();
 
-  // Vérifier si l'application est déjà installée
   useEffect(() => {
-    // Vérifier si l'application est déjà en mode standalone/installed
     const isInstalled = window.matchMedia('(display-mode: standalone)').matches 
       || (window.navigator as any).standalone === true;
     
-    // Si l'utilisateur peut installer la PWA et qu'elle n'est pas déjà installée
     if (canInstallPWA && !isInstalled && !isDismissed) {
-      // Vérifier si l'utilisateur a déjà rejeté la bannière récemment
       const lastDismissed = localStorage.getItem('guardia_install_dismissed');
       if (!lastDismissed || Date.now() - parseInt(lastDismissed) > 7 * 24 * 60 * 60 * 1000) {
-        // N'afficher qu'après un certain délai
         const timer = setTimeout(() => {
           setIsVisible(true);
-        }, 10000); // 10 secondes
+        }, 10000);
         
         return () => clearTimeout(timer);
       }
     }
   }, [canInstallPWA, isDismissed]);
 
-  // Fonction pour installer l'application
   const handleInstall = async () => {
     try {
       if (isIOS && isSafari) {
@@ -68,22 +61,16 @@ const InstallAppBanner: React.FC = () => {
     }
   };
 
-  // Fermer la bannière et marquer comme rejetée
   const handleDismiss = () => {
     setIsVisible(false);
     setIsDismissed(true);
     localStorage.setItem('guardia_install_dismissed', Date.now().toString());
   };
 
-  // Fermer les instructions
   const closeInstructions = () => {
     setShowInstructions(null);
   };
 
-  // Si la bannière ne doit pas être affichée, ne rien rendre
-  if (!isVisible) return null;
-
-  // Détecter le type de navigateur pour les instructions spécifiques
   const getBrowserSpecificInstructions = () => {
     if (isIOS && isSafari) {
       return (
@@ -190,7 +177,7 @@ const InstallAppBanner: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open('/help/installation-guide', '_blank')}
+                  onClick={() => window.open('/installation-guide', '_blank')}
                 >
                   <HelpCircle className="h-4 w-4 mr-1" />
                   Aide

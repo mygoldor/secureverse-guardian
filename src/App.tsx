@@ -20,6 +20,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Payment from "./pages/Payment";
+import InstallationGuide from "./pages/InstallationGuide";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,9 @@ const App = () => (
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/installation-guide" element={<InstallationGuide />} />
+              {/* Ancienne route pour maintenir la compatibilité */}
+              <Route path="/help/installation-guide" element={<Navigate to="/installation-guide" replace />} />
               {/* Redirect any unknown routes to the 404 page */}
               <Route path="*" element={<NotFound />} />
             </Routes>

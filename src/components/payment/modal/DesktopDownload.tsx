@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Download, AlertTriangle, RefreshCw, Shield, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,10 +24,8 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
   const [platform, setPlatform] = useState('');
   
   useEffect(() => {
-    // Get the user's operating system for desktop platforms
     const userAgent = window.navigator.userAgent;
     
-    // In a real app, these would point to actual files on your server
     if (userAgent.indexOf('Windows') !== -1) {
       setDownloadUrl('/downloads/Guardia-Security-1.0.0-win.exe');
       setPlatform('Windows');
@@ -40,7 +37,6 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
       setPlatform('Linux');
     }
     
-    // Show instructions automatically after download starts
     if (installationStarted && !downloadError) {
       setShowInstructions(true);
     }
@@ -53,12 +49,10 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
     
     setFileCheckInProgress(true);
     
-    // First check if the file exists by making a HEAD request
     fetch(downloadUrl, { method: 'HEAD' })
       .then(response => {
         setFileCheckInProgress(false);
         if (response.ok) {
-          // File exists, proceed with download
           const link = document.createElement('a');
           link.href = downloadUrl;
           link.download = downloadUrl.split('/').pop() || 'Guardia-Security-Installer';
@@ -71,13 +65,10 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
             description: "L'installateur de Guardia est en cours de téléchargement.",
           });
           
-          // Call parent's onDownload callback
           onDownload();
           
-          // Show instructions after download starts
           setShowInstructions(true);
         } else {
-          // File doesn't exist
           console.error('Download file not found:', downloadUrl);
           
           toast({
@@ -230,7 +221,7 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
         )}
         
         <Button
-          onClick={() => window.open('/help/installation-guide', '_blank')}
+          onClick={() => window.open('/installation-guide', '_blank')}
           variant="ghost"
           size="sm"
           className="text-blue-600"
