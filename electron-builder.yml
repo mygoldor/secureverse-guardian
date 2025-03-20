@@ -32,12 +32,24 @@ mac:
     - "dmg"
     - "zip"
   artifactName: "${productName}-${version}-${arch}.${ext}"
+  # Code signing for macOS - Uncomment when certificate is available
+  # hardenedRuntime: true
+  # gatekeeperAssess: false
+  # entitlements: "./build/entitlements.mac.plist"
+  # entitlementsInherit: "./build/entitlements.mac.plist"
+  # identity: null # Set to "Developer ID Application: Your Company Name (YOUR_TEAM_ID)"
   
 win:
   icon: "public/icons/guardia-icon-512.png"
   target:
     - "nsis"
   artifactName: "${productName}-${version}-${arch}.${ext}"
+  # Code signing for Windows - Uncomment when certificate is available
+  # certificateFile: "./path/to/certificate.pfx"
+  # certificatePassword: "${CERTIFICATE_PASSWORD}"
+  # signAndEditExecutable: true
+  # signingHashAlgorithms: ["sha256"]
+  # signDlls: true
 
 linux:
   icon: "public/icons/guardia-icon-512.png"

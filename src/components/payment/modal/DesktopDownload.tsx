@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Download, AlertTriangle, RefreshCw, Shield } from 'lucide-react';
+import { Download, AlertTriangle, RefreshCw, Shield, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -22,6 +22,7 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
   const [downloadUrl, setDownloadUrl] = useState('');
   const [fileCheckInProgress, setFileCheckInProgress] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [platform, setPlatform] = useState('');
   
   useEffect(() => {
     // Get the user's operating system for desktop platforms
@@ -30,10 +31,13 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
     // In a real app, these would point to actual files on your server
     if (userAgent.indexOf('Windows') !== -1) {
       setDownloadUrl('/downloads/Guardia-Security-1.0.0-win.exe');
+      setPlatform('Windows');
     } else if (userAgent.indexOf('Mac') !== -1) {
       setDownloadUrl('/downloads/Guardia-Security-1.0.0-mac.dmg');
+      setPlatform('Mac');
     } else if (userAgent.indexOf('Linux') !== -1) {
       setDownloadUrl('/downloads/Guardia-Security-1.0.0-linux.AppImage');
+      setPlatform('Linux');
     }
     
     // Show instructions automatically after download starts
@@ -102,6 +106,52 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
     setShowInstructions(false);
     handleDownload();
   };
+  
+  const getSecurityInstructions = () => {
+    switch(platform) {
+      case 'Windows':
+        return (
+          <div className="bg-amber-50 p-2 rounded border border-amber-200 mt-1">
+            <div className="flex items-start">
+              <Shield className="h-4 w-4 text-amber-600 mr-2 mt-0.5" />
+              <span className="text-amber-700 text-xs">
+                <strong>Message "Windows a protégé votre ordinateur"</strong>: Cliquez sur "Plus d'informations" puis "Exécuter quand même".
+              </span>
+            </div>
+            <div className="flex items-start mt-2">
+              <Shield className="h-4 w-4 text-amber-600 mr-2 mt-0.5" />
+              <span className="text-amber-700 text-xs">
+                <strong>Message "guardia-security n'est pas fréquemment téléchargé"</strong>: Cliquez sur "Conserver" puis localisez le fichier dans vos téléchargements.
+              </span>
+            </div>
+          </div>
+        );
+      case 'Mac':
+        return (
+          <div className="bg-amber-50 p-2 rounded border border-amber-200 mt-1">
+            <div className="flex items-start">
+              <Shield className="h-4 w-4 text-amber-600 mr-2 mt-0.5" />
+              <span className="text-amber-700 text-xs">
+                <strong>Message "L'application ne peut pas être ouverte"</strong>: Allez dans Préférences Système &gt; Sécurité &gt; cliquez sur "Ouvrir quand même".
+              </span>
+            </div>
+          </div>
+        );
+      case 'Linux':
+        return (
+          <div className="bg-amber-50 p-2 rounded border border-amber-200 mt-1">
+            <div className="flex items-start">
+              <Shield className="h-4 w-4 text-amber-600 mr-2 mt-0.5" />
+              <span className="text-amber-700 text-xs">
+                <strong>Rendre exécutable</strong>: Après téléchargement, ouvrez un terminal, accédez au dossier et tapez "chmod +x Guardia-Security-*.AppImage"
+              </span>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="bg-blue-50 p-4 rounded-lg my-4">
@@ -122,21 +172,18 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
           </p>
           <ol className="text-sm text-blue-700 list-decimal pl-5 space-y-2">
             <li>
-              <strong>Attention au message de sécurité</strong>: Votre navigateur peut afficher un avertissement du type "guardia-security n'est pas fréquemment téléchargé".
-              <div className="bg-amber-50 p-2 rounded border border-amber-200 mt-1">
-                <div className="flex items-start">
-                  <Shield className="h-4 w-4 text-amber-600 mr-2 mt-0.5" />
-                  <span className="text-amber-700 text-xs">
-                    Cliquez sur "Conserver" puis "Exécuter quand même" car il s'agit de notre application officielle.
-                  </span>
-                </div>
-              </div>
+              <strong>Attention aux messages de sécurité</strong>: Votre navigateur et système d'exploitation peuvent afficher des avertissements de sécurité.
+              {getSecurityInstructions()}
             </li>
             <li><strong>Localisez le fichier</strong> téléchargé dans votre dossier de téléchargements.</li>
             <li><strong>Exécutez le fichier</strong> en double-cliquant dessus.</li>
-            <li>Si un avertissement de sécurité apparaît, cliquez sur <strong>"Plus d'informations"</strong> puis <strong>"Exécuter quand même"</strong>.</li>
             <li>Suivez les instructions d'installation à l'écran.</li>
+            <li>Une fois installé, lancez l'application depuis votre menu Démarrer (Windows), Launchpad (Mac) ou Applications (Linux).</li>
           </ol>
+          
+          <div className="bg-blue-100 p-2 rounded text-xs text-blue-700 mt-2">
+            <p><strong>Note</strong>: Ces avertissements de sécurité sont normaux et apparaissent pour les applications nouvellement téléchargées. Guardia Security est une application légitime et sécurisée.</p>
+          </div>
         </div>
       ) : (
         <p className="text-sm text-blue-600 mb-2">
@@ -181,6 +228,16 @@ const DesktopDownload: React.FC<DesktopDownloadProps> = ({
             Voir les instructions
           </Button>
         )}
+        
+        <Button
+          onClick={() => window.open('/help/installation-guide', '_blank')}
+          variant="ghost"
+          size="sm"
+          className="text-blue-600"
+        >
+          <ExternalLink className="h-3 w-3 mr-1" />
+          Aide
+        </Button>
       </div>
     </div>
   );

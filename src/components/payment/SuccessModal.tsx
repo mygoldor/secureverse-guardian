@@ -9,11 +9,12 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, ExternalLink } from 'lucide-react';
+import { CheckCircle, ExternalLink, ShieldAlert, Info } from 'lucide-react';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import MobilePWA from './modal/MobilePWA';
 import DesktopDownload from './modal/DesktopDownload';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { deferredPrompt, startInstallation, downloadStarted, downloadError, resetDownload } = usePWAInstall();
   const [installationAttempted, setInstallationAttempted] = useState(false);
   const [showHelpLink, setShowHelpLink] = useState(false);
+  const [showSecurityInfo, setShowSecurityInfo] = useState(false);
   
   // Handle close function
   const handleClose = () => {
@@ -64,6 +66,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     }
   }, [downloadStarted]);
 
+  // Show security info after download starts
+  useEffect(() => {
+    if (downloadStarted && !isMobile) {
+      setShowSecurityInfo(true);
+    }
+  }, [downloadStarted, isMobile]);
+
   // Cleanup effect to prevent memory leaks
   useEffect(() => {
     return () => {
@@ -85,12 +94,18 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     resetDownload();
     setInstallationAttempted(false);
     setShowHelpLink(false);
+    setShowSecurityInfo(false);
   };
 
   // Handle help button click
   const handleHelpClick = () => {
     // Open help documentation in a new tab
     window.open('/help/installation-guide', '_blank');
+  };
+
+  // Toggle security info display
+  const toggleSecurityInfo = () => {
+    setShowSecurityInfo(!showSecurityInfo);
   };
 
   // Make sure isOpen is a boolean to prevent type errors
@@ -112,12 +127,43 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
           <p>Un email de confirmation a été envoyé à votre adresse avec un lien de validation.</p>
           
           {!isMobile && (
-            <DesktopDownload 
-              installationStarted={downloadStarted}
-              downloadError={downloadError}
-              onDownload={handleDownload}
-              onReset={handleReset}
-            />
+            <>
+              <DesktopDownload 
+                installationStarted={downloadStarted}
+                downloadError={downloadError}
+                onDownload={handleDownload}
+                onReset={handleReset}
+              />
+              
+              {downloadStarted && (
+                <div className="mt-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={toggleSecurityInfo}
+                    className="flex items-center text-amber-700 bg-amber-50 border-amber-200 hover:bg-amber-100"
+                  >
+                    <ShieldAlert className="h-4 w-4 mr-2" />
+                    {showSecurityInfo ? "Masquer" : "Afficher"} les informations sur les avertissements de sécurité
+                  </Button>
+                  
+                  {showSecurityInfo && (
+                    <Alert className="mt-2 bg-amber-50 border-amber-200">
+                      <ShieldAlert className="h-4 w-4 text-amber-700" />
+                      <AlertDescription className="text-sm text-amber-700 mt-2">
+                        <p className="font-medium mb-1">Avertissements de sécurité courants:</p>
+                        <ul className="list-disc pl-5 space-y-1 text-xs">
+                          <li><strong>Windows:</strong> "Windows a protégé votre ordinateur" - Cliquez sur "Plus d'informations" puis "Exécuter quand même".</li>
+                          <li><strong>Chrome/Edge:</strong> "guardia-security n'est pas fréquemment téléchargé" - Cliquez sur "Conserver" puis trouvez le fichier dans vos téléchargements.</li>
+                          <li><strong>Mac:</strong> "L'application ne peut pas être ouverte" - Allez dans Préférences Système &gt; Sécurité &gt; "Ouvrir quand même".</li>
+                        </ul>
+                        <p className="text-xs mt-2">Ces avertissements sont normaux pour les nouvelles applications. Guardia Security est une application légitime et sécurisée.</p>
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
+              )}
+            </>
           )}
           
           {/* Add to Home Screen option for all mobile users */}
