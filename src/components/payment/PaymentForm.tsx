@@ -84,6 +84,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         return;
       }
       
+      // Clear any previous installation choices
+      sessionStorage.removeItem('installationChoiceMade');
+      
       // Simulate payment processing
       console.log('Processing payment...', data);
       

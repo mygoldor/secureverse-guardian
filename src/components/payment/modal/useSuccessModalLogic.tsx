@@ -4,9 +4,11 @@ import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import { createPlatformShortcut } from '@/utils/shortcutGenerator';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { isMobile, isDesktop } = useDeviceDetection();
   const { deferredPrompt, startInstallation, downloadStarted, downloadError, resetDownload } = usePWAInstall();
   const [installationAttempted, setInstallationAttempted] = useState(false);
@@ -18,22 +20,41 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
   const [shortcutCreated, setShortcutCreated] = useState(false);
   const [userMadeChoice, setUserMadeChoice] = useState(false);
   
+  // Reset user choice state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      // Clear previous choice state
+      setUserMadeChoice(false);
+      console.log('Modal opened, reset user choice state:', new Date().toISOString());
+    }
+  }, [isOpen]);
+  
   // Check if user has already made a choice (from session storage)
   useEffect(() => {
-    const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
-    console.log('Initial choiceMade check:', choiceMade, new Date().toISOString());
-    if (choiceMade) {
-      setUserMadeChoice(true);
+    if (isOpen) {
+      const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
+      console.log('Initial choiceMade check:', choiceMade, new Date().toISOString());
+      if (choiceMade) {
+        setUserMadeChoice(true);
+      }
     }
-  }, []);
+  }, [isOpen]);
   
   // Persist the installation state when changes occur
   useEffect(() => {
     console.log('userMadeChoice changed:', userMadeChoice, new Date().toISOString());
     if (userMadeChoice) {
       sessionStorage.setItem('installationChoiceMade', 'true');
+      
+      // Redirect to dashboard after a brief delay
+      const redirectTimer = setTimeout(() => {
+        console.log('Redirecting to dashboard after choice made');
+        navigate('/dashboard');
+      }, 3000);
+      
+      return () => clearTimeout(redirectTimer);
     }
-  }, [userMadeChoice]);
+  }, [userMadeChoice, navigate]);
   
   // Force prompt to stay open if no choice made
   useEffect(() => {
@@ -122,6 +143,14 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     }
   };
 
+  // Add download handler implementation
+  const handleDownload = () => {
+    console.log('Download handler called');
+    // Simulate download process
+    sessionStorage.setItem('installationChoiceMade', 'true');
+    setUserMadeChoice(true);
+  };
+
   return {
     isMobile,
     isDesktop,
@@ -135,7 +164,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     downloadError,
     userMadeChoice,
     handleClose,
-    handleDownload: () => {}, // Keep this empty function to avoid breaking the interface
+    handleDownload, // Now implemented
     handleReset,
     handleHelpClick,
     toggleSecurityInfo,

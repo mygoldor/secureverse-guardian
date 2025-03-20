@@ -37,6 +37,8 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
       navigate('/dashboard');
     } else {
       console.log('Payment successful but no installation choice made, showing modal');
+      // Clear any incorrect or stale choice data
+      sessionStorage.removeItem('installationChoiceMade');
       setIsVerified(true);
     }
     

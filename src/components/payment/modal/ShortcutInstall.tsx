@@ -66,6 +66,8 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
   };
 
   const handleConfirmShortcut = () => {
+    // Clear any previous choice
+    sessionStorage.removeItem('installationChoiceMade');
     console.log('Create shortcut button clicked, setting installationChoiceMade to true');
     sessionStorage.setItem('installationChoiceMade', 'true');
     setCreatingShortcut(true);

@@ -20,6 +20,9 @@ const Payment = () => {
   
   // Add component loading state
   useEffect(() => {
+    // Clear any previous installation choice when arriving at payment page
+    sessionStorage.removeItem('installationChoiceMade');
+    
     // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -30,17 +33,16 @@ const Payment = () => {
   
   const handlePaymentSuccess = () => {
     try {
+      // Set payment success flag in sessionStorage
+      sessionStorage.setItem('paymentSuccessful', 'true');
+      // Make sure to remove any previous installation choice
+      sessionStorage.removeItem('installationChoiceMade');
+      
       setShowSuccessModal(true);
       // Simulate email sending
-      console.log('Sending confirmation email...');
+      console.log('Sending confirmation email...', new Date().toISOString());
       
-      // Close modal and redirect after 5 seconds
-      const redirectTimer = setTimeout(() => {
-        setShowSuccessModal(false);
-        navigate('/dashboard');
-      }, 5000);
-      
-      return () => clearTimeout(redirectTimer);
+      // Don't auto-redirect; the modal handles this based on user choice
     } catch (error) {
       console.error('Error in payment success handler:', error);
       toast({

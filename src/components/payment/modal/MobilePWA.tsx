@@ -75,6 +75,8 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
       <InstallPWAButton 
         deferredPrompt={deferredPrompt} 
         onInstall={() => {
+          // Clear any previous choice
+          sessionStorage.removeItem('installationChoiceMade');
           console.log('Install PWA button clicked, setting installationChoiceMade to true');
           sessionStorage.setItem('installationChoiceMade', 'true');
           setInstalling(true);

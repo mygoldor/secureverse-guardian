@@ -14,6 +14,8 @@ interface SuccessModalProps {
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
+  const navigate = useNavigate(); // Add navigate to handle redirects
+  
   const {
     isMobile,
     deferredPrompt,
@@ -49,12 +51,19 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       }
     };
     
+    if (isModalOpen) {
+      // Clear any previous installation choice data when modal opens
+      sessionStorage.removeItem('installationChoiceMade');
+      setUserMadeChoice(false);
+      console.log('Modal opened, cleared previous installation choices');
+    }
+    
     // Check immediately and every 500ms
     checkInstallationChoice();
     const interval = setInterval(checkInstallationChoice, 500);
     
     return () => clearInterval(interval);
-  }, [userMadeChoice, setUserMadeChoice]);
+  }, [isModalOpen, userMadeChoice, setUserMadeChoice]);
   
   // Use the navigation prevention hook
   const { handleEscapeKeyDown, handlePointerDownOutside } = useNavigationPrevention({
@@ -63,7 +72,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   });
 
   // Create mandatory installation modal based on HTML example
-  const [showForcedModal, setShowForcedModal] = useState(true);
+  const [showForcedModal, setShowForcedModal] = useState(false);
 
   // If no choices have been made, show the forced modal
   useEffect(() => {
@@ -73,6 +82,18 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       setShowForcedModal(false);
     }
   }, [isModalOpen, userMadeChoice]);
+
+  // Redirect to dashboard after user makes a choice
+  useEffect(() => {
+    if (userMadeChoice && isModalOpen) {
+      const redirectTimer = setTimeout(() => {
+        console.log('User made choice, redirecting to dashboard...');
+        navigate('/dashboard');
+      }, 3000); // Redirect after 3 seconds
+      
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [userMadeChoice, isModalOpen, navigate]);
 
   // Handle forced installation choice
   const handleForcedInstall = () => {
