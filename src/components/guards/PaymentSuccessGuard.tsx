@@ -18,6 +18,8 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     const hasSuccessfulPayment = sessionStorage.getItem('paymentSuccessful') === 'true';
     const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
     
+    console.log('PaymentSuccessGuard checks:', { hasSuccessfulPayment, hasUserMadeChoice });
+    
     if (!hasSuccessfulPayment) {
       toast({
         variant: "destructive",
@@ -27,15 +29,17 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
       navigate('/payment');
     } else if (hasUserMadeChoice) {
       // If the user has already made an installation choice, redirect to dashboard
+      console.log('User made installation choice, redirecting to dashboard');
       navigate('/dashboard');
     } else {
+      console.log('Payment successful but no installation choice made, showing modal');
       setIsVerified(true);
     }
     
     setIsLoading(false);
   }, [navigate, toast]);
 
-  // Add an additional check to prevent page unload if no choice made
+  // Prevent navigation if no choice made
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';

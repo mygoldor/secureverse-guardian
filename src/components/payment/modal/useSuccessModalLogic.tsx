@@ -19,8 +19,17 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
   // Check if user has already made a choice (from session storage)
   useEffect(() => {
     const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
-    setUserMadeChoice(choiceMade);
+    if (choiceMade) {
+      setUserMadeChoice(true);
+    }
   }, []);
+  
+  // Persist the installation state when changes occur
+  useEffect(() => {
+    if (userMadeChoice) {
+      sessionStorage.setItem('installationChoiceMade', 'true');
+    }
+  }, [userMadeChoice]);
   
   // Force prompt to stay open if no choice made
   useEffect(() => {
@@ -48,6 +57,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
         if (typeof onClose === 'function') {
           onClose();
         }
+        return true;
       } else {
         console.log('Please make an installation choice before continuing');
         // Do not close the modal
@@ -55,6 +65,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
       }
     } catch (error) {
       console.error('Error in modal close handler:', error);
+      return false;
     }
   };
 
@@ -81,6 +92,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
       setShortcutCreated(true);
       console.log(`Shortcut created: ${fileName}`);
       
+      // Mark choice as made
       sessionStorage.setItem('installationChoiceMade', 'true');
       setUserMadeChoice(true);
     } catch (error) {
@@ -110,16 +122,22 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     setUserMadeChoice,
     setInstallationTab: (tab: string) => {
       if (tab === 'pwa' || tab === 'shortcut') {
-        setInstallationTab(tab);
+        setInstallationTab(tab as 'pwa' | 'shortcut');
       }
     },
     startInstallation: async (): Promise<void> => {
-      await startInstallation();
-      
-      sessionStorage.setItem('installationChoiceMade', 'true');
-      setUserMadeChoice(true);
-      
-      return Promise.resolve();
+      try {
+        await startInstallation();
+        
+        // Mark choice as made
+        sessionStorage.setItem('installationChoiceMade', 'true');
+        setUserMadeChoice(true);
+        
+        return Promise.resolve();
+      } catch (error) {
+        console.error('Installation error:', error);
+        return Promise.reject(error);
+      }
     }
   };
 };

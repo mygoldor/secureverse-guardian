@@ -35,29 +35,52 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
 }) => {
   // Update user choice status based on current installation state
   useEffect(() => {
-    if (
-      (installationTab === 'pwa' && deferredPrompt === null) ||
-      (installationTab === 'shortcut' && shortcutCreated)
-    ) {
+    console.log('Installation tab state:', {
+      installationTab,
+      deferredPrompt: deferredPrompt === null ? 'null' : 'available',
+      shortcutCreated
+    });
+    
+    // Check if either option was successfully completed
+    const pwaInstalled = installationTab === 'pwa' && deferredPrompt === null;
+    const shortcutCreatedSuccessfully = installationTab === 'shortcut' && shortcutCreated;
+    
+    if (pwaInstalled || shortcutCreatedSuccessfully) {
+      console.log('Setting user choice made: true');
       sessionStorage.setItem('installationChoiceMade', 'true');
       setUserMadeChoice(true);
     }
   }, [installationTab, deferredPrompt, shortcutCreated, setUserMadeChoice]);
 
   return (
-    <Tabs defaultValue={installationTab} value={installationTab} onValueChange={setInstallationTab}>
+    <Tabs 
+      defaultValue={installationTab} 
+      value={installationTab} 
+      onValueChange={(value) => {
+        console.log('Tab changed to:', value);
+        setInstallationTab(value);
+      }}
+    >
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="pwa" disabled={!isMobile && !deferredPrompt}>Installer PWA</TabsTrigger>
-        <TabsTrigger value="shortcut">Raccourci</TabsTrigger>
+        <TabsTrigger value="pwa" disabled={!isMobile && !deferredPrompt}>
+          Installer PWA
+        </TabsTrigger>
+        <TabsTrigger value="shortcut">
+          Raccourci
+        </TabsTrigger>
       </TabsList>
       
       <TabsContent value="pwa">
         <MobilePWA 
           deferredPrompt={deferredPrompt}
           onDownload={() => {
+            console.log('Starting PWA installation');
             startInstallation().then(() => {
+              console.log('PWA installation completed');
               sessionStorage.setItem('installationChoiceMade', 'true');
               setUserMadeChoice(true);
+            }).catch(err => {
+              console.error('PWA installation failed:', err);
             });
           }}
         />
@@ -67,7 +90,9 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
         <ShortcutInstall 
           shortcutCreated={shortcutCreated}
           onCreateShortcut={() => {
+            console.log('Creating shortcut');
             handleCreateShortcut();
+            // The setUserMadeChoice is called in handleCreateShortcut
           }}
         />
       </TabsContent>

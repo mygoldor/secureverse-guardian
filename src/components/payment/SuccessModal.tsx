@@ -47,14 +47,14 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   // Force modal to stay open
   useEffect(() => {
     const preventClosing = (e: BeforeUnloadEvent) => {
-      if (!userMadeChoice) {
+      if (isModalOpen && !userMadeChoice) {
         e.preventDefault();
         e.returnValue = '';
         return '';
       }
     };
 
-    if (isModalOpen && !userMadeChoice) {
+    if (isModalOpen) {
       window.addEventListener('beforeunload', preventClosing);
     }
 
@@ -88,30 +88,34 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
           });
           return;
         }
-        if (userMadeChoice) {
+        if (!open && userMadeChoice) {
           handleClose();
         }
       }}
     >
-      <DialogContent className="sm:max-w-md" onEscapeKeyDown={(e) => {
-        if (!userMadeChoice) {
-          e.preventDefault();
-          toast({
-            variant: "destructive",
-            title: "Choix requis",
-            description: "Veuillez choisir une option d'installation avant de continuer.",
-          });
-        }
-      }} onPointerDownOutside={(e) => {
-        if (!userMadeChoice) {
-          e.preventDefault();
-          toast({
-            variant: "destructive",
-            title: "Choix requis",
-            description: "Veuillez choisir une option d'installation avant de continuer.",
-          });
-        }
-      }}>
+      <DialogContent 
+        className="sm:max-w-md" 
+        onEscapeKeyDown={(e) => {
+          if (!userMadeChoice) {
+            e.preventDefault();
+            toast({
+              variant: "destructive",
+              title: "Choix requis",
+              description: "Veuillez choisir une option d'installation avant de continuer.",
+            });
+          }
+        }} 
+        onPointerDownOutside={(e) => {
+          if (!userMadeChoice) {
+            e.preventDefault();
+            toast({
+              variant: "destructive",
+              title: "Choix requis",
+              description: "Veuillez choisir une option d'installation avant de continuer.",
+            });
+          }
+        }}
+      >
         <SuccessHeader />
         
         <div className="text-center space-y-4">
