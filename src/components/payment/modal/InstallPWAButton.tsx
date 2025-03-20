@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Plus } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
@@ -21,11 +21,15 @@ export interface BeforeInstallPromptEvent extends Event {
 
 const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onInstall }) => {
   const { toast } = useToast();
+  const [isInstalling, setIsInstalling] = useState(false);
   
   const installPWA = async () => {
     // Immediately mark as having made a choice - since clicking this button is a choice
     console.log('PWA installation started, marking choice as made');
     sessionStorage.setItem('installationChoiceMade', 'true');
+    
+    // Set installing state to true to show progress indicator
+    setIsInstalling(true);
     
     if (!deferredPrompt) {
       // If the deferred prompt isn't available, show manual instructions based on browser
@@ -50,29 +54,41 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
       
       // Call the onInstall callback even for manual installation
       onInstall();
+      setIsInstalling(false);
       return;
     }
 
-    // Show the install prompt
-    deferredPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
-    const choiceResult = await deferredPrompt.userChoice;
-    
-    if (choiceResult.outcome === 'accepted') {
+    try {
+      // Show the install prompt
+      await deferredPrompt.prompt();
+      
+      // Wait for the user to respond to the prompt
+      const choiceResult = await deferredPrompt.userChoice;
+      
+      if (choiceResult.outcome === 'accepted') {
+        toast({
+          title: "Installation réussie",
+          description: "Guardia a été ajouté à votre écran d'accueil.",
+        });
+      } else {
+        toast({
+          title: "Installation annulée",
+          description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
+        });
+      }
+    } catch (error) {
+      console.error('Error during PWA installation:', error);
       toast({
-        title: "Installation réussie",
-        description: "Guardia a été ajouté à votre écran d'accueil.",
+        variant: "destructive",
+        title: "Erreur d'installation",
+        description: "Une erreur s'est produite lors de l'installation.",
       });
-    } else {
-      toast({
-        title: "Installation annulée",
-        description: "Vous pouvez toujours installer Guardia plus tard depuis le menu de votre navigateur.",
-      });
+    } finally {
+      // In any case, turn off the progress indicator
+      setIsInstalling(false);
+      // Call the onInstall callback
+      onInstall();
     }
-    
-    // Call the onInstall callback in any case
-    onInstall();
   };
 
   return (
@@ -80,9 +96,19 @@ const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onI
       onClick={installPWA} 
       className="mt-2 bg-green-600 hover:bg-green-700" 
       size="sm"
+      disabled={isInstalling}
     >
-      <Plus className="h-4 w-4 mr-2" />
-      Ajouter à l'écran d'accueil
+      {isInstalling ? (
+        <>
+          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          Installation en cours...
+        </>
+      ) : (
+        <>
+          <Plus className="h-4 w-4 mr-2" />
+          Ajouter à l'écran d'accueil
+        </>
+      )}
     </Button>
   );
 };

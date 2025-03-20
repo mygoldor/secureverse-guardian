@@ -1,8 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, CheckCircle } from 'lucide-react';
+import { ExternalLink, CheckCircle, Loader2 } from 'lucide-react';
 import ShortcutConfirmationDialog from './ShortcutConfirmationDialog';
+import { Progress } from '@/components/ui/progress';
 
 interface ShortcutInstallProps {
   shortcutCreated: boolean;
@@ -15,6 +16,8 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
 }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deviceType, setDeviceType] = useState('');
+  const [creatingShortcut, setCreatingShortcut] = useState(false);
+  const [progressValue, setProgressValue] = useState(0);
 
   // When the component renders and shows shortcut created
   // make sure the session storage is updated
@@ -22,6 +25,8 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
     if (shortcutCreated) {
       console.log('ShortcutInstall: shortcut created, updating session storage');
       sessionStorage.setItem('installationChoiceMade', 'true');
+      setCreatingShortcut(false);
+      setProgressValue(100);
     }
     
     // Detect device type
@@ -41,6 +46,21 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
     }
   }, [shortcutCreated]);
 
+  // Simulate progress for shortcut creation
+  useEffect(() => {
+    if (creatingShortcut && !shortcutCreated) {
+      const interval = setInterval(() => {
+        setProgressValue((prevValue) => {
+          // Stop increasing when we hit 90% - the final 10% will happen after success
+          const newValue = prevValue < 90 ? prevValue + 10 : prevValue;
+          return newValue;
+        });
+      }, 200); // Update every 200ms
+      
+      return () => clearInterval(interval);
+    }
+  }, [creatingShortcut, shortcutCreated]);
+
   const handleCreateShortcutClick = () => {
     setShowConfirmation(true);
   };
@@ -48,6 +68,8 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
   const handleConfirmShortcut = () => {
     console.log('Create shortcut button clicked, setting installationChoiceMade to true');
     sessionStorage.setItem('installationChoiceMade', 'true');
+    setCreatingShortcut(true);
+    setProgressValue(10); // Start at 10%
     onCreateShortcut();
     setShowConfirmation(false);
   };
@@ -65,18 +87,42 @@ const ShortcutInstall: React.FC<ShortcutInstallProps> = ({
       <p className="text-sm text-purple-700 mb-2">
         Téléchargez un raccourci vers Guardia pour l'ajouter à votre bureau ou écran d'accueil.
       </p>
+      
+      {creatingShortcut && !shortcutCreated && (
+        <div className="mb-3">
+          <div className="flex items-center mb-1">
+            <Loader2 className="h-4 w-4 mr-2 text-purple-700 animate-spin" />
+            <span className="text-sm text-purple-700">Création du raccourci en cours...</span>
+          </div>
+          <Progress value={progressValue} className="h-2" indicatorClassName="bg-purple-600" />
+        </div>
+      )}
+      
       {shortcutCreated ? (
         <div className="bg-green-100 p-2 rounded text-green-800 text-sm mb-2">
           <CheckCircle className="h-4 w-4 inline mr-1" />
           Raccourci créé avec succès! Vérifiez vos téléchargements.
+          {progressValue === 100 && (
+            <div className="mt-1">
+              <Progress value={progressValue} className="h-2" indicatorClassName="bg-green-600" />
+            </div>
+          )}
         </div>
       ) : (
         <Button 
           onClick={handleCreateShortcutClick}
           variant="outline"
           className="bg-purple-100 border-purple-300 text-purple-800 hover:bg-purple-200"
+          disabled={creatingShortcut}
         >
-          Télécharger le raccourci
+          {creatingShortcut ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Création en cours...
+            </>
+          ) : (
+            'Télécharger le raccourci'
+          )}
         </Button>
       )}
 

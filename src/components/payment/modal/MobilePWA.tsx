@@ -1,7 +1,8 @@
 
-import React, { useEffect } from 'react';
-import { Smartphone } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Smartphone, Loader2 } from 'lucide-react';
 import InstallPWAButton, { BeforeInstallPromptEvent } from './InstallPWAButton';
+import { Progress } from '@/components/ui/progress';
 
 interface MobilePWAProps {
   deferredPrompt: BeforeInstallPromptEvent | null;
@@ -9,6 +10,9 @@ interface MobilePWAProps {
 }
 
 const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => {
+  const [installing, setInstalling] = useState(false);
+  const [progressValue, setProgressValue] = useState(0);
+  
   // If the deferredPrompt is null after being non-null (installation happened)
   // make sure to update session storage
   useEffect(() => {
@@ -16,6 +20,9 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
     if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
       console.log('MobilePWA: deferredPrompt is now null after being available, marking choice as made');
       sessionStorage.setItem('installationChoiceMade', 'true');
+      // Installation completed
+      setInstalling(false);
+      setProgressValue(100);
     }
     
     // Track if prompt was available
@@ -23,6 +30,20 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
       sessionStorage.setItem('promptWasAvailable', 'true');
     }
   }, [deferredPrompt]);
+  
+  // Simulate progress during installation
+  useEffect(() => {
+    if (installing) {
+      const interval = setInterval(() => {
+        setProgressValue((prevValue) => {
+          // Increase progress value but cap at 90% until installation is complete
+          return prevValue < 90 ? prevValue + 5 : prevValue;
+        });
+      }, 300);
+      
+      return () => clearInterval(interval);
+    }
+  }, [installing]);
 
   return (
     <div className="bg-green-50 p-4 rounded-lg my-4">
@@ -33,11 +54,31 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
       <p className="text-sm text-green-600 mb-2">
         Installez Guardia directement sur votre écran d'accueil pour un accès rapide et une expérience optimale.
       </p>
+      
+      {installing && (
+        <div className="mb-3">
+          <div className="flex items-center mb-1">
+            <Loader2 className="h-4 w-4 mr-2 text-green-700 animate-spin" />
+            <span className="text-sm text-green-700">Installation en cours...</span>
+          </div>
+          <Progress value={progressValue} className="h-2" indicatorClassName="bg-green-600" />
+        </div>
+      )}
+      
+      {deferredPrompt === null && progressValue === 100 && (
+        <div className="bg-green-100 p-2 rounded text-green-800 text-sm mb-2">
+          <Progress value={100} className="h-2 mb-2" indicatorClassName="bg-green-600" />
+          Installation réussie ! L'application est maintenant disponible sur votre écran d'accueil.
+        </div>
+      )}
+      
       <InstallPWAButton 
         deferredPrompt={deferredPrompt} 
         onInstall={() => {
           console.log('Install PWA button clicked, setting installationChoiceMade to true');
           sessionStorage.setItem('installationChoiceMade', 'true');
+          setInstalling(true);
+          setProgressValue(10); // Start at 10%
           onDownload();
         }}
       />
