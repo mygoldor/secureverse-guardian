@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import type { DialogContentProps } from '@radix-ui/react-dialog';
 
 interface UseNavigationPreventionProps {
   isModalOpen: boolean;
@@ -92,10 +93,10 @@ export const useNavigationPrevention = ({
     };
   }, [isModalOpen, userMadeChoice, toast]);
 
-  // Handler functions for Dialog events
-  const handleEscapeKeyDown = (e: React.KeyboardEvent) => {
+  // Handler functions for Dialog events - with correct type annotations
+  const handleEscapeKeyDown: DialogContentProps["onEscapeKeyDown"] = (event) => {
     if (!userMadeChoice) {
-      e.preventDefault();
+      event.preventDefault();
       toast({
         variant: "destructive",
         title: "Choix requis",
@@ -104,9 +105,9 @@ export const useNavigationPrevention = ({
     }
   };
 
-  const handlePointerDownOutside = (e: React.PointerEvent) => {
+  const handlePointerDownOutside: DialogContentProps["onPointerDownOutside"] = (event) => {
     if (!userMadeChoice) {
-      e.preventDefault();
+      event.preventDefault();
       toast({
         variant: "destructive",
         title: "Choix requis",

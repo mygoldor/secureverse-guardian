@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { DialogContent, DialogFooter } from '@/components/ui/dialog';
+import { DialogContent, DialogFooter, DialogContentProps } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import SuccessHeader from './SuccessHeader';
@@ -26,8 +26,8 @@ interface SuccessModalContentProps {
   handleCreateShortcut: () => void;
   setUserMadeChoice: (choice: boolean) => void;
   handleClose: () => boolean;
-  onEscapeKeyDown: (e: React.KeyboardEvent) => void;
-  onPointerDownOutside: (e: React.PointerEvent) => void;
+  onEscapeKeyDown: DialogContentProps["onEscapeKeyDown"];
+  onPointerDownOutside: DialogContentProps["onPointerDownOutside"];
 }
 
 const SuccessModalContent: React.FC<SuccessModalContentProps> = ({
