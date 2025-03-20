@@ -22,6 +22,10 @@ const HelpLink: React.FC<HelpLinkProps> = ({
   }
   
   const handleClick = () => {
+    // Make sure the payment success flag is set
+    sessionStorage.setItem('paymentSuccessful', 'true');
+    
+    // Navigate to the installation guide
     navigate('/installation-guide');
     onHelpClick();
   };

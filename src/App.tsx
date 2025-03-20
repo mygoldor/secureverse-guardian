@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/cookies/CookieBanner";
+import PaymentSuccessGuard from "@/components/guards/PaymentSuccessGuard";
 import NotFound from "./pages/NotFound";
 import Protection from "./pages/Protection";
 import Privacy from "./pages/Privacy";
@@ -45,9 +46,19 @@ const App = () => (
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/installation-guide" element={<InstallationGuide />} />
+              <Route 
+                path="/installation-guide" 
+                element={
+                  <PaymentSuccessGuard>
+                    <InstallationGuide />
+                  </PaymentSuccessGuard>
+                } 
+              />
               {/* Ancienne route pour maintenir la compatibilité */}
-              <Route path="/help/installation-guide" element={<Navigate to="/installation-guide" replace />} />
+              <Route 
+                path="/help/installation-guide" 
+                element={<Navigate to="/installation-guide" replace />} 
+              />
               {/* Redirect any unknown routes to the 404 page */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -90,6 +90,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       setTimeout(() => {
         setIsSubmitting(false);
         
+        // Set payment success flag in sessionStorage
+        sessionStorage.setItem('paymentSuccessful', 'true');
+        
         // Check if the callback exists before calling it
         if (typeof onPaymentSuccess === 'function') {
           onPaymentSuccess();
