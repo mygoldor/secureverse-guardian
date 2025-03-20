@@ -87,7 +87,7 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile menu using Sheet component - moved outside header for better visibility */}
+      {/* Mobile menu using Sheet component - positioned on the right side */}
       <Sheet>
         <SheetTrigger asChild>
           <button className="menu-button md:hidden">

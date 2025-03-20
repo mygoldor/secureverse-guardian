@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -124,13 +123,12 @@
     @apply px-4 py-2 rounded-lg font-medium transition-colors;
   }
   
-  /* Updated menu button style with increased z-index */
   .menu-button {
     display: block;
     position: fixed;
     top: 15px;
-    left: 15px;
-    z-index: 9999 !important; /* Ensure highest z-index priority */
+    right: 15px;
+    z-index: 9999 !important;
     background-color: #007bff;
     color: white;
     padding: 12px;
@@ -141,7 +139,6 @@
   }
 }
 
-/* Custom responsive styles */
 @media only screen and (max-width: 768px) {
   body {
     font-size: 16px;
@@ -180,6 +177,6 @@
   }
   
   .menu-button {
-    display: none; /* Hide menu button on larger screens */
+    display: none;
   }
 }
