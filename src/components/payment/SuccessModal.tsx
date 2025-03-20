@@ -1,6 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { Dialog } from '@/components/ui/dialog';
+import { useNavigate } from 'react-router-dom';
 import { useSuccessModalLogic } from './modal/useSuccessModalLogic';
 import { useNavigationPrevention } from './modal/useNavigationPrevention';
 import SuccessModalContent from './modal/SuccessModalContent';
@@ -14,7 +14,7 @@ interface SuccessModalProps {
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
-  const navigate = useNavigate(); // Add navigate to handle redirects
+  const navigate = useNavigate();
   
   const {
     isMobile,
@@ -37,10 +37,8 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     setUserMadeChoice
   } = useSuccessModalLogic(isOpen, onClose);
 
-  // Make sure isOpen is a boolean to prevent type errors
   const isModalOpen = Boolean(isOpen);
   
-  // Check session storage for installation choice and update state
   useEffect(() => {
     const checkInstallationChoice = () => {
       const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
@@ -52,29 +50,24 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     };
     
     if (isModalOpen) {
-      // Clear any previous installation choice data when modal opens
       sessionStorage.removeItem('installationChoiceMade');
       setUserMadeChoice(false);
       console.log('Modal opened, cleared previous installation choices');
     }
     
-    // Check immediately and every 500ms
     checkInstallationChoice();
     const interval = setInterval(checkInstallationChoice, 500);
     
     return () => clearInterval(interval);
   }, [isModalOpen, userMadeChoice, setUserMadeChoice]);
   
-  // Use the navigation prevention hook
   const { handleEscapeKeyDown, handlePointerDownOutside } = useNavigationPrevention({
     isModalOpen,
     userMadeChoice
   });
 
-  // Create mandatory installation modal based on HTML example
   const [showForcedModal, setShowForcedModal] = useState(false);
 
-  // If no choices have been made, show the forced modal
   useEffect(() => {
     if (isModalOpen && !userMadeChoice) {
       setShowForcedModal(true);
@@ -83,19 +76,17 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isModalOpen, userMadeChoice]);
 
-  // Redirect to dashboard after user makes a choice
   useEffect(() => {
     if (userMadeChoice && isModalOpen) {
       const redirectTimer = setTimeout(() => {
         console.log('User made choice, redirecting to dashboard...');
         navigate('/dashboard');
-      }, 3000); // Redirect after 3 seconds
+      }, 3000);
       
       return () => clearTimeout(redirectTimer);
     }
   }, [userMadeChoice, isModalOpen, navigate]);
 
-  // Handle forced installation choice
   const handleForcedInstall = () => {
     console.log('Forced install clicked');
     if (deferredPrompt) {
@@ -127,7 +118,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         onOpenChange={(open) => {
           console.log('Dialog onOpenChange:', { open, userMadeChoice });
           if (!open && !userMadeChoice) {
-            // Prevent closing if no choice made
             toast({
               variant: "destructive",
               title: "Choix requis",
