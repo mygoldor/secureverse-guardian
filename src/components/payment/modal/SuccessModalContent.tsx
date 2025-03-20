@@ -8,6 +8,7 @@ import SuccessHeader from './SuccessHeader';
 import InstallationTabs from './InstallationTabs';
 import SecurityInfoAlert from './SecurityInfoAlert';
 import HelpLink from './HelpLink';
+import CountdownTimer from './CountdownTimer';
 
 interface SuccessModalContentProps {
   userMadeChoice: boolean;
@@ -69,6 +70,26 @@ const SuccessModalContent: React.FC<SuccessModalContentProps> = ({
       console.log('Modal closing via footer button');
     }
   };
+  
+  // Force choice after timer ends
+  const handleTimeUp = () => {
+    toast({
+      title: "Temps écoulé",
+      description: "Le temps imparti est écoulé. Choix automatique en cours...",
+    });
+    
+    // Default to shortcut creation if no choice was made
+    if (!userMadeChoice) {
+      if (installationTab === 'shortcut') {
+        handleCreateShortcut();
+      } else {
+        setInstallationTab('shortcut');
+        setTimeout(() => {
+          handleCreateShortcut();
+        }, 500);
+      }
+    }
+  };
 
   return (
     <DialogContent 
@@ -77,6 +98,17 @@ const SuccessModalContent: React.FC<SuccessModalContentProps> = ({
       onPointerDownOutside={onPointerDownOutside}
     >
       <SuccessHeader />
+      
+      {!userMadeChoice && (
+        <div className="bg-amber-50 p-2 rounded-md mb-4 text-center">
+          <p className="text-sm text-amber-800 mb-1">Temps restant pour choisir une option</p>
+          <CountdownTimer 
+            initialTime={120} // 2 minutes
+            onTimeUp={handleTimeUp}
+            className="text-amber-900"
+          />
+        </div>
+      )}
       
       <div className="text-center space-y-4">
         <p>Un email de confirmation a été envoyé à votre adresse avec un lien de validation.</p>
