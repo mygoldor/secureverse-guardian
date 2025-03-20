@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
@@ -15,27 +16,45 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
   const [shortcutCreated, setShortcutCreated] = useState(false);
   const [userMadeChoice, setUserMadeChoice] = useState(false);
   
+  // Check if user has already made a choice (from session storage)
   useEffect(() => {
     const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
     setUserMadeChoice(choiceMade);
   }, []);
   
+  // Force prompt to stay open if no choice made
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isOpen && !userMadeChoice) {
+        e.preventDefault();
+        e.returnValue = 'You need to make an installation choice before leaving.';
+        return e.returnValue;
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('beforeunload', handleBeforeUnload);
+    }
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isOpen, userMadeChoice]);
+  
   const handleClose = () => {
     try {
-      const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
-      
-      if (hasUserMadeChoice) {
+      // Only allow closing if the user made an installation choice
+      if (userMadeChoice) {
         if (typeof onClose === 'function') {
           onClose();
         }
       } else {
         console.log('Please make an installation choice before continuing');
+        // Do not close the modal
+        return false;
       }
     } catch (error) {
       console.error('Error in modal close handler:', error);
-      if (typeof window !== 'undefined') {
-        window.history.back();
-      }
     }
   };
 
@@ -67,9 +86,13 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
 
   useEffect(() => {
     return () => {
-      console.log('SuccessModal unmounted successfully');
+      if (userMadeChoice) {
+        console.log('SuccessModal unmounted successfully');
+      } else {
+        console.log('SuccessModal unmounted without installation choice');
+      }
     };
-  }, []);
+  }, [userMadeChoice]);
 
   const handleDownload = () => {
     setInstallationAttempted(true);
@@ -77,6 +100,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     if (!isMobile && installationTab === 'download') {
       startInstallation();
       
+      // Set choice made after a delay to ensure download starts
       if (!downloadError) {
         setTimeout(() => {
           sessionStorage.setItem('installationChoiceMade', 'true');
@@ -135,13 +159,14 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     handleHelpClick,
     toggleSecurityInfo,
     handleCreateShortcut,
+    setUserMadeChoice,
     setInstallationTab: (tab: string) => {
       if (tab === 'download' || tab === 'pwa' || tab === 'shortcut') {
         setInstallationTab(tab);
       }
     },
     startInstallation: async (): Promise<void> => {
-      startInstallation();
+      await startInstallation();
       
       sessionStorage.setItem('installationChoiceMade', 'true');
       setUserMadeChoice(true);

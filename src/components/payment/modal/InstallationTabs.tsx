@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DesktopDownload from './DesktopDownload';
 import MobilePWA from './MobilePWA';
@@ -17,6 +17,7 @@ interface InstallationTabsProps {
   handleReset: () => void;
   shortcutCreated: boolean;
   handleCreateShortcut: () => void;
+  setUserMadeChoice: (choice: boolean) => void;
 }
 
 const InstallationTabs: React.FC<InstallationTabsProps> = ({ 
@@ -30,20 +31,19 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
   handleDownload,
   handleReset,
   shortcutCreated,
-  handleCreateShortcut
+  handleCreateShortcut,
+  setUserMadeChoice
 }) => {
-  // Record when a user makes a choice by clicking on action buttons
-  const handleUserChoice = () => {
-    // Only set the flag when an actual installation action is completed
-    if (installationTab === 'download' && downloadStarted && !downloadError) {
+  // Update user choice status based on current installation state
+  useEffect(() => {
+    if (
+      (installationTab === 'download' && downloadStarted && !downloadError) ||
+      (installationTab === 'shortcut' && shortcutCreated)
+    ) {
       sessionStorage.setItem('installationChoiceMade', 'true');
-    } else if (installationTab === 'shortcut' && shortcutCreated) {
-      sessionStorage.setItem('installationChoiceMade', 'true');
-    } else if (installationTab === 'pwa') {
-      // For PWA, we'll set the flag after installation attempt
-      sessionStorage.setItem('installationChoiceMade', 'true');
+      setUserMadeChoice(true);
     }
-  };
+  }, [installationTab, downloadStarted, downloadError, shortcutCreated, setUserMadeChoice]);
 
   return (
     <Tabs defaultValue={installationTab} value={installationTab} onValueChange={setInstallationTab}>
@@ -59,10 +59,6 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
           downloadError={downloadError}
           onDownload={() => {
             handleDownload();
-            // Only mark choice as made if download succeeds
-            if (!downloadError) {
-              handleUserChoice();
-            }
           }}
           onReset={handleReset}
         />
@@ -72,8 +68,10 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
         <MobilePWA 
           deferredPrompt={deferredPrompt}
           onDownload={() => {
-            startInstallation();
-            handleUserChoice();
+            startInstallation().then(() => {
+              sessionStorage.setItem('installationChoiceMade', 'true');
+              setUserMadeChoice(true);
+            });
           }}
         />
       </TabsContent>
@@ -83,10 +81,6 @@ const InstallationTabs: React.FC<InstallationTabsProps> = ({
           shortcutCreated={shortcutCreated}
           onCreateShortcut={() => {
             handleCreateShortcut();
-            // Only mark as completed if shortcut was created successfully
-            if (shortcutCreated) {
-              handleUserChoice();
-            }
           }}
         />
       </TabsContent>

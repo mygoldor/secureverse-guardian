@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -37,12 +37,32 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     toggleSecurityInfo,
     handleCreateShortcut,
     setInstallationTab,
-    startInstallation
+    startInstallation,
+    setUserMadeChoice
   } = useSuccessModalLogic(isOpen, onClose);
 
   // Make sure isOpen is a boolean to prevent type errors
   const isModalOpen = Boolean(isOpen);
   
+  // Force modal to stay open
+  useEffect(() => {
+    const preventClosing = (e: BeforeUnloadEvent) => {
+      if (!userMadeChoice) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+    };
+
+    if (isModalOpen && !userMadeChoice) {
+      window.addEventListener('beforeunload', preventClosing);
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', preventClosing);
+    };
+  }, [isModalOpen, userMadeChoice]);
+
   const handleFooterButtonClick = () => {
     if (!userMadeChoice) {
       toast({
@@ -56,19 +76,42 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={(open) => {
-      if (!open && !userMadeChoice) {
-        // Prevent closing if no choice made
-        toast({
-          variant: "warning",
-          title: "Choix requis",
-          description: "Veuillez choisir une option d'installation avant de continuer.",
-        });
-        return;
-      }
-      handleClose();
-    }}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog 
+      open={isModalOpen} 
+      onOpenChange={(open) => {
+        if (!open && !userMadeChoice) {
+          // Prevent closing if no choice made
+          toast({
+            variant: "warning",
+            title: "Choix requis",
+            description: "Veuillez choisir une option d'installation avant de continuer.",
+          });
+          return;
+        }
+        if (userMadeChoice) {
+          handleClose();
+        }
+      }}
+    >
+      <DialogContent className="sm:max-w-md" onEscapeKeyDown={(e) => {
+        if (!userMadeChoice) {
+          e.preventDefault();
+          toast({
+            variant: "warning",
+            title: "Choix requis",
+            description: "Veuillez choisir une option d'installation avant de continuer.",
+          });
+        }
+      }} onPointerDownOutside={(e) => {
+        if (!userMadeChoice) {
+          e.preventDefault();
+          toast({
+            variant: "warning",
+            title: "Choix requis",
+            description: "Veuillez choisir une option d'installation avant de continuer.",
+          });
+        }
+      }}>
         <SuccessHeader />
         
         <div className="text-center space-y-4">
@@ -89,6 +132,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
               handleReset={handleReset}
               shortcutCreated={shortcutCreated}
               handleCreateShortcut={handleCreateShortcut}
+              setUserMadeChoice={setUserMadeChoice}
             />
           </div>
           
@@ -99,7 +143,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             />
           )}
           
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 font-bold">
             {userMadeChoice 
               ? "Vous allez être redirigé vers votre tableau de bord..."
               : "Veuillez choisir une option d'installation pour continuer."}
@@ -114,9 +158,10 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         
         <DialogFooter className="sm:justify-center">
           <Button
-            variant="outline"
+            variant={userMadeChoice ? "default" : "outline"}
             onClick={handleFooterButtonClick}
-            className={!userMadeChoice ? "opacity-70" : ""}
+            className={!userMadeChoice ? "opacity-70 cursor-not-allowed" : ""}
+            disabled={!userMadeChoice}
           >
             {userMadeChoice 
               ? "Continuer vers le tableau de bord"

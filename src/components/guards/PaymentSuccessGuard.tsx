@@ -35,6 +35,26 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     setIsLoading(false);
   }, [navigate, toast]);
 
+  // Add an additional check to prevent page unload if no choice made
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
+      if (isVerified && !hasUserMadeChoice) {
+        e.preventDefault();
+        e.returnValue = 'Vous devez choisir une option d\'installation avant de quitter.';
+        return e.returnValue;
+      }
+    };
+
+    if (isVerified) {
+      window.addEventListener('beforeunload', handleBeforeUnload);
+    }
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isVerified]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-white">
