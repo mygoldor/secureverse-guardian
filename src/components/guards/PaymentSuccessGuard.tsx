@@ -16,6 +16,7 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
   useEffect(() => {
     // Check if payment was successful
     const hasSuccessfulPayment = sessionStorage.getItem('paymentSuccessful') === 'true';
+    const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
     
     if (!hasSuccessfulPayment) {
       toast({
@@ -24,6 +25,9 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
         description: "Cette page n'est accessible qu'après un paiement réussi.",
       });
       navigate('/payment');
+    } else if (hasUserMadeChoice) {
+      // If the user has already made an installation choice, redirect to dashboard
+      navigate('/dashboard');
     } else {
       setIsVerified(true);
     }

@@ -25,6 +25,9 @@ const HelpLink: React.FC<HelpLinkProps> = ({
     // Make sure the payment success flag is set
     sessionStorage.setItem('paymentSuccessful', 'true');
     
+    // Make sure the installation choice flag is NOT set so the guide stays visible
+    sessionStorage.removeItem('installationChoiceMade');
+    
     // Navigate to the installation guide
     navigate('/installation-guide');
     onHelpClick();
