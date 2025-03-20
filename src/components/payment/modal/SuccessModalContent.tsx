@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { DialogContent, DialogFooter, DialogContentProps } from '@/components/ui/dialog';
+import { DialogContent, DialogFooter } from '@/components/ui/dialog';
+import type { DialogContentProps } from '@radix-ui/react-dialog';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import SuccessHeader from './SuccessHeader';
