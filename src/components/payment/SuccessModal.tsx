@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { CheckCircle } from 'lucide-react';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
@@ -19,8 +20,8 @@ interface SuccessModalProps {
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   const { isMobile } = useDeviceDetection();
-  const { deferredPrompt, startInstallation } = usePWAInstall();
-  const [installationStarted, setInstallationStarted] = useState(false);
+  const { deferredPrompt, startInstallation, downloadStarted, downloadError, resetDownload } = usePWAInstall();
+  const [installationAttempted, setInstallationAttempted] = useState(false);
   
   // Handle close function
   const handleClose = () => {
@@ -39,7 +40,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
 
   // Start installation automatically
   useEffect(() => {
-    if (isOpen && !installationStarted && !isMobile) {
+    if (isOpen && !installationAttempted && !isMobile) {
       // Set a short delay before starting download to ensure modal is visible
       const timer = setTimeout(() => {
         handleDownload();
@@ -47,7 +48,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       
       return () => clearTimeout(timer);
     }
-  }, [isOpen, isMobile, installationStarted]);
+  }, [isOpen, isMobile, installationAttempted]);
 
   // Cleanup effect to prevent memory leaks
   useEffect(() => {
@@ -58,11 +59,17 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
 
   // Function to start installation for desktop
   const handleDownload = () => {
-    setInstallationStarted(true);
+    setInstallationAttempted(true);
     
     if (!isMobile) {
       startInstallation();
     }
+  };
+
+  // Reset function for retry attempts
+  const handleReset = () => {
+    resetDownload();
+    setInstallationAttempted(false);
   };
 
   // Make sure isOpen is a boolean to prevent type errors
@@ -76,15 +83,19 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             <CheckCircle className="h-16 w-16 text-green-500" />
           </div>
           <DialogTitle className="text-center text-2xl">Paiement réussi</DialogTitle>
+          <DialogDescription className="text-center">
+            Votre abonnement à Guardia a été activé avec succès
+          </DialogDescription>
         </DialogHeader>
         <div className="text-center space-y-4">
-          <p>Merci pour votre abonnement à Guardia !</p>
           <p>Un email de confirmation a été envoyé à votre adresse avec un lien de validation.</p>
           
           {!isMobile && (
             <DesktopDownload 
-              installationStarted={installationStarted}
+              installationStarted={downloadStarted}
+              downloadError={downloadError}
               onDownload={handleDownload}
+              onReset={handleReset}
             />
           )}
           

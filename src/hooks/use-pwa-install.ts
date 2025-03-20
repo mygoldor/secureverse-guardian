@@ -7,6 +7,7 @@ export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [canInstallPWA, setCanInstallPWA] = useState(false);
   const [downloadStarted, setDownloadStarted] = useState(false);
+  const [downloadError, setDownloadError] = useState(false);
   const { toast } = useToast();
 
   // Handle PWA installation prompt
@@ -33,34 +34,32 @@ export function usePWAInstall() {
     // Get the user's operating system for desktop platforms
     const userAgent = window.navigator.userAgent;
     let downloadUrl = '';
+    let platformName = '';
     
     // Set download URL based on detected platform
     if (userAgent.indexOf('Windows') !== -1) {
       downloadUrl = '/downloads/Guardia-Security-1.0.0-win.exe';
-      toast({
-        title: "Préparation du téléchargement",
-        description: "Nous préparons le téléchargement pour Windows...",
-      });
+      platformName = 'Windows';
     } else if (userAgent.indexOf('Mac') !== -1) {
       downloadUrl = '/downloads/Guardia-Security-1.0.0-mac.dmg';
-      toast({
-        title: "Préparation du téléchargement",
-        description: "Nous préparons le téléchargement pour macOS...",
-      });
+      platformName = 'macOS';
     } else if (userAgent.indexOf('Linux') !== -1) {
       downloadUrl = '/downloads/Guardia-Security-1.0.0-linux.AppImage';
-      toast({
-        title: "Préparation du téléchargement",
-        description: "Nous préparons le téléchargement pour Linux...",
-      });
+      platformName = 'Linux';
     } else {
       toast({
         variant: "destructive",
         title: "Système non reconnu",
         description: "Veuillez télécharger manuellement la version correspondant à votre système d'exploitation.",
       });
+      setDownloadError(true);
       return;
     }
+    
+    toast({
+      title: "Préparation du téléchargement",
+      description: `Nous préparons le téléchargement pour ${platformName}...`,
+    });
     
     // First check if the file exists by making a HEAD request
     fetch(downloadUrl, { method: 'HEAD' })
@@ -75,6 +74,7 @@ export function usePWAInstall() {
           document.body.removeChild(link);
           
           setDownloadStarted(true);
+          setDownloadError(false);
           
           toast({
             title: "Téléchargement démarré",
@@ -83,6 +83,7 @@ export function usePWAInstall() {
         } else {
           // File doesn't exist
           console.error('Download file not found:', downloadUrl);
+          setDownloadError(true);
           
           toast({
             variant: "destructive",
@@ -93,6 +94,7 @@ export function usePWAInstall() {
       })
       .catch(error => {
         console.error('Error checking download file:', error);
+        setDownloadError(true);
         
         toast({
           variant: "destructive",
@@ -102,10 +104,18 @@ export function usePWAInstall() {
       });
   };
 
+  // Function to reset download state
+  const resetDownload = () => {
+    setDownloadError(false);
+    setDownloadStarted(false);
+  };
+
   return {
     deferredPrompt,
     canInstallPWA,
     downloadStarted,
-    startInstallation
+    downloadError,
+    startInstallation,
+    resetDownload
   };
 }
