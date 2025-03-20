@@ -13,30 +13,22 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
   const [installing, setInstalling] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
   
-  // If the deferredPrompt is null after being non-null (installation happened)
-  // make sure to update session storage
   useEffect(() => {
-    // We can check if deferredPrompt is null and was previously non-null
     if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
-      console.log('MobilePWA: deferredPrompt is now null after being available, marking choice as made');
       sessionStorage.setItem('installationChoiceMade', 'true');
-      // Installation completed
       setInstalling(false);
       setProgressValue(100);
     }
     
-    // Track if prompt was available
     if (deferredPrompt !== null) {
       sessionStorage.setItem('promptWasAvailable', 'true');
     }
   }, [deferredPrompt]);
   
-  // Simulate progress during installation
   useEffect(() => {
     if (installing) {
       const interval = setInterval(() => {
         setProgressValue((prevValue) => {
-          // Increase progress value but cap at 90% until installation is complete
           return prevValue < 90 ? prevValue + 5 : prevValue;
         });
       }, 300);
@@ -75,12 +67,10 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
       <InstallPWAButton 
         deferredPrompt={deferredPrompt} 
         onInstall={() => {
-          // Clear any previous choice
           sessionStorage.removeItem('installationChoiceMade');
-          console.log('Install PWA button clicked, setting installationChoiceMade to true');
           sessionStorage.setItem('installationChoiceMade', 'true');
           setInstalling(true);
-          setProgressValue(10); // Start at 10%
+          setProgressValue(10);
           onDownload();
         }}
       />

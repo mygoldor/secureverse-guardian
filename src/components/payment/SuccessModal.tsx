@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Dialog } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
@@ -38,13 +39,12 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   } = useSuccessModalLogic(isOpen, onClose);
 
   const isModalOpen = Boolean(isOpen);
+  const [showForcedModal, setShowForcedModal] = useState(false);
   
   useEffect(() => {
     const checkInstallationChoice = () => {
       const choiceMade = sessionStorage.getItem('installationChoiceMade') === 'true';
-      console.log('Checking installation choice:', choiceMade);
       if (choiceMade && !userMadeChoice) {
-        console.log('Setting userMadeChoice to true based on session storage');
         setUserMadeChoice(true);
       }
     };
@@ -52,7 +52,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     if (isModalOpen) {
       sessionStorage.removeItem('installationChoiceMade');
       setUserMadeChoice(false);
-      console.log('Modal opened, cleared previous installation choices');
     }
     
     checkInstallationChoice();
@@ -66,8 +65,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     userMadeChoice
   });
 
-  const [showForcedModal, setShowForcedModal] = useState(false);
-
   useEffect(() => {
     if (isModalOpen && !userMadeChoice) {
       setShowForcedModal(true);
@@ -79,7 +76,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (userMadeChoice && isModalOpen) {
       const redirectTimer = setTimeout(() => {
-        console.log('User made choice, redirecting to dashboard...');
         navigate('/dashboard');
       }, 3000);
       
@@ -88,7 +84,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   }, [userMadeChoice, isModalOpen, navigate]);
 
   const handleForcedInstall = () => {
-    console.log('Forced install clicked');
     if (deferredPrompt) {
       startInstallation();
     } else {
@@ -99,7 +94,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleForcedShortcut = () => {
-    console.log('Forced shortcut clicked');
     setInstallationTab('shortcut');
     handleCreateShortcut();
     setShowForcedModal(false);
@@ -116,7 +110,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       <Dialog 
         open={isModalOpen} 
         onOpenChange={(open) => {
-          console.log('Dialog onOpenChange:', { open, userMadeChoice });
           if (!open && !userMadeChoice) {
             toast({
               variant: "destructive",

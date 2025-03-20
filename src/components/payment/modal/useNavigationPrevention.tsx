@@ -14,30 +14,7 @@ export const useNavigationPrevention = ({
 }: UseNavigationPreventionProps) => {
   const { toast } = useToast();
 
-  // Prevent navigation attempts if modal is open and no choice made
   useEffect(() => {
-    console.log('Modal state:', { 
-      isModalOpen, 
-      userMadeChoice,
-      sessionStorageChoice: sessionStorage.getItem('installationChoiceMade'),
-      timestamp: new Date().toISOString() 
-    });
-    
-    // Block navigation attempts
-    const blockNavigation = () => {
-      if (isModalOpen && !userMadeChoice) {
-        console.log('Blocking navigation attempt');
-        toast({
-          variant: "destructive",
-          title: "Choix requis",
-          description: "Veuillez choisir une option d'installation avant de continuer.",
-        });
-        return false;
-      }
-      return true;
-    };
-    
-    // Prevent window closing
     const preventClosing = (e: BeforeUnloadEvent) => {
       if (isModalOpen && !userMadeChoice) {
         e.preventDefault();
@@ -46,7 +23,6 @@ export const useNavigationPrevention = ({
       }
     };
 
-    // Handle popstate (back button)
     const handlePopState = (e: PopStateEvent) => {
       if (isModalOpen && !userMadeChoice) {
         e.preventDefault();
@@ -71,7 +47,6 @@ export const useNavigationPrevention = ({
     }
   }, [isModalOpen, userMadeChoice, toast]);
 
-  // Prevent ESC key from closing the modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isModalOpen && !userMadeChoice) {
@@ -93,7 +68,6 @@ export const useNavigationPrevention = ({
     };
   }, [isModalOpen, userMadeChoice, toast]);
 
-  // Handler functions for Dialog events - with correct type annotations
   const handleEscapeKeyDown: DialogContentProps["onEscapeKeyDown"] = (event) => {
     if (!userMadeChoice) {
       event.preventDefault();

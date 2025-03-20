@@ -14,15 +14,8 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if payment was successful
     const hasSuccessfulPayment = sessionStorage.getItem('paymentSuccessful') === 'true';
     const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
-    
-    console.log('PaymentSuccessGuard checks:', { 
-      hasSuccessfulPayment, 
-      hasUserMadeChoice,
-      timeChecked: new Date().toISOString() 
-    });
     
     if (!hasSuccessfulPayment) {
       toast({
@@ -32,12 +25,8 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
       });
       navigate('/payment');
     } else if (hasUserMadeChoice) {
-      // If the user has already made an installation choice, redirect to dashboard
-      console.log('User made installation choice, redirecting to dashboard');
       navigate('/dashboard');
     } else {
-      console.log('Payment successful but no installation choice made, showing modal');
-      // Clear any incorrect or stale choice data
       sessionStorage.removeItem('installationChoiceMade');
       setIsVerified(true);
     }
@@ -45,7 +34,6 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     setIsLoading(false);
   }, [navigate, toast]);
 
-  // We need to handle browser navigation/refresh to prevent users from escaping the choice
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
@@ -57,11 +45,9 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
       }
     };
 
-    // Handle attempts to navigate away using browser controls
     const handlePopState = () => {
       const hasUserMadeChoice = sessionStorage.getItem('installationChoiceMade') === 'true';
       if (isVerified && !hasUserMadeChoice) {
-        // Push the current state back to prevent navigation
         window.history.pushState(null, '', window.location.pathname);
         toast({
           variant: "destructive",
@@ -74,8 +60,6 @@ const PaymentSuccessGuard: React.FC<PaymentSuccessGuardProps> = ({ children }) =
     if (isVerified) {
       window.addEventListener('beforeunload', handleBeforeUnload);
       window.addEventListener('popstate', handlePopState);
-      
-      // Push a state to ensure we can catch back button presses
       window.history.pushState(null, '', window.location.pathname);
     }
     
