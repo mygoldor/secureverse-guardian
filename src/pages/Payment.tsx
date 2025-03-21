@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, CheckCircle, CreditCard } from 'lucide-react';
@@ -19,7 +20,6 @@ const Payment = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
-  const [paymentTab, setPaymentTab] = useState('form');
   
   useEffect(() => {
     sessionStorage.removeItem('installationChoiceMade');
@@ -132,59 +132,36 @@ const Payment = () => {
           <div className="bg-green-50 shadow-md rounded-lg p-6 border border-gray-200">
             <h3 className="text-xl font-semibold mb-6 text-center">Options de paiement</h3>
             
-            <Tabs defaultValue="form" onValueChange={setPaymentTab} className="w-full">
-              <TabsList className="grid grid-cols-2 mb-6">
-                <TabsTrigger value="form" className="flex items-center gap-2">
-                  <Shield className="h-4 w-4" />
-                  <span>Formulaire complet</span>
-                </TabsTrigger>
-                <TabsTrigger value="stripe" className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4" />
-                  <span>Paiement rapide</span>
-                </TabsTrigger>
-              </TabsList>
+            <div className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <p className="text-blue-800 text-sm">
+                  Utilisez ce mode de paiement rapide pour vous abonner sans créer de compte. 
+                  Un compte sera automatiquement créé avec votre adresse e-mail.
+                </p>
+              </div>
               
-              <TabsContent value="form">
-                <PaymentForm 
-                  selectedPlan={selectedPlan} 
-                  onPlanChange={handlePlanChange}
-                  onPaymentSuccess={handlePaymentSuccess}
-                />
-              </TabsContent>
-              
-              <TabsContent value="stripe">
-                <div className="space-y-4">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                    <p className="text-blue-800 text-sm">
-                      Utilisez ce mode de paiement rapide pour vous abonner sans créer de compte. 
-                      Un compte sera automatiquement créé avec votre adresse e-mail.
-                    </p>
-                  </div>
-                  
-                  <div className="space-y-4 mb-6">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-1">
-                        Adresse e-mail
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-security-primary"
-                        placeholder="votre@email.com"
-                        value={email}
-                        onChange={(e) => handleEmailChange(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  
-                  <StripeCheckout 
-                    planType={selectedPlan}
-                    email={email}
-                    onSuccess={handlePaymentSuccess}
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium mb-1">
+                    Adresse e-mail
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-security-primary"
+                    placeholder="votre@email.com"
+                    value={email}
+                    onChange={(e) => handleEmailChange(e.target.value)}
                   />
                 </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+              
+              <StripeCheckout 
+                planType={selectedPlan}
+                email={email}
+                onSuccess={handlePaymentSuccess}
+              />
+            </div>
           </div>
         </section>
       </main>
