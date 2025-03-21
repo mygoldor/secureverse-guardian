@@ -9,84 +9,18 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      subscriptions: {
+      Cyber: {
         Row: {
           created_at: string
-          id: string
-          next_billing_date: string
-          payment_date: string
-          payment_method: string
-          plan_id: string
-          plan_name: string
-          price: string
-          status: string
-          user_id: string
+          id: number
         }
         Insert: {
           created_at?: string
-          id?: string
-          next_billing_date: string
-          payment_date?: string
-          payment_method: string
-          plan_id: string
-          plan_name: string
-          price: string
-          status?: string
-          user_id: string
+          id?: number
         }
         Update: {
           created_at?: string
-          id?: string
-          next_billing_date?: string
-          payment_date?: string
-          payment_method?: string
-          plan_id?: string
-          plan_name?: string
-          price?: string
-          status?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_profiles: {
-        Row: {
-          "Any other fields you want to store (name, email, etc.)":
-            | number[]
-            | null
-          avatar_url: string | null
-          company: string | null
-          created_at: string
-          "created_at (type: timestamptz, default: now())": string | null
-          "id (type: uuid, primary key, default: uuid_generate_v4())": number
-          name: string | null
-          role: string | null
-          "user_id (type: uuid, set as unique)": string
-        }
-        Insert: {
-          "Any other fields you want to store (name, email, etc.)"?:
-            | number[]
-            | null
-          avatar_url?: string | null
-          company?: string | null
-          created_at?: string
-          "created_at (type: timestamptz, default: now())"?: string | null
-          "id (type: uuid, primary key, default: uuid_generate_v4())"?: number
-          name?: string | null
-          role?: string | null
-          "user_id (type: uuid, set as unique)": string
-        }
-        Update: {
-          "Any other fields you want to store (name, email, etc.)"?:
-            | number[]
-            | null
-          avatar_url?: string | null
-          company?: string | null
-          created_at?: string
-          "created_at (type: timestamptz, default: now())"?: string | null
-          "id (type: uuid, primary key, default: uuid_generate_v4())"?: number
-          name?: string | null
-          role?: string | null
-          "user_id (type: uuid, set as unique)"?: string
+          id?: number
         }
         Relationships: []
       }
