@@ -1,4 +1,3 @@
-
 from backend.app import app
 import socket
 import sys
@@ -8,6 +7,9 @@ import threading
 import subprocess
 import datetime
 from flask import Flask, redirect, request, jsonify
+
+# Import our Stripe routes
+from backend.stripe_routes import stripe_bp
 
 def is_port_in_use(port):
     # ... keep existing code (port check function)
@@ -84,6 +86,9 @@ def renew_certificates(domain="www.cybergard.eu"):
 def run_http_server(http_port):
     """Run HTTP server that redirects to HTTPS"""
     # ... keep existing code (HTTP server function)
+
+# Register the Stripe Blueprint
+app.register_blueprint(stripe_bp)
 
 # Add API endpoints for certificate management
 @app.route('/api/cert-status', methods=['GET'])

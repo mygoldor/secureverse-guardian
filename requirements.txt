@@ -6,4 +6,6 @@ pyOpenSSL==23.2.0
 # Let's Encrypt certificate management
 certbot>=2.0.0
 datetime>=4.3
+# Payment processing
+stripe>=5.0.0
 
