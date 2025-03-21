@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, CheckCircle, CreditCard } from 'lucide-react';
+import { ArrowLeft, Shield, CheckCircle, CreditCard, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PaymentForm from '@/components/payment/PaymentForm';
@@ -10,6 +11,7 @@ import StripeCheckout from '@/components/payment/StripeCheckout';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 
 const Payment = () => {
   const { t } = useLanguage();
@@ -20,6 +22,7 @@ const Payment = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [paymentTab, setPaymentTab] = useState('stripe');
+  const [paymentMethod, setPaymentMethod] = useState('stripe');
   
   useEffect(() => {
     sessionStorage.removeItem('installationChoiceMade');
@@ -60,6 +63,10 @@ const Payment = () => {
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail);
+  };
+
+  const handlePaymentMethodChange = (method: string) => {
+    setPaymentMethod(method);
   };
   
   if (isLoading) {
@@ -165,11 +172,41 @@ const Payment = () => {
                     </div>
                   </div>
                   
-                  <StripeCheckout 
-                    planType={selectedPlan}
-                    email={email}
-                    onSuccess={handlePaymentSuccess}
-                  />
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium mb-3">
+                      Méthode de paiement
+                    </label>
+                    <PaymentMethodSelector 
+                      value={paymentMethod} 
+                      onChange={handlePaymentMethodChange} 
+                    />
+                  </div>
+                  
+                  {paymentMethod === 'stripe' && (
+                    <StripeCheckout 
+                      planType={selectedPlan}
+                      email={email}
+                      onSuccess={handlePaymentSuccess}
+                    />
+                  )}
+                  
+                  {paymentMethod === 'mollie' && (
+                    <Button 
+                      onClick={handlePaymentSuccess} 
+                      className="w-full bg-[#0a84ff] hover:bg-[#0a84ff]/90 text-white"
+                    >
+                      Payer avec Bancontact
+                    </Button>
+                  )}
+                  
+                  {paymentMethod === 'paypal' && (
+                    <Button 
+                      onClick={handlePaymentSuccess} 
+                      className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white"
+                    >
+                      Payer avec PayPal
+                    </Button>
+                  )}
                 </div>
               </TabsContent>
             </Tabs>
