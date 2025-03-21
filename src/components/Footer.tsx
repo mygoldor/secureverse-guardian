@@ -1,11 +1,21 @@
 
 import React from 'react';
 import { Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Footer = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  
+  const handleNavigation = (sectionId: string) => {
+    navigate('/');
+    // Add a small delay to ensure the page loads before scrolling
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
   
   return (
     <footer className="bg-[#003366] text-white py-12 px-4">
@@ -31,11 +41,46 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-lg mb-4">{t('navigation')}</h4>
             <ul className="space-y-2">
-              <li><a href="#hero" className="text-gray-300 hover:text-white transition-colors">{t('home')}</a></li>
-              <li><a href="#features" className="text-gray-300 hover:text-white transition-colors">{t('features')}</a></li>
-              <li><a href="#pricing" className="text-gray-300 hover:text-white transition-colors">{t('pricing')}</a></li>
-              <li><a href="#testimonials" className="text-gray-300 hover:text-white transition-colors">{t('testimonials')}</a></li>
-              <li><a href="#contact" className="text-gray-300 hover:text-white transition-colors">{t('contact')}</a></li>
+              <li>
+                <button 
+                  onClick={() => handleNavigation('hero')} 
+                  className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  {t('home')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleNavigation('features')} 
+                  className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  {t('features')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleNavigation('pricing')} 
+                  className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  {t('pricing')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleNavigation('testimonials')} 
+                  className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  {t('testimonials')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleNavigation('contact')} 
+                  className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  {t('contact')}
+                </button>
+              </li>
             </ul>
           </div>
           
