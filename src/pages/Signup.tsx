@@ -36,8 +36,8 @@ const Signup = () => {
     // Basic validation
     if (password !== confirmPassword) {
       toast({
-        title: t('passwords_dont_match') as string,
-        description: t('passwords_dont_match') as string,
+        title: t('passwords_dont_match'),
+        description: t('passwords_dont_match'),
         variant: "destructive",
       });
       setIsLoading(false);
@@ -49,16 +49,16 @@ const Signup = () => {
     
     if (result.success) {
       toast({
-        title: t('signup_success') as string,
-        description: t('signup_success') as string,
+        title: t('signup_success'),
+        description: t('signup_success'),
       });
       
       // Redirect to payment page to complete subscription
       navigate('/payment');
     } else {
       toast({
-        title: t('signup_failed') as string,
-        description: result.error instanceof Error ? result.error.message : t('signup_failed') as string,
+        title: t('error'),
+        description: result.error instanceof Error ? result.error.message : t('error'),
         variant: "destructive",
       });
     }

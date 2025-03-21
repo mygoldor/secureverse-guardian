@@ -12,22 +12,29 @@ export interface UserData {
 // Sign up a new user with Supabase
 export const signUpUser = async (email: string, password: string, name: string) => {
   try {
+    console.log("Starting signup process for:", email);
+    
     // Sign up the user with Supabase
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    if (authError) throw authError;
+    if (authError) {
+      console.error("Auth error during signup:", authError);
+      throw authError;
+    }
+
+    console.log("Auth signup successful:", authData?.user?.id);
 
     if (authData && authData.user) {
       // Create a profile for the user in profiles table
       const { error: profileError } = await supabase
-        .from('profiles' as any)
+        .from('profiles')
         .insert({
           user_id: authData.user.id,
           name: name,
-        } as any);
+        });
 
       if (profileError) {
         console.error('Error creating user profile:', profileError);
@@ -68,12 +75,12 @@ export const signInUser = async (email: string, password: string) => {
     if (data && data.user) {
       // Get user profile
       const { data: profileData, error: profileError } = await supabase
-        .from('profiles' as any)
+        .from('profiles')
         .select('*')
         .eq('user_id', data.user.id)
         .single();
         
-      if (profileError && profileError.code !== 'PGRST116') {
+      if (profileError) {
         console.error('Error fetching user profile:', profileError);
       }
       
