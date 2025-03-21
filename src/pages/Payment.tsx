@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, CheckCircle, CreditCard, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
-import PaymentForm from '@/components/payment/PaymentForm';
 import PlanOption from '@/components/payment/PlanOption';
 import SuccessModal from '@/components/payment/SuccessModal';
 import StripeCheckout from '@/components/payment/StripeCheckout';
@@ -19,7 +18,6 @@ const Payment = () => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [email, setEmail] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   
   useEffect(() => {
@@ -35,9 +33,9 @@ const Payment = () => {
       sessionStorage.setItem('paymentSuccessful', 'true');
       sessionStorage.removeItem('installationChoiceMade');
       setShowSuccessModal(true);
-      console.log('Sending confirmation email...', new Date().toISOString());
+      console.log('Paiement simulé', new Date().toISOString());
     } catch (error) {
-      console.error('Error in payment success handler:', error);
+      console.error('Erreur de paiement:', error);
       toast({
         variant: "destructive",
         title: "Erreur",
@@ -50,17 +48,13 @@ const Payment = () => {
     try {
       setSelectedPlan(plan);
     } catch (error) {
-      console.error('Error changing plan:', error);
+      console.error('Erreur de changement de plan:', error);
       toast({
         variant: "destructive",
         title: "Erreur",
         description: "Impossible de changer de plan. Veuillez réessayer.",
       });
     }
-  };
-
-  const handleEmailChange = (newEmail: string) => {
-    setEmail(newEmail);
   };
 
   const handlePaymentMethodChange = (method: string) => {
@@ -78,16 +72,6 @@ const Payment = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <main className="flex-grow container mx-auto py-8 px-4">
-        <div className="mx-auto max-w-2xl mb-4">
-          <Button 
-            onClick={handlePaymentSuccess}
-            variant="outline"
-            className="w-full bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-800"
-          >
-            Simuler un paiement réussi
-          </Button>
-        </div>
-
         <section className="mb-12 text-center">
           <h2 className="text-3xl font-bold mb-6 text-security-primary">Protégez vos appareils dès aujourd'hui</h2>
           
@@ -138,36 +122,14 @@ const Payment = () => {
             <h3 className="text-xl font-semibold mb-6 text-center">Options de paiement</h3>
             
             <div className="space-y-4">
-              <div className="space-y-4 mb-6">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-1">
-                    Adresse e-mail
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-security-primary"
-                    placeholder="votre@email.com"
-                    value={email}
-                    onChange={(e) => handleEmailChange(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <label className="block text-sm font-medium mb-3">
-                  Méthode de paiement
-                </label>
-                <PaymentMethodSelector 
-                  value={paymentMethod} 
-                  onChange={handlePaymentMethodChange} 
-                />
-              </div>
+              <PaymentMethodSelector 
+                value={paymentMethod} 
+                onChange={handlePaymentMethodChange} 
+              />
               
               {paymentMethod === 'stripe' && (
                 <StripeCheckout 
                   planType={selectedPlan}
-                  email={email}
                   onSuccess={handlePaymentSuccess}
                 />
               )}
