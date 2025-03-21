@@ -303,7 +303,6 @@ const de: TranslationKeys = {
   already_have_account: 'Haben Sie bereits ein Konto?',
   passwords_dont_match: 'Passwörter stimmen nicht überein',
   passwords_dont_match_desc: 'Bitte stellen Sie sicher, dass beide Passwörter identisch sind',
-  signup_success: 'Registrierung erfolgreich',
   signup_success_desc: 'Ihr Konto wurde erstellt. Weiterleitung zum Dashboard...',
   
   // Security alerts

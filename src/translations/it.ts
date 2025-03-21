@@ -13,6 +13,12 @@ const it: TranslationKeys = {
   password: 'Password',
   confirm_password: 'Conferma password',
   forgot_password: 'Password dimenticata?',
+  error: 'Errore',
+  login_success: 'Accesso riuscito',
+  login_failed: 'Accesso fallito',
+  dont_have_account: 'Non hai un account?',
+  signup_success: 'Registrazione completata',
+  signup_failed: 'Registrazione fallita',
   
   // Navigation
   home: 'Home',

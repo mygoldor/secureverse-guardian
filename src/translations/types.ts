@@ -13,12 +13,12 @@ export type TranslationKeys = {
   password: string;
   confirm_password: string;
   forgot_password: string;
-  error: string; // Added missing key
-  login_success: string; // Added missing key
-  login_failed: string; // Added missing key
-  dont_have_account: string; // Added missing key
-  signup_success: string; // Added missing key
-  signup_failed: string; // Added missing key
+  error: string;
+  login_success: string;
+  login_failed: string;
+  dont_have_account: string;
+  signup_success: string;
+  signup_failed: string;
   
   // Navigation
   home: string;
@@ -102,7 +102,7 @@ export type TranslationKeys = {
   // Dashboard page
   dashboard: string;
   quick_scan: string;
-  analyse_rapide: string; // Added the missing key here
+  analyse_rapide: string;
   change_language: string;
 
   // Security elements
@@ -303,7 +303,6 @@ export type TranslationKeys = {
   already_have_account: string;
   passwords_dont_match: string;
   passwords_dont_match_desc: string;
-  signup_success: string;
   signup_success_desc: string;
   
   // Security alerts

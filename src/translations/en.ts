@@ -1,4 +1,3 @@
-
 import { TranslationKeys } from './types';
 
 const en: TranslationKeys = {
@@ -14,6 +13,12 @@ const en: TranslationKeys = {
   password: 'Password',
   confirm_password: 'Confirm Password',
   forgot_password: 'Forgot Password?',
+  error: 'Error',
+  login_success: 'Login successful',
+  login_failed: 'Login failed',
+  dont_have_account: 'Don\'t have an account?',
+  signup_success: 'Sign Up Successful',
+  signup_failed: 'Sign Up failed',
   
   // Navigation
   home: 'Home',
@@ -97,7 +102,7 @@ const en: TranslationKeys = {
   // Dashboard page
   dashboard: 'Dashboard',
   quick_scan: 'Quick Scan',
-  analyse_rapide: 'Quick Scan', // Added the missing translation for English
+  analyse_rapide: 'Quick Scan',
   change_language: 'Change Language',
 
   // Security elements
