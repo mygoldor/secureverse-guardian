@@ -13,6 +13,12 @@ export type TranslationKeys = {
   password: string;
   confirm_password: string;
   forgot_password: string;
+  error: string; // Added missing key
+  login_success: string; // Added missing key
+  login_failed: string; // Added missing key
+  dont_have_account: string; // Added missing key
+  signup_success: string; // Added missing key
+  signup_failed: string; // Added missing key
   
   // Navigation
   home: string;

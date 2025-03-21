@@ -30,16 +30,16 @@ const Login = () => {
     
     if (result.success) {
       toast({
-        title: t('login') as string,
-        description: t('login_success') as string,
+        title: t('login'),
+        description: t('login_success'),
       });
       
       // Redirect to dashboard
       navigate('/dashboard');
     } else {
       toast({
-        title: t('login_failed') as string,
-        description: result.error instanceof Error ? result.error.message : t('login_failed') as string,
+        title: t('login'),
+        description: result.error instanceof Error ? result.error.message : t('login_failed'),
         variant: "destructive",
       });
     }
@@ -55,32 +55,32 @@ const Login = () => {
             <Shield className="h-8 w-8 text-[#003366]" />
             <span className="font-bold text-2xl text-[#003366]">Guardia</span>
           </Link>
-          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('login_to_guardia') as string}</h2>
+          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('login_to_guardia')}</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">{t('email_address') as string}</Label>
+            <Label htmlFor="email">{t('email_address')}</Label>
             <Input 
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={t('enter_your_email') as string}
+              placeholder={t('enter_your_email')}
               required
               className="w-full"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">{t('password') as string}</Label>
+            <Label htmlFor="password">{t('password')}</Label>
             <div className="relative">
               <Input 
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('enter_your_password') as string}
+                placeholder={t('enter_your_password')}
                 required
                 className="w-full pr-10 text-foreground"
               />
@@ -102,19 +102,19 @@ const Login = () => {
             {isLoading ? (
               <span className="flex items-center">
                 <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                {t('login') as string}
+                {t('login')}
               </span>
             ) : (
-              t('login') as string
+              t('login')
             )}
           </Button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            {t('dont_have_account') as string} {' '}
+            {t('dont_have_account')} {' '}
             <Link to="/signup" className="text-[#003366] hover:underline">
-              {t('create_account') as string}
+              {t('create_account')}
             </Link>
           </p>
         </div>

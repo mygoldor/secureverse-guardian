@@ -57,8 +57,8 @@ const Signup = () => {
       navigate('/payment');
     } else {
       toast({
-        title: t('error'),
-        description: result.error instanceof Error ? result.error.message : t('error'),
+        title: t('signup'),
+        description: result.error instanceof Error ? result.error.message : t('signup_failed'),
         variant: "destructive",
       });
     }
@@ -74,45 +74,45 @@ const Signup = () => {
             <Shield className="h-8 w-8 text-[#003366]" />
             <span className="font-bold text-2xl text-[#003366]">Guardia</span>
           </Link>
-          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('create_account_guardia') as string}</h2>
+          <h2 className="text-2xl font-bold text-[#003366] text-center">{t('create_account_guardia')}</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">{t('full_name') as string}</Label>
+            <Label htmlFor="name">{t('full_name')}</Label>
             <Input 
               id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={t('enter_your_name') as string}
+              placeholder={t('enter_your_name')}
               required
               className="w-full"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">{t('email_address') as string}</Label>
+            <Label htmlFor="email">{t('email_address')}</Label>
             <Input 
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={t('enter_your_email') as string}
+              placeholder={t('enter_your_email')}
               required
               className="w-full"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">{t('password') as string}</Label>
+            <Label htmlFor="password">{t('password')}</Label>
             <div className="relative">
               <Input 
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('enter_your_password') as string}
+                placeholder={t('enter_your_password')}
                 required
                 className="w-full pr-10 text-foreground"
               />
@@ -127,14 +127,14 @@ const Signup = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">{t('confirm_password') as string}</Label>
+            <Label htmlFor="confirmPassword">{t('confirm_password')}</Label>
             <div className="relative">
               <Input 
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder={t('confirm_your_password') as string}
+                placeholder={t('confirm_your_password')}
                 required
                 className="w-full pr-10 text-foreground"
               />
@@ -156,19 +156,19 @@ const Signup = () => {
             {isLoading ? (
               <span className="flex items-center">
                 <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                {t('signup') as string}
+                {t('signup')}
               </span>
             ) : (
-              t('create_account') as string
+              t('create_account')
             )}
           </Button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            {t('already_have_account') as string} {' '}
+            {t('already_have_account')} {' '}
             <Link to="/login" className="text-[#003366] hover:underline">
-              {t('login') as string}
+              {t('login')}
             </Link>
           </p>
         </div>
