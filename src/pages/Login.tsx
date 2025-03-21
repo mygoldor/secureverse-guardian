@@ -30,8 +30,8 @@ const Login = () => {
     
     if (result.success) {
       toast({
-        title: t('login_success'),
-        description: t('login_success_desc'),
+        title: t('login'),
+        description: t('login_success'),
       });
       
       // Redirect to dashboard
@@ -39,7 +39,7 @@ const Login = () => {
     } else {
       toast({
         title: t('login_failed'),
-        description: result.error instanceof Error ? result.error.message : t('login_failed_desc'),
+        description: result.error instanceof Error ? result.error.message : t('login_failed'),
         variant: "destructive",
       });
     }
@@ -102,7 +102,7 @@ const Login = () => {
             {isLoading ? (
               <span className="flex items-center">
                 <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                {t('logging_in')}
+                {t('login')}
               </span>
             ) : (
               t('login')

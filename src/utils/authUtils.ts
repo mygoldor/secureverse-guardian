@@ -21,11 +21,11 @@ export const signUpUser = async (email: string, password: string, name: string) 
     if (authError) throw authError;
 
     if (authData && authData.user) {
-      // Create a profile for the user in user_profiles table
+      // Create a profile for the user in profiles table
       const { error: profileError } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .insert({
-          'user_id (type: uuid, set as unique)': authData.user.id,
+          user_id: authData.user.id,
           name: name,
         });
 
@@ -68,9 +68,9 @@ export const signInUser = async (email: string, password: string) => {
     if (data && data.user) {
       // Get user profile
       const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
-        .eq('user_id (type: uuid, set as unique)', data.user.id)
+        .eq('user_id', data.user.id)
         .single();
         
       if (profileError && profileError.code !== 'PGRST116') {

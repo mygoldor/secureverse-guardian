@@ -14,13 +14,12 @@ export interface SecurityScan {
 }
 
 // Create a type-safe function for security_scans table
-// Since we can't modify the types.ts file, we'll use a workaround
 export const saveScanResult = async (scanData: SecurityScan) => {
   try {
     // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans' as any)
-      .insert(scanData as any)
+      .from('security_scans')
+      .insert(scanData)
       .select()
       .single();
       
@@ -34,9 +33,8 @@ export const saveScanResult = async (scanData: SecurityScan) => {
 
 export const getRecentScans = async (limit = 5) => {
   try {
-    // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans' as any)
+      .from('security_scans')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(limit);
@@ -51,9 +49,8 @@ export const getRecentScans = async (limit = 5) => {
 
 export const getTotalThreats = async () => {
   try {
-    // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans' as any)
+      .from('security_scans')
       .select('threats_found')
       .eq('status', 'completed');
       
