@@ -1,17 +1,21 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Shield, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -19,8 +23,32 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Authentication logic would go here
-    console.log('Login attempt with:', { email, password });
+    setIsLoading(true);
+    
+    // Simulate authentication
+    setTimeout(() => {
+      // For demo purposes, consider any login as successful
+      // In a real app, you would verify credentials with a backend
+      
+      // Store user information in localStorage
+      const userData = {
+        id: 'user-123',
+        email: email,
+        name: 'Demo User',
+        isAuthenticated: true,
+        subscriptionActive: true
+      };
+      
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      toast({
+        title: "Connexion réussie",
+        description: "Vous êtes maintenant connecté.",
+      });
+      
+      setIsLoading(false);
+      navigate('/dashboard');
+    }, 1000);
   };
 
   return (
@@ -73,8 +101,16 @@ const Login = () => {
           <Button 
             type="submit" 
             className="w-full bg-[#003366] hover:bg-[#00509E] text-white"
+            disabled={isLoading}
           >
-            {t('login')}
+            {isLoading ? (
+              <span className="flex items-center">
+                <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                {t('logging_in')}
+              </span>
+            ) : (
+              t('login')
+            )}
           </Button>
         </form>
 

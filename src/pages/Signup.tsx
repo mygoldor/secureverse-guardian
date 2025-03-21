@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,8 +15,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useLanguage();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -28,6 +30,7 @@ const Signup = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     // Basic validation
     if (password !== confirmPassword) {
@@ -36,15 +39,34 @@ const Signup = () => {
         description: t('passwords_dont_match_desc'),
         variant: "destructive",
       });
+      setIsLoading(false);
       return;
     }
     
-    // Signup logic would go here
-    console.log('Signup attempt with:', { name, email, password });
-    toast({
-      title: t('signup_success'),
-      description: t('signup_success_desc'),
-    });
+    // Simulate signup process
+    setTimeout(() => {
+      // Create user account (in a real app, this would be done by a backend)
+      const userData = {
+        id: `user-${Date.now()}`,
+        name: name,
+        email: email,
+        isAuthenticated: true,
+        subscriptionActive: false
+      };
+      
+      // Store in localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      toast({
+        title: t('signup_success'),
+        description: t('signup_success_desc'),
+      });
+      
+      setIsLoading(false);
+      
+      // Redirect to payment page to complete subscription
+      navigate('/payment');
+    }, 1000);
   };
 
   return (
@@ -132,8 +154,16 @@ const Signup = () => {
           <Button 
             type="submit" 
             className="w-full bg-[#003366] hover:bg-[#00509E] text-white"
+            disabled={isLoading}
           >
-            {t('create_account')}
+            {isLoading ? (
+              <span className="flex items-center">
+                <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                {t('creating_account')}
+              </span>
+            ) : (
+              t('create_account')
+            )}
           </Button>
         </form>
 

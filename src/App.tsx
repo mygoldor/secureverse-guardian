@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/cookies/CookieBanner";
 import PaymentSuccessGuard from "@/components/guards/PaymentSuccessGuard";
+import AuthGuard from "@/components/guards/AuthGuard";
 import NotFound from "./pages/NotFound";
 import Protection from "./pages/Protection";
 import Privacy from "./pages/Privacy";
@@ -35,17 +36,58 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Landing />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/protection" element={<Protection />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/performance" element={<Performance />} />
-              <Route path="/settings" element={<Settings />} />
+              
+              {/* Protected routes that require authentication */}
+              <Route 
+                path="/dashboard" 
+                element={
+                  <AuthGuard>
+                    <Dashboard />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/protection" 
+                element={
+                  <AuthGuard>
+                    <Protection />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/privacy" 
+                element={
+                  <AuthGuard>
+                    <Privacy />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/performance" 
+                element={
+                  <AuthGuard>
+                    <Performance />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/settings" 
+                element={
+                  <AuthGuard>
+                    <Settings />
+                  </AuthGuard>
+                } 
+              />
+              
+              {/* Public routes */}
               <Route path="/payment" element={<Payment />} />
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/cookies" element={<CookiesPolicy />} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              
+              {/* Routes that require payment */}
               <Route 
                 path="/installation-guide" 
                 element={
@@ -54,11 +96,13 @@ const App = () => (
                   </PaymentSuccessGuard>
                 } 
               />
+              
               {/* Ancienne route pour maintenir la compatibilité */}
               <Route 
                 path="/help/installation-guide" 
                 element={<Navigate to="/installation-guide" replace />} 
               />
+              
               {/* Redirect any unknown routes to the 404 page */}
               <Route path="*" element={<NotFound />} />
             </Routes>

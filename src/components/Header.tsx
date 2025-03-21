@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
-import { Bell, Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Bell, Menu, X, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -13,11 +13,45 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useToast } from '@/hooks/use-toast';
 
 const Header = () => {
   const location = useLocation();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [user, setUser] = useState<any>(null);
+  
+  useEffect(() => {
+    // Check if user is logged in
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+  
+  const handleLogout = () => {
+    // Remove user data from localStorage
+    localStorage.removeItem('user');
+    
+    // Show toast notification
+    toast({
+      title: "Déconnexion réussie",
+      description: "Vous avez été déconnecté avec succès."
+    });
+    
+    // Redirect to home page
+    navigate('/');
+  };
   
   // Check if a path is active
   const isActive = (path: string) => {
@@ -29,7 +63,7 @@ const Header = () => {
       <header className="w-full bg-white border-b border-gray-100 shadow-sm py-3 px-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Link to="/dashboard">
+            <Link to={user ? "/dashboard" : "/"}>
               <div className="flex items-center space-x-2">
                 <img 
                   src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
@@ -41,48 +75,89 @@ const Header = () => {
             </Link>
           </div>
           
-          <div className="hidden md:flex items-center space-x-6">
-            <Link 
-              to="/dashboard" 
-              className={`transition-colors ${isActive('/') || isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-            >
-              Dashboard
-            </Link>
-            <Link 
-              to="/protection" 
-              className={`transition-colors ${isActive('/protection') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-            >
-              Protection
-            </Link>
-            <Link 
-              to="/privacy" 
-              className={`transition-colors ${isActive('/privacy') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-            >
-              Privacy
-            </Link>
-            <Link 
-              to="/performance" 
-              className={`transition-colors ${isActive('/performance') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-            >
-              Performance
-            </Link>
-            <Link 
-              to="/settings" 
-              className={`transition-colors ${isActive('/settings') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
-            >
-              Settings
-            </Link>
-          </div>
+          {user && (
+            <div className="hidden md:flex items-center space-x-6">
+              <Link 
+                to="/dashboard" 
+                className={`transition-colors ${isActive('/') || isActive('/dashboard') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+              >
+                Dashboard
+              </Link>
+              <Link 
+                to="/protection" 
+                className={`transition-colors ${isActive('/protection') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+              >
+                Protection
+              </Link>
+              <Link 
+                to="/privacy" 
+                className={`transition-colors ${isActive('/privacy') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+              >
+                Privacy
+              </Link>
+              <Link 
+                to="/performance" 
+                className={`transition-colors ${isActive('/performance') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+              >
+                Performance
+              </Link>
+              <Link 
+                to="/settings" 
+                className={`transition-colors ${isActive('/settings') ? 'text-security-primary' : 'text-security-muted hover:text-security-primary'}`}
+              >
+                Settings
+              </Link>
+            </div>
+          )}
           
           <div className="flex items-center space-x-3">
             <LanguageSelector />
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-security-danger"></span>
-            </Button>
-            <Button className="hidden md:inline-flex bg-security-primary hover:bg-security-secondary text-white">
-              {t('quick_scan')}
-            </Button>
+            
+            {user ? (
+              <>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-security-danger"></span>
+                </Button>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>{user.name || user.email}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Se déconnecter</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                <Button className="hidden md:inline-flex bg-security-primary hover:bg-security-secondary text-white">
+                  {t('quick_scan')}
+                </Button>
+              </>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Link to="/login">
+                  <Button variant="outline">
+                    {t('login')}
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-security-primary hover:bg-security-secondary text-white">
+                    {t('signup')}
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -99,39 +174,70 @@ const Header = () => {
             <SheetTitle>Guardia</SheetTitle>
           </SheetHeader>
           <div className="flex flex-col space-y-4">
-            <Link 
-              to="/dashboard" 
-              className={`py-2 text-base ${isActive('/') || isActive('/dashboard') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-            >
-              Dashboard
-            </Link>
-            <Link 
-              to="/protection" 
-              className={`py-2 text-base ${isActive('/protection') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-            >
-              Protection
-            </Link>
-            <Link 
-              to="/privacy" 
-              className={`py-2 text-base ${isActive('/privacy') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-            >
-              Privacy
-            </Link>
-            <Link 
-              to="/performance" 
-              className={`py-2 text-base ${isActive('/performance') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-            >
-              Performance
-            </Link>
-            <Link 
-              to="/settings" 
-              className={`py-2 text-base ${isActive('/settings') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
-            >
-              Settings
-            </Link>
-            <Button className="mt-2 bg-security-primary hover:bg-security-secondary text-white">
-              {t('quick_scan')}
-            </Button>
+            {user ? (
+              <>
+                <div className="pb-4 border-b border-gray-100">
+                  <p className="font-medium">{user.name || user.email}</p>
+                  <p className="text-sm text-gray-500">{user.email}</p>
+                </div>
+                
+                <Link 
+                  to="/dashboard" 
+                  className={`py-2 text-base ${isActive('/') || isActive('/dashboard') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  to="/protection" 
+                  className={`py-2 text-base ${isActive('/protection') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+                >
+                  Protection
+                </Link>
+                <Link 
+                  to="/privacy" 
+                  className={`py-2 text-base ${isActive('/privacy') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+                >
+                  Privacy
+                </Link>
+                <Link 
+                  to="/performance" 
+                  className={`py-2 text-base ${isActive('/performance') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+                >
+                  Performance
+                </Link>
+                <Link 
+                  to="/settings" 
+                  className={`py-2 text-base ${isActive('/settings') ? 'text-security-primary font-medium' : 'text-security-muted'}`}
+                >
+                  Settings
+                </Link>
+                <Button className="mt-2 bg-security-primary hover:bg-security-secondary text-white">
+                  {t('quick_scan')}
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="mt-4 flex items-center justify-center" 
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Se déconnecter
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" className="w-full">
+                    {t('login')}
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="w-full bg-security-primary hover:bg-security-secondary text-white">
+                    {t('signup')}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </SheetContent>
       </Sheet>
