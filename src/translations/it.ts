@@ -1,3 +1,4 @@
+
 import { TranslationKeys } from './types';
 
 const it: TranslationKeys = {
@@ -303,7 +304,7 @@ const it: TranslationKeys = {
   already_have_account: 'Hai già un account?',
   passwords_dont_match: 'Le password non corrispondono',
   passwords_dont_match_desc: 'Assicurati che entrambe le password siano identiche',
-  signup_success: 'Registrazione completata',
+  // Removed duplicate signup_success here
   signup_success_desc: 'Il tuo account è stato creato. Reindirizzamento alla dashboard...',
   
   // Security alerts section
