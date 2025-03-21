@@ -1,28 +1,41 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { BeforeInstallPromptEvent, InstallPWAButtonProps } from './types/installPwa';
-import InstallButtonIcon from './install-button/InstallButtonIcon';
-import InstallButtonContent from './install-button/InstallButtonContent';
+import { useNavigate } from 'react-router-dom';
 import { useInstallPWA } from './install-button/useInstallPWA';
+import InstallButtonContent from './install-button/InstallButtonContent';
+import { BeforeInstallPromptEvent } from './types/installPwa';
 
-const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({ deferredPrompt, onInstall }) => {
-  const { isInstalling, installPWA } = useInstallPWA(deferredPrompt, onInstall);
+interface InstallPWAButtonProps {
+  deferredPrompt: BeforeInstallPromptEvent | null;
+  onInstall: () => void;
+  className?: string;
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+}
 
+const InstallPWAButton: React.FC<InstallPWAButtonProps> = ({
+  deferredPrompt,
+  onInstall,
+  className = '',
+  variant = 'default'
+}) => {
+  const navigate = useNavigate(); // Safe inside component
+  const { isInstalling, installPWA } = useInstallPWA(
+    deferredPrompt, 
+    onInstall,
+    () => navigate('/dashboard') // Pass navigation as callback
+  );
+  
   return (
-    <Button 
-      onClick={installPWA} 
-      className="mt-2 bg-green-600 hover:bg-green-700 w-full" 
-      size="sm"
+    <Button
+      onClick={installPWA}
       disabled={isInstalling}
+      className={className}
+      variant={variant}
     >
-      <InstallButtonIcon isInstalling={isInstalling} />
       <InstallButtonContent isInstalling={isInstalling} />
     </Button>
   );
 };
 
 export default InstallPWAButton;
-
-// Export the BeforeInstallPromptEvent type for backward compatibility
-export type { BeforeInstallPromptEvent };

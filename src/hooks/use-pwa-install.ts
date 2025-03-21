@@ -1,11 +1,10 @@
 
 import { usePWADetection } from './pwa/use-pwa-detection';
 import { usePWAActions } from './pwa/use-pwa-actions';
-import { useNavigate } from 'react-router-dom';
 import { useToast } from './use-toast';
 
+// Remove direct Router dependency from the hook
 export function usePWAInstall() {
-  const navigate = useNavigate();
   const { toast } = useToast();
   
   // Get installation detection
@@ -27,17 +26,19 @@ export function usePWAInstall() {
     setDeferredPrompt
   });
   
-  // App installed handler with notifications and redirect
-  const handleAppInstalled = () => {
+  // App installed handler with notifications
+  const handleAppInstalled = (callback?: () => void) => {
     toast({
       title: "Installation réussie",
       description: "Guardia a été installé sur votre appareil.",
     });
     
-    // Redirect to dashboard after a delay
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 1000);
+    // Use callback instead of direct navigation
+    if (callback) {
+      setTimeout(() => {
+        callback();
+      }, 1000);
+    }
   };
 
   return {

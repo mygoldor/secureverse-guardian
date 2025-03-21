@@ -18,8 +18,8 @@ export const saveScanResult = async (scanData: SecurityScan) => {
   try {
     // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans')
-      .insert(scanData)
+      .from('security_scans' as any)
+      .insert(scanData as any)
       .select()
       .single();
       
@@ -34,7 +34,7 @@ export const saveScanResult = async (scanData: SecurityScan) => {
 export const getRecentScans = async (limit = 5) => {
   try {
     const { data, error } = await supabase
-      .from('security_scans')
+      .from('security_scans' as any)
       .select('*')
       .order('created_at', { ascending: false })
       .limit(limit);
@@ -50,7 +50,7 @@ export const getRecentScans = async (limit = 5) => {
 export const getTotalThreats = async () => {
   try {
     const { data, error } = await supabase
-      .from('security_scans')
+      .from('security_scans' as any)
       .select('threats_found')
       .eq('status', 'completed');
       

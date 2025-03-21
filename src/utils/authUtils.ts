@@ -23,11 +23,11 @@ export const signUpUser = async (email: string, password: string, name: string) 
     if (authData && authData.user) {
       // Create a profile for the user in profiles table
       const { error: profileError } = await supabase
-        .from('profiles')
+        .from('profiles' as any)
         .insert({
           user_id: authData.user.id,
           name: name,
-        });
+        } as any);
 
       if (profileError) {
         console.error('Error creating user profile:', profileError);
@@ -68,7 +68,7 @@ export const signInUser = async (email: string, password: string) => {
     if (data && data.user) {
       // Get user profile
       const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
+        .from('profiles' as any)
         .select('*')
         .eq('user_id', data.user.id)
         .single();

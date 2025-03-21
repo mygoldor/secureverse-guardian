@@ -35,7 +35,8 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
     handleCreateShortcut,
     setInstallationTab,
     startInstallation,
-    setUserMadeChoice
+    setUserMadeChoice,
+    navigateToDashboard
   } = useSuccessModalLogic(isOpen, onClose);
 
   const isModalOpen = Boolean(isOpen);

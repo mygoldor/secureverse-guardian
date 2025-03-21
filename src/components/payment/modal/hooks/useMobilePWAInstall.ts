@@ -1,17 +1,16 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BeforeInstallPromptEvent } from '../types/installPwa';
 
 export function useMobilePWAInstall(
   deferredPrompt: BeforeInstallPromptEvent | null,
-  onDownload: () => void
+  onDownload: () => void,
+  onNavigate?: () => void // Optional callback for navigation
 ) {
   const [installing, setInstalling] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
   const [installComplete, setInstallComplete] = useState(false);
   const [installError, setInstallError] = useState(false);
-  const navigate = useNavigate();
   
   // Check if app is already installed or installation was handled
   useEffect(() => {
@@ -23,9 +22,12 @@ export function useMobilePWAInstall(
       setInstallComplete(true);
       sessionStorage.setItem('installationChoiceMade', 'true');
       
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
+      // Use the callback for navigation if provided
+      if (onNavigate) {
+        setTimeout(() => {
+          onNavigate();
+        }, 2000);
+      }
     } else if (deferredPrompt === null && sessionStorage.getItem('promptWasAvailable') === 'true') {
       sessionStorage.setItem('installationChoiceMade', 'true');
       setInstalling(false);
@@ -36,7 +38,7 @@ export function useMobilePWAInstall(
     if (deferredPrompt !== null) {
       sessionStorage.setItem('promptWasAvailable', 'true');
     }
-  }, [deferredPrompt, navigate]);
+  }, [deferredPrompt, onNavigate]);
   
   // Simulate progress when installing
   useEffect(() => {
@@ -81,7 +83,10 @@ export function useMobilePWAInstall(
           setInstallComplete(true);
           setInstalling(false);
           
-          navigate('/dashboard');
+          // Use the navigation callback if provided
+          if (onNavigate) {
+            onNavigate();
+          }
         }, 3000);
       }
     } catch (error) {
@@ -96,7 +101,10 @@ export function useMobilePWAInstall(
   // Skip installation
   const handleSkip = () => {
     sessionStorage.setItem('installationChoiceMade', 'true');
-    navigate('/dashboard');
+    // Use the navigation callback if provided
+    if (onNavigate) {
+      onNavigate();
+    }
   };
 
   return {

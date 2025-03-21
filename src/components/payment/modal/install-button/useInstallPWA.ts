@@ -1,18 +1,17 @@
 
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { BeforeInstallPromptEvent } from '../types/installPwa';
 
 export function useInstallPWA(
   deferredPrompt: BeforeInstallPromptEvent | null,
-  onInstall: () => void
+  onInstall: () => void,
+  onNavigate?: () => void // Optional callback for navigation
 ) {
   const { toast } = useToast();
   const { isIOS, isAndroid } = useDeviceDetection();
   const [isInstalling, setIsInstalling] = useState(false);
-  const navigate = useNavigate();
 
   const installPWA = async () => {
     // Immediately mark as having made a choice - since clicking this button is a choice
@@ -59,10 +58,12 @@ export function useInstallPWA(
       // Call the onInstall callback even for manual installation
       onInstall();
       
-      // Ensure we redirect after a delay
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 5000);
+      // Use callback for navigation if provided
+      if (onNavigate) {
+        setTimeout(() => {
+          onNavigate();
+        }, 5000);
+      }
       
       setIsInstalling(false);
       return;
@@ -87,10 +88,12 @@ export function useInstallPWA(
         });
       }
       
-      // Ensure we redirect after a delay regardless of outcome
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 3000);
+      // Use callback for navigation if provided
+      if (onNavigate) {
+        setTimeout(() => {
+          onNavigate();
+        }, 3000);
+      }
       
     } catch (error) {
       console.error('Error during PWA installation:', error);
@@ -100,10 +103,12 @@ export function useInstallPWA(
         description: "Une erreur s'est produite lors de l'installation. Vous pouvez continuer vers votre tableau de bord.",
       });
       
-      // Still redirect to dashboard on error after a delay
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 3000);
+      // Still use callback for navigation if provided
+      if (onNavigate) {
+        setTimeout(() => {
+          onNavigate();
+        }, 3000);
+      }
     } finally {
       // In any case, turn off the progress indicator
       setIsInstalling(false);

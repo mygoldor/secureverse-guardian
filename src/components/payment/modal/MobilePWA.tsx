@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Smartphone } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { BeforeInstallPromptEvent } from './types/installPwa';
 import InstallProgressIndicator from './pwa-components/InstallProgressIndicator';
 import InstallActions from './pwa-components/InstallActions';
@@ -12,6 +13,8 @@ interface MobilePWAProps {
 }
 
 const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => {
+  const navigate = useNavigate(); // Now safely inside a component
+  
   const {
     installing,
     progressValue,
@@ -19,7 +22,11 @@ const MobilePWA: React.FC<MobilePWAProps> = ({ deferredPrompt, onDownload }) => 
     installError,
     handleInstallClick,
     handleSkip
-  } = useMobilePWAInstall(deferredPrompt, onDownload);
+  } = useMobilePWAInstall(
+    deferredPrompt, 
+    onDownload,
+    () => navigate('/dashboard') // Pass navigation as a callback
+  );
 
   return (
     <div className="bg-green-50 p-4 rounded-lg my-4">

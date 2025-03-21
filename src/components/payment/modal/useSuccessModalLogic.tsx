@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDeviceDetection } from '@/hooks/use-device-detection';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import { createPlatformShortcut } from '@/utils/shortcutGenerator';
@@ -8,8 +9,9 @@ import { useInstallationTracker } from '@/hooks/use-installation-tracker';
 
 export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
   const { toast } = useToast();
+  const navigate = useNavigate(); // Now safely inside a component
   const { isMobile, isDesktop } = useDeviceDetection();
-  const { deferredPrompt, startInstallation, downloadStarted, downloadError, resetDownload } = usePWAInstall();
+  const { deferredPrompt, startInstallation, downloadStarted, downloadError, resetDownload, handleAppInstalled } = usePWAInstall();
   const { userMadeChoice, setUserMadeChoice, handleClosePrevention } = useInstallationTracker(isOpen);
   
   const [installationAttempted, setInstallationAttempted] = useState(false);
@@ -70,6 +72,11 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     setUserMadeChoice(true);
   };
 
+  // Set up navigation callback for the PWA install handler
+  const navigateToDashboard = () => {
+    navigate('/dashboard');
+  };
+
   return {
     isMobile,
     isDesktop,
@@ -89,6 +96,7 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
     toggleSecurityInfo,
     handleCreateShortcut,
     setUserMadeChoice,
+    navigateToDashboard,
     setInstallationTab: (tab: string) => {
       if (tab === 'pwa' || tab === 'shortcut') {
         setInstallationTab(tab as 'pwa' | 'shortcut');
@@ -98,6 +106,8 @@ export const useSuccessModalLogic = (isOpen: boolean, onClose: () => void) => {
       try {
         await startInstallation();
         setUserMadeChoice(true);
+        // Use our callback for successful installation
+        handleAppInstalled(navigateToDashboard);
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
