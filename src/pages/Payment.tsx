@@ -5,7 +5,6 @@ import { useToast } from '@/hooks/use-toast';
 import Footer from '@/components/Footer';
 import SuccessModal from '@/components/payment/SuccessModal';
 import PlanSection from '@/components/payment/PlanSection';
-import BenefitsSection from '@/components/payment/BenefitsSection';
 import PaymentMethodsSection from '@/components/payment/PaymentMethodsSection';
 import PaymentLoader from '@/components/payment/PaymentLoader';
 
@@ -69,8 +68,6 @@ const Payment = () => {
           selectedPlan={selectedPlan} 
           onPlanChange={handlePlanChange} 
         />
-        
-        <BenefitsSection />
         
         <PaymentMethodsSection 
           paymentMethod={paymentMethod}
