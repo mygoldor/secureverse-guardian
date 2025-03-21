@@ -1,4 +1,3 @@
-
 const { app } = require('electron');
 const path = require('path');
 const os = require('os');
@@ -40,7 +39,7 @@ const config = {
   // Certificate configuration
   certificates: {
     USE_LETSENCRYPT: process.env.GUARDIA_USE_LETSENCRYPT === 'true' || false,
-    DOMAIN: process.env.GUARDIA_DOMAIN || 'localhost',
+    DOMAIN: process.env.GUARDIA_DOMAIN || 'www.cybergard.eu',
     CERT_PATH: process.env.GUARDIA_CERT_PATH || null,
     KEY_PATH: process.env.GUARDIA_KEY_PATH || null
   }

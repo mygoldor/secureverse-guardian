@@ -5,12 +5,15 @@
 
 import axios from 'axios';
 
+// The specific domain we want to use for certificates
+const DEFAULT_DOMAIN = 'www.cybergard.eu';
+
 /**
  * Check certificate expiration status
- * @param domain Domain to check certificate for
+ * @param domain Domain to check certificate for (defaults to www.cybergard.eu)
  * @returns Object with expiration details
  */
-export const checkCertExpiration = async (domain: string): Promise<{
+export const checkCertExpiration = async (domain: string = DEFAULT_DOMAIN): Promise<{
   isValid: boolean;
   daysRemaining: number | null;
   expiryDate: string | null;
@@ -36,10 +39,10 @@ export const checkCertExpiration = async (domain: string): Promise<{
 
 /**
  * Trigger certificate renewal
- * @param domain Domain to renew certificate for
+ * @param domain Domain to renew certificate for (defaults to www.cybergard.eu)
  * @returns Success status and message
  */
-export const renewCertificate = async (domain: string): Promise<{
+export const renewCertificate = async (domain: string = DEFAULT_DOMAIN): Promise<{
   success: boolean;
   message: string;
 }> => {

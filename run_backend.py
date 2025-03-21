@@ -57,12 +57,13 @@ def check_cert_expiration(cert_path):
             "error": str(e)
         }
 
-def renew_certificates():
-    """Attempt to renew Let's Encrypt certificates"""
+def renew_certificates(domain="www.cybergard.eu"):
+    """Attempt to renew Let's Encrypt certificates for specific domain"""
     try:
-        # Run certbot renew
+        # Run certbot renew with the specific domain
+        # Note: in actual usage, certbot will use the domains it has certs for
         result = subprocess.run(
-            ["certbot", "renew", "--non-interactive"],
+            ["certbot", "renew", "--cert-name", domain, "--non-interactive"],
             capture_output=True,
             text=True
         )
@@ -82,21 +83,12 @@ def renew_certificates():
 
 def run_http_server(http_port):
     """Run HTTP server that redirects to HTTPS"""
-    redirect_app = Flask("redirect_app")
-    
-    @redirect_app.route('/', defaults={'path': ''})
-    @redirect_app.route('/<path:path>')
-    def redirect_to_https(path):
-        https_url = f"https://{request.host.split(':')[0]}:5000{request.full_path}"
-        return redirect(https_url, code=301)
-    
-    print(f"Starting HTTP redirect server on port {http_port}")
-    redirect_app.run(host="127.0.0.1", port=http_port)
+    # ... keep existing code (HTTP server function)
 
 # Add API endpoints for certificate management
 @app.route('/api/cert-status', methods=['GET'])
 def cert_status():
-    domain = request.args.get('domain', 'localhost')
+    domain = request.args.get('domain', 'www.cybergard.eu')
     cert_path, _ = find_letsencrypt_cert()
     
     if not cert_path:
@@ -112,7 +104,7 @@ def cert_status():
 @app.route('/api/cert-renew', methods=['POST'])
 def cert_renew():
     data = request.get_json() or {}
-    domain = data.get('domain', 'localhost')
+    domain = data.get('domain', 'www.cybergard.eu')
     
     # Check if we have Let's Encrypt certificates first
     cert_path, _ = find_letsencrypt_cert()
@@ -123,10 +115,13 @@ def cert_renew():
         })
     
     # Try to renew certificates
-    result = renew_certificates()
+    result = renew_certificates(domain)
     return jsonify(result)
 
 if __name__ == "__main__":
+    # Default domain for certificates
+    default_domain = "www.cybergard.eu"
+    
     https_port = 5000
     http_port = 5001  # HTTP port for redirection
     
@@ -152,7 +147,7 @@ if __name__ == "__main__":
     lets_encrypt_cert, lets_encrypt_key = find_letsencrypt_cert()
     
     if lets_encrypt_cert and lets_encrypt_key:
-        print(f"Using Let's Encrypt certificate: {lets_encrypt_cert}")
+        print(f"Using Let's Encrypt certificate: {lets_encrypt_cert} for domain {default_domain}")
         # Check expiration
         expiry_info = check_cert_expiration(lets_encrypt_cert)
         if expiry_info["isValid"]:
@@ -160,8 +155,8 @@ if __name__ == "__main__":
         else:
             print(f"Certificate is invalid or expired: {expiry_info['error']}")
             # Try automatic renewal
-            print("Attempting to renew certificates...")
-            renewal_result = renew_certificates()
+            print(f"Attempting to renew certificates for {default_domain}...")
+            renewal_result = renew_certificates(default_domain)
             print(f"Renewal attempt: {renewal_result['message']}")
         
         cert_file = lets_encrypt_cert
