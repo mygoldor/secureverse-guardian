@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { signUpUser } from '@/utils/authUtils';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -28,7 +29,7 @@ const Signup = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
@@ -43,30 +44,26 @@ const Signup = () => {
       return;
     }
     
-    // Simulate signup process
-    setTimeout(() => {
-      // Create user account (in a real app, this would be done by a backend)
-      const userData = {
-        id: `user-${Date.now()}`,
-        name: name,
-        email: email,
-        isAuthenticated: true,
-        subscriptionActive: false
-      };
-      
-      // Store in localStorage
-      localStorage.setItem('user', JSON.stringify(userData));
-      
+    // Call the signup function
+    const result = await signUpUser(email, password, name);
+    
+    if (result.success) {
       toast({
         title: t('signup_success'),
         description: t('signup_success_desc'),
       });
       
-      setIsLoading(false);
-      
       // Redirect to payment page to complete subscription
       navigate('/payment');
-    }, 1000);
+    } else {
+      toast({
+        title: t('signup_failed'),
+        description: result.error instanceof Error ? result.error.message : t('signup_failed_desc'),
+        variant: "destructive",
+      });
+    }
+    
+    setIsLoading(false);
   };
 
   return (

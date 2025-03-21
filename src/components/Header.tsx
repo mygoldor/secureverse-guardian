@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from '@/hooks/use-toast';
+import { signOutUser } from '@/utils/authUtils';
 
 const Header = () => {
   const location = useLocation();
@@ -39,18 +40,28 @@ const Header = () => {
     }
   }, []);
   
-  const handleLogout = () => {
-    // Remove user data from localStorage
-    localStorage.removeItem('user');
+  const handleLogout = async () => {
+    const result = await signOutUser();
     
-    // Show toast notification
-    toast({
-      title: "Déconnexion réussie",
-      description: "Vous avez été déconnecté avec succès."
-    });
-    
-    // Redirect to home page
-    navigate('/');
+    if (result.success) {
+      // Update local state
+      setUser(null);
+      
+      // Show toast notification
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous avez été déconnecté avec succès."
+      });
+      
+      // Redirect to home page
+      navigate('/');
+    } else {
+      toast({
+        title: "Erreur de déconnexion",
+        description: "Une erreur s'est produite lors de la déconnexion. Veuillez réessayer.",
+        variant: "destructive"
+      });
+    }
   };
   
   // Check if a path is active

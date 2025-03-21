@@ -17,10 +17,10 @@ export interface SecurityScan {
 // Since we can't modify the types.ts file, we'll use a workaround
 export const saveScanResult = async (scanData: SecurityScan) => {
   try {
-    // @ts-ignore - We know this table exists even though it's not in the types
+    // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans')
-      .insert(scanData)
+      .from('security_scans' as any)
+      .insert(scanData as any)
       .select()
       .single();
       
@@ -34,9 +34,9 @@ export const saveScanResult = async (scanData: SecurityScan) => {
 
 export const getRecentScans = async (limit = 5) => {
   try {
-    // @ts-ignore - We know this table exists even though it's not in the types
+    // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans')
+      .from('security_scans' as any)
       .select('*')
       .order('created_at', { ascending: false })
       .limit(limit);
@@ -51,16 +51,16 @@ export const getRecentScans = async (limit = 5) => {
 
 export const getTotalThreats = async () => {
   try {
-    // @ts-ignore - We know this table exists even though it's not in the types
+    // Force TypeScript to ignore the table type check
     const { data, error } = await supabase
-      .from('security_scans')
+      .from('security_scans' as any)
       .select('threats_found')
       .eq('status', 'completed');
       
     if (error) throw error;
     
     // Make sure we handle the data correctly
-    const totalThreats = data.reduce((sum, scan) => sum + (scan.threats_found || 0), 0);
+    const totalThreats = data.reduce((sum: number, scan: any) => sum + (scan.threats_found || 0), 0);
     return { success: true, totalThreats };
   } catch (error) {
     console.error('Error calculating total threats:', error);

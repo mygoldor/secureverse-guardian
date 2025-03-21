@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { signInUser } from '@/utils/authUtils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,43 +15,36 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate authentication
-    setTimeout(() => {
-      // For demo purposes, consider any login as successful
-      // In a real app, you would verify credentials with a backend
-      
-      // Store user information in localStorage
-      const userData = {
-        id: 'user-123',
-        email: email,
-        name: 'Demo User',
-        isAuthenticated: true,
-        subscriptionActive: false // Default to false - requires payment
-      };
-      
-      localStorage.setItem('user', JSON.stringify(userData));
-      
+    const result = await signInUser(email, password);
+    
+    if (result.success) {
       toast({
-        title: "Connexion réussie",
-        description: "Vous êtes maintenant connecté.",
+        title: t('login_success'),
+        description: t('login_success_desc'),
       });
       
-      setIsLoading(false);
-      
-      // Redirect to payment page since subscription is not active
-      navigate('/payment');
-    }, 1000);
+      // Redirect to dashboard
+      navigate('/dashboard');
+    } else {
+      toast({
+        title: t('login_failed'),
+        description: result.error instanceof Error ? result.error.message : t('login_failed_desc'),
+        variant: "destructive",
+      });
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -108,7 +102,7 @@ const Login = () => {
             {isLoading ? (
               <span className="flex items-center">
                 <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                {t('login')}
+                {t('logging_in')}
               </span>
             ) : (
               t('login')
@@ -116,13 +110,13 @@ const Login = () => {
           </Button>
         </form>
 
-        <div className="mt-6 text-center space-y-2">
-          <Link to="/forgot-password" className="text-sm text-[#003366] hover:underline block">
-            {t('forgot_password')}
-          </Link>
-          <Link to="/signup" className="text-sm text-[#003366] hover:underline block">
-            {t('create_account')}
-          </Link>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            {t('dont_have_account')} {' '}
+            <Link to="/signup" className="text-[#003366] hover:underline">
+              {t('create_account')}
+            </Link>
+          </p>
         </div>
       </div>
     </div>
