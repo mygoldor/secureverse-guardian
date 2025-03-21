@@ -10,6 +10,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Make sure this is defined properly as a React functional component
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Browser language detection
   const detectBrowserLanguage = (): Language => {
