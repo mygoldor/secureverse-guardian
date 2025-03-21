@@ -3,5 +3,7 @@ Flask==2.0.1
 flask-cors==3.0.10
 psutil==5.9.0
 pyOpenSSL==23.2.0
-# Optional: For Let's Encrypt certificate management
-# certbot>=2.0.0
+# Let's Encrypt certificate management
+certbot>=2.0.0
+datetime>=4.3
+

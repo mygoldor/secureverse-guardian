@@ -2,6 +2,8 @@
 const { spawn } = require('child_process');
 const axios = require('axios');
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 const config = require('./config');
 const { getMainWindow } = require('./windowManager');
 
@@ -12,6 +14,110 @@ let pythonProcess = null;
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false // Allow self-signed certificates
 });
+
+// Certificate renewal related functions
+function checkCertificateExpiry(certPath) {
+  try {
+    // Check if certificate exists
+    if (!fs.existsSync(certPath)) {
+      return {
+        isValid: false,
+        daysRemaining: 0,
+        expiryDate: null,
+        error: 'Certificate not found'
+      };
+    }
+
+    // Parse the certificate using OpenSSL
+    const openSSLCommand = process.platform === 'win32' ? 'openssl.exe' : 'openssl';
+    const result = require('child_process').execSync(
+      `${openSSLCommand} x509 -enddate -noout -in "${certPath}"`,
+      { encoding: 'utf8' }
+    );
+
+    // Parse the expiration date
+    const expiryMatch = result.match(/notAfter=(.+)/);
+    if (!expiryMatch) {
+      return {
+        isValid: false,
+        daysRemaining: 0,
+        expiryDate: null,
+        error: 'Failed to parse certificate expiration'
+      };
+    }
+
+    const expiryDate = new Date(expiryMatch[1]);
+    const now = new Date();
+    const daysRemaining = Math.floor((expiryDate - now) / (1000 * 60 * 60 * 24));
+
+    return {
+      isValid: daysRemaining > 0,
+      daysRemaining: daysRemaining,
+      expiryDate: expiryDate.toISOString(),
+      error: null
+    };
+  } catch (error) {
+    console.error('Error checking certificate expiry:', error);
+    return {
+      isValid: false,
+      daysRemaining: null,
+      expiryDate: null,
+      error: error.message
+    };
+  }
+}
+
+function renewCertificates() {
+  return new Promise((resolve, reject) => {
+    // Skip actual renewal in development mode
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Certificate renewal skipped in development mode');
+      resolve({ success: true, message: 'Certificate renewal simulated in development mode' });
+      return;
+    }
+
+    const certbotCommand = process.platform === 'win32' ? 'certbot.exe' : 'certbot';
+    
+    // Run certificate renewal
+    const certbotProcess = spawn(certbotCommand, ['renew', '--non-interactive']);
+    
+    let output = '';
+    let errorOutput = '';
+    
+    certbotProcess.stdout.on('data', (data) => {
+      const chunk = data.toString();
+      output += chunk;
+      console.log(`Certbot output: ${chunk}`);
+    });
+    
+    certbotProcess.stderr.on('data', (data) => {
+      const chunk = data.toString();
+      errorOutput += chunk;
+      console.error(`Certbot error: ${chunk}`);
+    });
+    
+    certbotProcess.on('close', (code) => {
+      if (code === 0) {
+        console.log('Certificate renewal completed successfully');
+        resolve({ success: true, message: 'Certificates renewed successfully' });
+      } else {
+        console.error(`Certificate renewal failed with code ${code}`);
+        resolve({ 
+          success: false, 
+          message: `Certificate renewal failed: ${errorOutput || 'Unknown error'}` 
+        });
+      }
+    });
+    
+    certbotProcess.on('error', (error) => {
+      console.error('Failed to start certbot:', error);
+      reject({ 
+        success: false, 
+        message: `Failed to start certbot: ${error.message}` 
+      });
+    });
+  });
+}
 
 function startPythonBackend() {
   // Check if Python is installed
@@ -119,5 +225,7 @@ async function callBackendAPI(endpoint, method = 'GET', data = null) {
 module.exports = {
   startPythonBackend,
   stopPythonBackend,
-  callBackendAPI
+  callBackendAPI,
+  checkCertificateExpiry,
+  renewCertificates
 };

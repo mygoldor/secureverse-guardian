@@ -5,90 +5,80 @@ import sys
 import os
 import ssl
 import threading
-from flask import Flask, redirect, request
+import subprocess
+import datetime
+from flask import Flask, redirect, request, jsonify
 
 def is_port_in_use(port):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('localhost', port)) == 0
+    # ... keep existing code (port check function)
 
 def generate_self_signed_cert(cert_file, key_file):
-    """Generate a self-signed certificate if none exists"""
-    if os.path.exists(cert_file) and os.path.exists(key_file):
-        print(f"Using existing certificate: {cert_file}")
-        return True
-    
-    try:
-        from OpenSSL import crypto
-        print("Generating self-signed certificate...")
-        
-        # Create a key pair
-        k = crypto.PKey()
-        k.generate_key(crypto.TYPE_RSA, 2048)
-        
-        # Create a self-signed cert
-        cert = crypto.X509()
-        cert.get_subject().C = "US"
-        cert.get_subject().ST = "State"
-        cert.get_subject().L = "City"
-        cert.get_subject().O = "Guardia Security"
-        cert.get_subject().OU = "Security"
-        cert.get_subject().CN = "localhost"
-        cert.set_serial_number(1000)
-        cert.gmtime_adj_notBefore(0)
-        cert.gmtime_adj_notAfter(10*365*24*60*60)  # 10 years
-        cert.set_issuer(cert.get_subject())
-        cert.set_pubkey(k)
-        cert.sign(k, 'sha256')
-        
-        # Write certificate
-        with open(cert_file, "wb") as f:
-            f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
-        
-        # Write private key
-        with open(key_file, "wb") as f:
-            f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k))
-        
-        print(f"Self-signed certificate generated: {cert_file}")
-        return True
-    except Exception as e:
-        print(f"Error generating certificate: {e}")
-        return False
+    # ... keep existing code (self-signed cert generation function)
 
 def find_letsencrypt_cert():
-    """Look for Let's Encrypt certificates in common locations"""
-    # Common Let's Encrypt certificate locations
-    possible_locations = [
-        # Linux common locations
-        ('/etc/letsencrypt/live/', 'fullchain.pem', 'privkey.pem'),
-        # macOS common locations
-        ('/usr/local/etc/letsencrypt/live/', 'fullchain.pem', 'privkey.pem'),
-        # Windows common locations (with Certbot installed)
-        ('C:/Certbot/live/', 'fullchain.pem', 'privkey.pem')
-    ]
+    # ... keep existing code (Let's Encrypt cert finding function)
+
+def check_cert_expiration(cert_path):
+    """Check a certificate's expiration date"""
+    if not os.path.exists(cert_path):
+        return {
+            "isValid": False,
+            "daysRemaining": None,
+            "expiryDate": None,
+            "error": "Certificate not found"
+        }
     
-    # Add domain-specific locations
-    domains = ['localhost', 'guardia.local', os.environ.get('GUARDIA_DOMAIN', '')]
-    
-    for base_path, cert_name, key_name in possible_locations:
-        for domain in domains:
-            if domain:
-                domain_path = os.path.join(base_path, domain)
-                cert_path = os.path.join(domain_path, cert_name)
-                key_path = os.path.join(domain_path, key_name)
-                
-                if os.path.exists(cert_path) and os.path.exists(key_path):
-                    print(f"Found Let's Encrypt certificate for {domain}: {cert_path}")
-                    return cert_path, key_path
-    
-    # Check custom certificate path if specified
-    custom_cert = os.environ.get('GUARDIA_CERT_PATH')
-    custom_key = os.environ.get('GUARDIA_KEY_PATH')
-    
-    if custom_cert and custom_key and os.path.exists(custom_cert) and os.path.exists(custom_key):
-        print(f"Using custom certificate: {custom_cert}")
-        return custom_cert, custom_key
-    
-    return None, None
+    try:
+        # Use OpenSSL to get certificate expiration
+        output = subprocess.check_output(
+            ["openssl", "x509", "-enddate", "-noout", "-in", cert_path],
+            universal_newlines=True
+        )
+        
+        # Parse the expiration date
+        expiry_str = output.strip().split("=")[1]
+        expiry_date = datetime.datetime.strptime(expiry_str, "%b %d %H:%M:%S %Y %Z")
+        
+        # Calculate days remaining
+        now = datetime.datetime.now()
+        days_remaining = (expiry_date - now).days
+        
+        return {
+            "isValid": days_remaining > 0,
+            "daysRemaining": days_remaining,
+            "expiryDate": expiry_date.isoformat(),
+            "error": None
+        }
+    except Exception as e:
+        return {
+            "isValid": False,
+            "daysRemaining": None,
+            "expiryDate": None,
+            "error": str(e)
+        }
+
+def renew_certificates():
+    """Attempt to renew Let's Encrypt certificates"""
+    try:
+        # Run certbot renew
+        result = subprocess.run(
+            ["certbot", "renew", "--non-interactive"],
+            capture_output=True,
+            text=True
+        )
+        
+        success = result.returncode == 0
+        message = result.stdout if success else result.stderr
+        
+        return {
+            "success": success,
+            "message": message
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": str(e)
+        }
 
 def run_http_server(http_port):
     """Run HTTP server that redirects to HTTPS"""
@@ -102,6 +92,39 @@ def run_http_server(http_port):
     
     print(f"Starting HTTP redirect server on port {http_port}")
     redirect_app.run(host="127.0.0.1", port=http_port)
+
+# Add API endpoints for certificate management
+@app.route('/api/cert-status', methods=['GET'])
+def cert_status():
+    domain = request.args.get('domain', 'localhost')
+    cert_path, _ = find_letsencrypt_cert()
+    
+    if not cert_path:
+        return jsonify({
+            "isValid": False,
+            "daysRemaining": None,
+            "expiryDate": None,
+            "error": "Certificate not found"
+        })
+    
+    return jsonify(check_cert_expiration(cert_path))
+
+@app.route('/api/cert-renew', methods=['POST'])
+def cert_renew():
+    data = request.get_json() or {}
+    domain = data.get('domain', 'localhost')
+    
+    # Check if we have Let's Encrypt certificates first
+    cert_path, _ = find_letsencrypt_cert()
+    if not cert_path:
+        return jsonify({
+            "success": False,
+            "message": "No Let's Encrypt certificates found to renew"
+        })
+    
+    # Try to renew certificates
+    result = renew_certificates()
+    return jsonify(result)
 
 if __name__ == "__main__":
     https_port = 5000
@@ -130,6 +153,17 @@ if __name__ == "__main__":
     
     if lets_encrypt_cert and lets_encrypt_key:
         print(f"Using Let's Encrypt certificate: {lets_encrypt_cert}")
+        # Check expiration
+        expiry_info = check_cert_expiration(lets_encrypt_cert)
+        if expiry_info["isValid"]:
+            print(f"Certificate is valid for {expiry_info['daysRemaining']} more days")
+        else:
+            print(f"Certificate is invalid or expired: {expiry_info['error']}")
+            # Try automatic renewal
+            print("Attempting to renew certificates...")
+            renewal_result = renew_certificates()
+            print(f"Renewal attempt: {renewal_result['message']}")
+        
         cert_file = lets_encrypt_cert
         key_file = lets_encrypt_key
         cert_exists = True
