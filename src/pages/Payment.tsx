@@ -10,7 +10,6 @@ import SuccessModal from '@/components/payment/SuccessModal';
 import StripeCheckout from '@/components/payment/StripeCheckout';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 
 const Payment = () => {
@@ -21,7 +20,6 @@ const Payment = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
-  const [paymentTab, setPaymentTab] = useState('stripe');
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   
   useEffect(() => {
@@ -139,77 +137,59 @@ const Payment = () => {
           <div className="bg-green-50 shadow-md rounded-lg p-6 border border-gray-200">
             <h3 className="text-xl font-semibold mb-6 text-center">Options de paiement</h3>
             
-            <Tabs defaultValue="stripe" onValueChange={setPaymentTab} className="w-full">
-              <TabsList className="grid grid-cols-1 mb-6">
-                <TabsTrigger value="stripe" className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4" />
-                  <span>Paiement rapide</span>
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="stripe">
-                <div className="space-y-4">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                    <p className="text-blue-800 text-sm">
-                      Utilisez ce mode de paiement rapide pour vous abonner sans créer de compte. 
-                      Un compte sera automatiquement créé avec votre adresse e-mail.
-                    </p>
-                  </div>
-                  
-                  <div className="space-y-4 mb-6">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-1">
-                        Adresse e-mail
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-security-primary"
-                        placeholder="votre@email.com"
-                        value={email}
-                        onChange={(e) => handleEmailChange(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium mb-3">
-                      Méthode de paiement
-                    </label>
-                    <PaymentMethodSelector 
-                      value={paymentMethod} 
-                      onChange={handlePaymentMethodChange} 
-                    />
-                  </div>
-                  
-                  {paymentMethod === 'stripe' && (
-                    <StripeCheckout 
-                      planType={selectedPlan}
-                      email={email}
-                      onSuccess={handlePaymentSuccess}
-                    />
-                  )}
-                  
-                  {paymentMethod === 'mollie' && (
-                    <Button 
-                      onClick={handlePaymentSuccess} 
-                      className="w-full bg-[#0a84ff] hover:bg-[#0a84ff]/90 text-white"
-                    >
-                      Payer avec Bancontact
-                    </Button>
-                  )}
-                  
-                  {paymentMethod === 'paypal' && (
-                    <Button 
-                      onClick={handlePaymentSuccess} 
-                      className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white"
-                    >
-                      Payer avec PayPal
-                    </Button>
-                  )}
+            <div className="space-y-4">
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium mb-1">
+                    Adresse e-mail
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-security-primary"
+                    placeholder="votre@email.com"
+                    value={email}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                  />
                 </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+              
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-3">
+                  Méthode de paiement
+                </label>
+                <PaymentMethodSelector 
+                  value={paymentMethod} 
+                  onChange={handlePaymentMethodChange} 
+                />
+              </div>
+              
+              {paymentMethod === 'stripe' && (
+                <StripeCheckout 
+                  planType={selectedPlan}
+                  email={email}
+                  onSuccess={handlePaymentSuccess}
+                />
+              )}
+              
+              {paymentMethod === 'mollie' && (
+                <Button 
+                  onClick={handlePaymentSuccess} 
+                  className="w-full bg-[#0a84ff] hover:bg-[#0a84ff]/90 text-white"
+                >
+                  Payer avec Bancontact
+                </Button>
+              )}
+              
+              {paymentMethod === 'paypal' && (
+                <Button 
+                  onClick={handlePaymentSuccess} 
+                  className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white"
+                >
+                  Payer avec PayPal
+                </Button>
+              )}
+            </div>
           </div>
         </section>
       </main>
