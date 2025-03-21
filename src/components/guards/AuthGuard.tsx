@@ -16,9 +16,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   useEffect(() => {
     const checkAuth = () => {
       // Check if user is logged in
-      const isLoggedIn = localStorage.getItem('user') !== null;
+      const userDataStr = localStorage.getItem('user');
       
-      if (!isLoggedIn) {
+      if (!userDataStr) {
         toast({
           variant: "destructive",
           title: "Accès non autorisé",
@@ -28,7 +28,35 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         return;
       }
       
-      setIsAuthenticated(true);
+      // Parse user data
+      try {
+        const userData = JSON.parse(userDataStr);
+        
+        // Check if user has made a successful payment
+        if (!userData.subscriptionActive) {
+          toast({
+            variant: "destructive",
+            title: "Abonnement requis",
+            description: "Un abonnement actif est nécessaire pour accéder à cette page.",
+          });
+          navigate('/payment');
+          return;
+        }
+        
+        // User is authenticated and has an active subscription
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        localStorage.removeItem('user');
+        toast({
+          variant: "destructive",
+          title: "Erreur d'authentification",
+          description: "Veuillez vous reconnecter.",
+        });
+        navigate('/login');
+        return;
+      }
+      
       setIsLoading(false);
     };
     

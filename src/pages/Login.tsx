@@ -36,7 +36,7 @@ const Login = () => {
         email: email,
         name: 'Demo User',
         isAuthenticated: true,
-        subscriptionActive: true
+        subscriptionActive: false // Default to false - requires payment
       };
       
       localStorage.setItem('user', JSON.stringify(userData));
@@ -47,7 +47,9 @@ const Login = () => {
       });
       
       setIsLoading(false);
-      navigate('/dashboard');
+      
+      // Redirect to payment page since subscription is not active
+      navigate('/payment');
     }, 1000);
   };
 
@@ -106,7 +108,7 @@ const Login = () => {
             {isLoading ? (
               <span className="flex items-center">
                 <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                {t('logging_in')}
+                {t('login')}
               </span>
             ) : (
               t('login')

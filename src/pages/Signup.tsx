@@ -159,7 +159,7 @@ const Signup = () => {
             {isLoading ? (
               <span className="flex items-center">
                 <span className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                {t('creating_account')}
+                {t('signup')}
               </span>
             ) : (
               t('create_account')
