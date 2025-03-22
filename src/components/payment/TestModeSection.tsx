@@ -26,7 +26,7 @@ const TestModeSection: React.FC<TestModeSectionProps> = ({
           onCheckedChange={(checked) => onTestModeChange(checked === true)}
         />
         <Label htmlFor="test-mode" className="font-medium">
-          Mode Test (Utiliser des cartes de test Stripe)
+          Mode Test
         </Label>
       </div>
       
