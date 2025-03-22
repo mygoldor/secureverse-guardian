@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { CreditCard } from 'lucide-react';
-import { createPaymentSession, updatePaymentStatus } from '@/utils/stripeClient';
+import { createPaymentSession, updatePaymentStatus } from '@/utils/stripe';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
