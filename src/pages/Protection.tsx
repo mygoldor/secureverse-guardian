@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Shield, RefreshCcw, Lock, Eye } from 'lucide-react';
 import Header from '@/components/Header';
 import ProtectionCard from '@/components/ProtectionCard';

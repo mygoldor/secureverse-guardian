@@ -1,4 +1,3 @@
-
 // Type definitions for translations
 export interface TranslationKeys {
   // General
@@ -364,4 +363,37 @@ export interface TranslationKeys {
   already_have_account: string;
   already_logged_in: string;
   go_to_dashboard: string;
+  
+  // Performance page
+  performance_summary: string;
+  performance_charts: string;
+  optimization_tips: string;
+  system_health: string;
+  cpu_usage: string;
+  memory_usage: string;
+  disk_usage: string;
+  network_usage: string;
+  cpu_usage_over_time: string;
+  memory_usage_over_time: string;
+  reduce_background_processes: string;
+  close_unused_applications: string;
+  view_processes: string;
+  clean_disk_space: string;
+  remove_temporary_files: string;
+  run_cleanup: string;
+  update_drivers: string;
+  outdated_graphics_driver: string;
+  update_now: string;
+  optimize_startup: string;
+  too_many_startup_programs: string;
+  manage_startup: string;
+  security_status: string;
+  protected: string;
+  uptime: string;
+  days: string;
+  hours: string;
+  system_updates: string;
+  updates_available: string;
+  disk_health: string;
+  good: string;
 }
