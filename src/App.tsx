@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/hooks/auth/AuthContext';
@@ -21,30 +22,32 @@ import TermsOfService from '@/pages/TermsOfService';
 
 const App = () => {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
-            <Route path="/protection" element={<Protection />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/performance" element={<Performance />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/mentions-legales" element={<MentionsLegales />} />
-            <Route path="/cookies" element={<CookiesPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            {/* Catch all route for pages that don't exist */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toaster />
-        </Router>
-      </AuthProvider>
-    </LanguageProvider>
+    <React.StrictMode>
+      <LanguageProvider>
+        <AuthProvider>
+          <Router>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
+              <Route path="/protection" element={<Protection />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/performance" element={<Performance />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/cookies" element={<CookiesPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              {/* Catch all route for pages that don't exist */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
+          </Router>
+        </AuthProvider>
+      </LanguageProvider>
+    </React.StrictMode>
   );
 };
 
