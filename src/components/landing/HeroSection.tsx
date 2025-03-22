@@ -19,7 +19,7 @@ const HeroSection: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-            <Link to="/signup" className="inline-block w-full sm:w-auto">
+            <Link to="/signup" id="start-button" className="inline-block w-full sm:w-auto no-underline">
               <Button 
                 size="lg" 
                 className="bg-white text-blue-700 hover:bg-blue-50 font-semibold w-full"
@@ -27,7 +27,7 @@ const HeroSection: React.FC = () => {
                 {t('get_started')}
               </Button>
             </Link>
-            <Link to="/signup" className="inline-block w-full sm:w-auto">
+            <Link to="/signup" id="discover-button" className="inline-block w-full sm:w-auto no-underline">
               <Button 
                 variant="outline"
                 size="lg" 
