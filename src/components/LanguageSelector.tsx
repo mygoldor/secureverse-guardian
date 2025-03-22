@@ -42,7 +42,7 @@ const LanguageSelector = () => {
         >
           <div className="flex items-center space-x-2">
             <Globe className="h-4 w-4" />
-            <SelectValue placeholder={t('change_language')} />
+            <SelectValue placeholder={languageLabels[language]} />
           </div>
         </SelectTrigger>
         <SelectContent>

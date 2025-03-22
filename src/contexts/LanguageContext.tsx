@@ -30,26 +30,38 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return detectBrowserLanguage();
   });
   
-  // Translate function
+  // Update language state and localStorage
+  const handleSetLanguage = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);
+  };
+  
+  // Translate function with fallback to English
   const t = (key: keyof TranslationKeys): string => {
-    const translation = translations[language][key];
+    // Try to get translation in current language
+    let translation = translations[language][key];
+    
+    // If translation is missing in current language, fallback to English
+    if (!translation && language !== 'en') {
+      translation = translations['en'][key];
+    }
+    
+    // If still no translation, return the key as fallback
     if (!translation) {
       console.warn(`Missing translation: ${key} for language: ${language}`);
-      // Return the key as fallback
       return key as string;
     }
+    
     return translation;
   };
   
-  // Update localStorage when language changes
+  // Update document language attribute when language changes
   React.useEffect(() => {
-    localStorage.setItem('language', language);
-    // Update document language attribute
     document.documentElement.lang = language;
   }, [language]);
   
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
