@@ -13,7 +13,6 @@ const CompanyInfoSection: React.FC = () => {
         <h4 className="font-medium mb-2">Data controller contact information:</h4>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Company name</strong>: Guardia Cybersecurity SRL</li>
-          <li><strong>Address</strong>: 123 Security Street, 1000 Brussels, Belgium</li>
           <li><strong>Contact email</strong>: info@cybergard.eu</li>
         </ul>
       </div>
