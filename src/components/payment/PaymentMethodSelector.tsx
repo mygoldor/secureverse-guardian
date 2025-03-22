@@ -19,10 +19,10 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({ value, on
       >
         <CreditCard className="h-6 w-6 mb-2" />
         <span className="text-sm font-medium">Carte bancaire</span>
-        <span className="text-xs text-gray-500 mt-1">Visa/Mastercard</span>
+        <span className="text-xs text-gray-500 mt-1"></span>
       </div>
 
-      {/* Mollie (Bancontact) option */}
+      {/* Bancontact option */}
       <div
         className={`border rounded-lg p-4 flex flex-col items-center cursor-pointer transition-all ${
           value === 'mollie' ? 'border-security-primary bg-blue-50' : 'border-gray-200'
