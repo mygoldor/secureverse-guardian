@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
@@ -19,6 +18,7 @@ import Settings from '@/pages/Settings';
 import MentionsLegales from '@/pages/MentionsLegales';
 import CookiesPolicy from '@/pages/CookiesPolicy';
 import TermsOfService from '@/pages/TermsOfService';
+import SimpleCookieBanner from '@/components/cookies/SimpleCookieBanner';
 
 const App = () => {
   return (
@@ -82,6 +82,7 @@ const App = () => {
             {/* Catch all route for pages that don't exist */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <SimpleCookieBanner />
           <Toaster />
         </Router>
       </AuthProvider>
