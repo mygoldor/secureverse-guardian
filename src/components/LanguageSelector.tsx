@@ -15,8 +15,8 @@ const LanguageSelector = () => {
   const { language, setLanguage, t } = useLanguage();
   const location = useLocation();
   
-  // Check if we're on the landing page
-  const isLandingPage = location.pathname === '/landing';
+  // Check if we're on the home/landing page
+  const isLandingPage = location.pathname === '/' || location.pathname === '/landing';
 
   // Define language label mapping
   const languageLabels = {
