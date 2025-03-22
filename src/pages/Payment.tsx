@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import Footer from '@/components/Footer';
 import SuccessModal from '@/components/payment/SuccessModal';
@@ -9,7 +8,6 @@ import PaymentMethodsSection from '@/components/payment/PaymentMethodsSection';
 import PaymentLoader from '@/components/payment/PaymentLoader';
 
 const Payment = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
