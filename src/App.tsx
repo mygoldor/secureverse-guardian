@@ -22,7 +22,7 @@ import TermsOfService from '@/pages/TermsOfService';
 import { CookieConsentProvider } from '@/contexts/CookieConsentContext';
 import SimpleCookieBanner from '@/components/cookies/SimpleCookieBanner';
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <LanguageProvider>
       <AuthProvider>

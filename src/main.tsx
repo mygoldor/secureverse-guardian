@@ -4,6 +4,19 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
+// Get the root element
+const rootElement = document.getElementById('root');
+
+// Create a root using createRoot API
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
+
 // Register the service worker with better error handling and logging
 if ("serviceWorker" in navigator) {
   window.addEventListener('load', () => {
@@ -157,9 +170,3 @@ declare global {
     gtag?: (...args: any[]) => void;
   }
 }
-
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
