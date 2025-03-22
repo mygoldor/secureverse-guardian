@@ -31,7 +31,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({ value, on
       >
         <div className="h-6 w-6 mb-2 flex items-center justify-center font-bold text-white bg-[#0a84ff] rounded">B</div>
         <span className="text-sm font-medium">Bancontact</span>
-        <span className="text-xs text-gray-500 mt-1">Mollie</span>
+        <span className="text-xs text-gray-500 mt-1"></span>
       </div>
     </div>
   );
