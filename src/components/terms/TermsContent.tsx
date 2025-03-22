@@ -31,7 +31,7 @@ const TermsContent: React.FC = () => {
 
       <h3 className="text-lg font-medium mt-4">2.3 Suppression de compte</h3>
       <p className="mb-6">
-        Vous pouvez supprimer votre compte à tout moment en nous contactant à l'adresse e-mail suivante : privacy@guardia-security.com. La suppression du compte entraînera la perte d'accès aux Services et à toutes les données associées.
+        Vous pouvez supprimer votre compte à tout moment en nous contactant à l'adresse e-mail suivante : info@cybergard.eu. La suppression du compte entraînera la perte d'accès aux Services et à toutes les données associées.
       </p>
 
       <Separator className="my-6" />
@@ -126,7 +126,7 @@ const TermsContent: React.FC = () => {
       <h2 className="text-xl font-semibold" id="contact">11. Contact</h2>
       <p className="mb-6">
         Si vous avez des questions concernant ces Conditions Générales, vous pouvez nous contacter à l'adresse suivante :<br /><br />
-        📩 <strong>E-mail</strong> : contact@guardia-security.com<br />
+        📩 <strong>E-mail</strong> : info@cybergard.eu<br />
         📍 <strong>Adresse</strong> : 123 Security Street, 1000 Brussels, Belgium
       </p>
 

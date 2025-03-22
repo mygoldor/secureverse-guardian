@@ -42,7 +42,7 @@ const UserRightsSection: React.FC = () => {
           <strong>Settings page</strong>: Use the "Export My Data" and "Delete My Data" options in your account settings.
         </li>
         <li className="mb-2">
-          <strong>Contact us</strong>: Email <strong>privacy@guardia-security.com</strong>
+          <strong>Contact us</strong>: Email <strong>info@cybergard.eu</strong>
         </li>
       </ul>
       <p className="mb-4">
