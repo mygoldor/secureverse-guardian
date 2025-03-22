@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Language, translations, TranslationKeys } from '@/translations';
 
 interface LanguageContextType {
@@ -8,9 +8,8 @@ interface LanguageContextType {
   t: (key: keyof TranslationKeys) => string;
 }
 
-const LanguageContext = React.createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Make sure this is defined properly as a React functional component
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Browser language detection
   const detectBrowserLanguage = (): Language => {
@@ -22,7 +21,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
   
   // Initialize with browser language or stored preference
-  const [language, setLanguage] = React.useState<Language>(() => {
+  const [language, setLanguage] = useState<Language>(() => {
     const storedLang = localStorage.getItem('language') as Language | null;
     if (storedLang && (storedLang === 'fr' || storedLang === 'en' || storedLang === 'es' || storedLang === 'de' || storedLang === 'it')) {
       return storedLang;
@@ -56,7 +55,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
   
   // Update document language attribute when language changes
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
   
@@ -67,8 +66,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 
-export const useLanguage = () => {
-  const context = React.useContext(LanguageContext);
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
   if (context === undefined) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
