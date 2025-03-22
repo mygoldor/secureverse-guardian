@@ -9,11 +9,13 @@ const HeroSection: React.FC = () => {
   
   const handleGetStarted = () => {
     console.log("Get Started clicked");
+    // Navigate directly to signup without any automatic redirections there
     navigate('/signup');
   };
   
   const handleDiscover = () => {
     console.log("Discover clicked");
+    // Navigate directly to signup without any automatic redirections there
     navigate('/signup');
   };
   
