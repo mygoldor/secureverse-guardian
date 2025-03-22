@@ -43,7 +43,8 @@ const SimpleCookieBanner: React.FC = () => {
         zIndex: 1000
       }}
     >
-      <p>Nous utilisons des cookies pour améliorer votre expérience.</p>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '16px' }}>Politique de Cookies</h4>
+      <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant à naviguer, vous acceptez notre utilisation des cookies.</p>
       <button 
         onClick={handleAccept}
         style={{
