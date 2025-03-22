@@ -1,24 +1,11 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
-  const navigate = useNavigate();
-  
-  // Function to handle navigation to signup page
-  const handleGetStartedClick = () => {
-    console.log("Navigating to signup page from Get Started button");
-    navigate('/signup');
-  };
-  
-  // Function to handle navigation to signup page
-  const handleDiscoverGuardiaClick = () => {
-    console.log("Navigating to signup page from Discover Guardia button");
-    navigate('/signup');
-  };
   
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
@@ -32,21 +19,23 @@ const HeroSection: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-            <Button 
-              size="lg" 
-              className="bg-white text-blue-700 hover:bg-blue-50 font-semibold"
-              onClick={handleGetStartedClick}
-            >
-              {t('get_started')}
-            </Button>
-            <Button 
-              variant="outline"
-              size="lg" 
-              className="bg-transparent border-white text-white hover:bg-white/10 font-semibold"
-              onClick={handleDiscoverGuardiaClick}
-            >
-              {t('discover_guardia')}
-            </Button>
+            <Link to="/signup" className="inline-block">
+              <Button 
+                size="lg" 
+                className="bg-white text-blue-700 hover:bg-blue-50 font-semibold w-full"
+              >
+                {t('get_started')}
+              </Button>
+            </Link>
+            <Link to="/signup" className="inline-block">
+              <Button 
+                variant="outline"
+                size="lg" 
+                className="bg-transparent border-white text-white hover:bg-white/10 font-semibold w-full"
+              >
+                {t('discover_guardia')}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
