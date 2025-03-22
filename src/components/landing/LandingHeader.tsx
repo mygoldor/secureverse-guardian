@@ -4,12 +4,22 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
-import { Menu } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Menu, X } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { useDeviceDetection } from '@/hooks/use-device-detection';
 
 const LandingHeader = () => {
   const { t } = useLanguage();
+  const { isMobile } = useDeviceDetection();
   
+  // These items will be used for both desktop and mobile navigation
+  const navItems = [
+    { href: "#features", label: t('features') },
+    { href: "#testimonials", label: t('testimonials') },
+    { href: "#pricing", label: t('pricing') },
+    { href: "#contact", label: t('contact') },
+  ];
+
   return (
     <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -25,10 +35,15 @@ const LandingHeader = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <nav className="flex items-center space-x-6">
-            <a href="#features" className="text-white hover:text-gray-300 transition-colors font-medium">{t('features')}</a>
-            <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors font-medium">{t('testimonials')}</a>
-            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors font-medium">{t('pricing')}</a>
-            <a href="#contact" className="text-white hover:text-gray-300 transition-colors font-medium">{t('contact')}</a>
+            {navItems.map((item) => (
+              <a 
+                key={item.href} 
+                href={item.href} 
+                className="text-white hover:text-gray-300 transition-colors font-medium"
+              >
+                {item.label}
+              </a>
+            ))}
             <Link to="/login" className="text-white hover:text-gray-300 transition-colors font-medium">{t('login')}</Link>
           </nav>
           
@@ -49,20 +64,33 @@ const LandingHeader = () => {
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="text-white hover:bg-blue-800">
                 <Menu className="h-6 w-6" />
+                <span className="sr-only">Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[250px] sm:w-[300px]">
+            <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-white">
               <div className="flex flex-col space-y-4 mt-8">
-                <a href="#features" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('features')}</a>
-                <a href="#testimonials" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('testimonials')}</a>
-                <a href="#pricing" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('pricing')}</a>
-                <a href="#contact" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('contact')}</a>
-                <Link to="/login" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('login')}</Link>
-                <Link to="/signup" className="mt-4">
-                  <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
-                    {t('get_started')}
-                  </Button>
-                </Link>
+                {navItems.map((item) => (
+                  <SheetClose asChild key={item.href}>
+                    <a 
+                      href={item.href} 
+                      className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
+                    >
+                      {item.label}
+                    </a>
+                  </SheetClose>
+                ))}
+                <SheetClose asChild>
+                  <Link to="/login" className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2">
+                    {t('login')}
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link to="/signup" className="mt-4">
+                    <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
+                      {t('get_started')}
+                    </Button>
+                  </Link>
+                </SheetClose>
               </div>
             </SheetContent>
           </Sheet>

@@ -22,7 +22,8 @@ const Home = () => {
         const element = document.querySelector(target.hash);
         
         if (element) {
-          element.scrollIntoView({
+          window.scrollTo({
+            top: element.getBoundingClientRect().top + window.scrollY - 80, // Account for header height
             behavior: 'smooth'
           });
         }
@@ -41,16 +42,16 @@ const Home = () => {
       <LandingHeader />
       <main>
         <HeroSection />
-        <div id="features" className="scroll-mt-20">
+        <div id="features" className="scroll-mt-24">
           <FeaturesSection />
         </div>
-        <div id="testimonials" className="scroll-mt-20">
+        <div id="testimonials" className="scroll-mt-24">
           <TestimonialsSection />
         </div>
-        <div id="pricing" className="scroll-mt-20">
+        <div id="pricing" className="scroll-mt-24">
           <PricingSection />
         </div>
-        <div id="contact" className="scroll-mt-20">
+        <div id="contact" className="scroll-mt-24">
           <CtaSection />
         </div>
       </main>
