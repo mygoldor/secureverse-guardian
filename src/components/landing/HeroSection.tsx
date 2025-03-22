@@ -1,12 +1,20 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  
+  const handleGetStarted = () => {
+    navigate('/signup');
+  };
+  
+  const handleDiscoverGuardia = () => {
+    navigate('/signup');
+  };
   
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
@@ -20,15 +28,19 @@ const HeroSection: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
-              <Link to="/signup">
-                {t('get_started')}
-              </Link>
+            <Button 
+              size="lg" 
+              className="bg-white text-blue-700 hover:bg-blue-50 font-semibold"
+              onClick={handleGetStarted}
+            >
+              {t('get_started')}
             </Button>
-            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
-              <Link to="/signup">
-                {t('discover_guardia')}
-              </Link>
+            <Button 
+              size="lg" 
+              className="bg-white text-blue-700 hover:bg-blue-50 font-semibold"
+              onClick={handleDiscoverGuardia}
+            >
+              {t('discover_guardia')}
             </Button>
           </div>
         </div>
