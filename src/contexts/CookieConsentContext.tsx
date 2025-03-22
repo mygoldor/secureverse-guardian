@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
@@ -31,20 +30,16 @@ const CookieConsentContext = createContext<CookieConsentContextType | undefined>
 export const CookieConsentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
   const [cookiePreferences, setCookiePreferences] = useState<CookieCategories>(defaultCookiePreferences);
-  // Initialize showBanner to true by default
   const [showBanner, setShowBanner] = useState<boolean>(true);
 
-  // Check for existing consent on mount
   useEffect(() => {
     const storedConsent = localStorage.getItem('cookieConsent');
     const storedPreferences = localStorage.getItem('cookiePreferences');
     
     if (storedConsent !== null) {
       setCookieConsent(storedConsent === 'true');
-      // Only hide banner if user has explicitly given or denied consent
       setShowBanner(false);
     } else {
-      // Show banner if no consent is stored
       setShowBanner(true);
     }
     
@@ -58,17 +53,14 @@ export const CookieConsentProvider: React.FC<{ children: ReactNode }> = ({ child
     }
   }, []);
 
-  // Save consent and preferences to localStorage
   const saveConsent = (consent: boolean, preferences: CookieCategories) => {
     localStorage.setItem('cookieConsent', consent.toString());
     localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
     
-    // Record GDPR action for audit trail
     const userId = localStorage.getItem('userId') || 'anonymous';
     const action = consent ? 'consent' : 'withdraw';
     
     try {
-      // Using the existing GDPR compliance utility
       import('@/utils/gdprCompliance').then(({ recordGdprAction }) => {
         recordGdprAction(action, userId);
       });
@@ -99,10 +91,8 @@ export const CookieConsentProvider: React.FC<{ children: ReactNode }> = ({ child
   };
 
   const saveCookiePreferences = (preferences: CookieCategories) => {
-    // Essential cookies are always enabled
     const updatedPreferences = { ...preferences, essential: true };
     
-    // If any non-essential cookies are enabled, set consent to true
     const hasConsent = updatedPreferences.functional || 
                       updatedPreferences.analytics || 
                       updatedPreferences.marketing;
