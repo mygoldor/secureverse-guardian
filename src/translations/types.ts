@@ -362,4 +362,5 @@ export type TranslationKeys = {
   marketing_cookies_info: string;
   gdpr_compliant: string;
   cookie_policy: string;
+  preferences: string; // Added the missing key
 };

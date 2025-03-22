@@ -364,6 +364,7 @@ const it: TranslationKeys = {
   marketing_cookies_info: 'Mostra annunci basati sui tuoi interessi',
   gdpr_compliant: 'Conforme al GDPR',
   cookie_policy: 'Politica dei cookie',
+  preferences: 'Preferenze',  // Added the missing translation
 };
 
 export default it;
