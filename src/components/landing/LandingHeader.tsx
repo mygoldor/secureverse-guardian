@@ -83,20 +83,11 @@ const LandingHeader = () => {
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-white">
               <div className="flex flex-col space-y-4 mt-8">
                 {navItems.map((item) => (
-                  <SheetClose asChild key={item.href}>
+                  <SheetClose key={item.href} asChild>
                     <a 
                       href={item.href} 
                       onClick={(e) => {
-                        e.preventDefault();
-                        const element = document.querySelector(item.href);
-                        if (element) {
-                          setTimeout(() => {
-                            window.scrollTo({
-                              top: element.getBoundingClientRect().top + window.scrollY - 80,
-                              behavior: 'smooth'
-                            });
-                          }, 100); // Small delay to ensure sheet closes first
-                        }
+                        handleNavClick(e, item.href);
                       }}
                       className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
                     >
