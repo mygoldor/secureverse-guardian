@@ -37,4 +37,7 @@ export default defineConfig(({ mode }) => ({
   preview: {
     port: 8080,
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+  },
 }));
