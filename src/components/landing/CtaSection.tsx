@@ -21,7 +21,7 @@ const CtaSection: React.FC = () => {
           </p>
           <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
             <Link to="/signup">
-              {t('start_protecting')}
+              {t('signup_now')}
             </Link>
           </Button>
         </div>
