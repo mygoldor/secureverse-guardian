@@ -172,6 +172,7 @@ const en = {
   signup_now: 'Sign Up Now',
   
   // Features Section
+  real_time_monitoring: 'Real-Time Monitoring',
   real_time_monitoring_desc: 'Continuous scanning of system activities to identify potential threats',
   malware_protection: 'Malware Protection',
   malware_protection_desc: 'Advanced detection and removal of all types of malware',
@@ -306,7 +307,6 @@ const en = {
   process_monitor: 'Process Monitor',
   firewall: 'Firewall',
   start_monitoring: 'Start Monitoring',
-  stop_monitoring: 'Stop Monitoring',
   process_name: 'Process Name',
   cpu_usage: 'CPU Usage',
   memory_usage: 'Memory Usage',

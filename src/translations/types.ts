@@ -172,6 +172,7 @@ export interface TranslationKeys {
   signup_now: string;
   
   // Features Section
+  real_time_monitoring: string;
   real_time_monitoring_desc: string;
   malware_protection: string;
   malware_protection_desc: string;
@@ -306,7 +307,6 @@ export interface TranslationKeys {
   process_monitor: string;
   firewall: string;
   start_monitoring: string;
-  stop_monitoring: string;
   process_name: string;
   cpu_usage: string;
   memory_usage: string;

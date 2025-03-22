@@ -172,6 +172,7 @@ const fr = {
   signup_now: 'S\'inscrire maintenant',
   
   // Features Section
+  real_time_monitoring: 'Surveillance en temps réel',
   real_time_monitoring_desc: 'Analyse continue des activités système pour identifier les menaces potentielles',
   malware_protection: 'Protection contre les malwares',
   malware_protection_desc: 'Détection et suppression avancées de tous types de malwares',
@@ -306,7 +307,6 @@ const fr = {
   process_monitor: 'Moniteur de processus',
   firewall: 'Pare-feu',
   start_monitoring: 'Démarrer la surveillance',
-  stop_monitoring: 'Arrêter la surveillance',
   process_name: 'Nom du processus',
   cpu_usage: 'Utilisation CPU',
   memory_usage: 'Utilisation mémoire',
