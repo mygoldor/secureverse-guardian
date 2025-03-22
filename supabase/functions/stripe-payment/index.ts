@@ -28,8 +28,8 @@ const PRICE_AMOUNTS = {
 
 // Define Stripe price IDs
 const PRICE_IDS = {
-  yearly: 'price_1R5UkPL2HzcstfNBQgbH8SyW', // Annual subscription price ID from user
-  monthly: 'price_monthly_placeholder' // Placeholder for monthly price ID
+  yearly: 'price_1R5UkPL2HzcstfNBQgbH8SyW', // Annual subscription price ID
+  monthly: 'price_1R5UjCL2HzcstfNBhGxAuHob' // Monthly subscription price ID
 }
 
 serve(async (req) => {

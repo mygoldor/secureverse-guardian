@@ -19,7 +19,7 @@ interface PaymentResult {
 // Store Stripe price IDs
 export const STRIPE_PRICE_IDS = {
   yearly: 'price_1R5UkPL2HzcstfNBQgbH8SyW', // Annual subscription price ID
-  monthly: 'price_monthly_placeholder' // Placeholder for monthly price ID
+  monthly: 'price_1R5UjCL2HzcstfNBhGxAuHob' // Monthly subscription price ID
 };
 
 /**
