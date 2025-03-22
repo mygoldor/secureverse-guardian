@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
@@ -9,7 +10,11 @@ const rootElement = document.getElementById('root');
 // Create a root using createRoot API
 if (rootElement) {
   const root = createRoot(rootElement);
-  root.render(<App />);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
 }
 
 // Register the service worker with better error handling and logging
