@@ -26,77 +26,79 @@ import OneMonthPaymentPage from './pages/OneMonthPayment';
 const App: React.FC = () => {
   return (
     <Router>
-      <LanguageProvider>
-        <AuthProvider>
-          <CookieConsentProvider>
-            <Routes>
-              {/* Home route without additional header */}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/one-month-payment" element={<OneMonthPaymentPage />} />
-              
-              {/* Protected routes that require authentication and subscription */}
-              <Route path="/dashboard" element={
-                <AuthGuard>
-                  <Header />
-                  <Dashboard />
-                </AuthGuard>
-              } />
-              <Route path="/protection" element={
-                <AuthGuard>
-                  <Header />
-                  <Protection />
-                </AuthGuard>
-              } />
-              <Route path="/performance" element={
-                <AuthGuard>
-                  <Header />
-                  <Performance />
-                </AuthGuard>
-              } />
-              <Route path="/settings" element={
-                <AuthGuard>
-                  <Header />
-                  <Settings />
-                </AuthGuard>
-              } />
-              
-              {/* Legal pages - publicly accessible */}
-              <Route path="/privacy" element={
-                <>
-                  <Header />
-                  <Privacy />
-                </>
-              } />
-              <Route path="/mentions-legales" element={
-                <>
-                  <Header />
-                  <MentionsLegales />
-                </>
-              } />
-              <Route path="/cookies" element={
-                <>
-                  <Header />
-                  <CookiesPolicy />
-                </>
-              } />
-              <Route path="/terms" element={
-                <>
-                  <Header />
-                  <TermsOfService />
-                </>
-              } />
-              
-              {/* Catch all route for pages that don't exist */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <SimpleCookieBanner />
-            <Toaster />
-          </CookieConsentProvider>
-        </AuthProvider>
-      </LanguageProvider>
+      <React.StrictMode>
+        <LanguageProvider>
+          <AuthProvider>
+            <CookieConsentProvider>
+              <Routes>
+                {/* Home route without additional header */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/one-month-payment" element={<OneMonthPaymentPage />} />
+                
+                {/* Protected routes that require authentication and subscription */}
+                <Route path="/dashboard" element={
+                  <AuthGuard>
+                    <Header />
+                    <Dashboard />
+                  </AuthGuard>
+                } />
+                <Route path="/protection" element={
+                  <AuthGuard>
+                    <Header />
+                    <Protection />
+                  </AuthGuard>
+                } />
+                <Route path="/performance" element={
+                  <AuthGuard>
+                    <Header />
+                    <Performance />
+                  </AuthGuard>
+                } />
+                <Route path="/settings" element={
+                  <AuthGuard>
+                    <Header />
+                    <Settings />
+                  </AuthGuard>
+                } />
+                
+                {/* Legal pages - publicly accessible */}
+                <Route path="/privacy" element={
+                  <>
+                    <Header />
+                    <Privacy />
+                  </>
+                } />
+                <Route path="/mentions-legales" element={
+                  <>
+                    <Header />
+                    <MentionsLegales />
+                  </>
+                } />
+                <Route path="/cookies" element={
+                  <>
+                    <Header />
+                    <CookiesPolicy />
+                  </>
+                } />
+                <Route path="/terms" element={
+                  <>
+                    <Header />
+                    <TermsOfService />
+                  </>
+                } />
+                
+                {/* Catch all route for pages that don't exist */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <SimpleCookieBanner />
+              <Toaster />
+            </CookieConsentProvider>
+          </AuthProvider>
+        </LanguageProvider>
+      </React.StrictMode>
     </Router>
   );
 };
