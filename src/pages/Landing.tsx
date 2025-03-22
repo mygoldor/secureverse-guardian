@@ -66,9 +66,7 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="w-full bg-[#003366] sticky top-0 z-50">
-        <LandingHeader />
-      </div>
+      <LandingHeader />
       <HeroSection />
       <FeaturesSection />
       <TestimonialsSection />
