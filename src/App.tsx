@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
@@ -24,10 +25,10 @@ import OneMonthPaymentPage from './pages/OneMonthPayment';
 
 const App: React.FC = () => {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <CookieConsentProvider>
-          <Router>
+    <Router>
+      <LanguageProvider>
+        <AuthProvider>
+          <CookieConsentProvider>
             <Routes>
               {/* Home route without additional header */}
               <Route path="/" element={<Home />} />
@@ -93,10 +94,10 @@ const App: React.FC = () => {
             </Routes>
             <SimpleCookieBanner />
             <Toaster />
-          </Router>
-        </CookieConsentProvider>
-      </AuthProvider>
-    </LanguageProvider>
+          </CookieConsentProvider>
+        </AuthProvider>
+      </LanguageProvider>
+    </Router>
   );
 };
 
