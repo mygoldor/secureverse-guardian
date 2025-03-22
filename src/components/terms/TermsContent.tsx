@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
 
@@ -13,7 +12,7 @@ const TermsContent: React.FC = () => {
 
       <h2 className="text-xl font-semibold" id="introduction">1. Introduction</h2>
       <p className="mb-6">
-        Les Services sont fournis par <strong>Guardia Security</strong>, société enregistrée sous le numéro B123456789 et ayant son siège social à 123 Security Street, 1000 Brussels, Belgium. Nous nous réservons le droit de modifier, suspendre ou interrompre les Services à tout moment, sans préavis.
+        Les Services sont fournis par <strong>Guardia Security</strong>. Nous nous réservons le droit de modifier, suspendre ou interrompre les Services à tout moment, sans préavis.
       </p>
 
       <Separator className="my-6" />
