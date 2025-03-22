@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -16,23 +17,33 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPageLoaded, setIsPageLoaded] = useState(false);
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { signUp, user } = useAuth();
 
+  // Log when component mounts to track lifecycle
   useEffect(() => {
-    setIsPageLoaded(true);
+    console.log("Signup component mounted");
     
-    if (user && isPageLoaded) {
+    // Only redirect existing users with a delay
+    if (user) {
+      console.log("User already logged in, will redirect");
       const redirectTimer = setTimeout(() => {
+        console.log("Redirecting to dashboard");
         navigate('/dashboard');
-      }, 300);
+      }, 1000); // Longer delay to ensure component is fully mounted
       
-      return () => clearTimeout(redirectTimer);
+      return () => {
+        console.log("Clearing redirect timer");
+        clearTimeout(redirectTimer);
+      };
     }
-  }, [user, navigate, isPageLoaded]);
+    
+    return () => {
+      console.log("Signup component unmounted");
+    };
+  }, [user, navigate]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -44,6 +55,7 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted");
     setIsLoading(true);
     
     if (password !== confirmPassword) {
@@ -57,16 +69,24 @@ const Signup = () => {
     }
     
     try {
+      console.log("Attempting signup");
       const result = await signUp(email, password, name);
       
       if (result.success) {
+        console.log("Signup successful");
         toast({
           title: t('signup_success'),
           description: t('signup_success'),
         });
         
-        navigate('/payment');
+        // Navigate to payment page after successful signup
+        // Using setTimeout to delay navigation and prevent immediate redirect
+        setTimeout(() => {
+          console.log("Navigating to payment page");
+          navigate('/payment');
+        }, 1000);
       } else {
+        console.log("Signup failed:", result.error);
         toast({
           title: t('signup'),
           description: result.error instanceof Error ? result.error.message : t('signup_failed'),
