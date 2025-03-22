@@ -1,17 +1,19 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Cookie } from 'lucide-react';
+import { Cookie, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CookieBannerFullProps {
   onAccept: () => void;
   onReject: () => void;
+  onPreferences?: () => void;
 }
 
 const CookieBannerFull: React.FC<CookieBannerFullProps> = ({
   onAccept,
   onReject,
+  onPreferences,
 }) => {
   const { t } = useLanguage();
 
@@ -22,6 +24,17 @@ const CookieBannerFull: React.FC<CookieBannerFullProps> = ({
           <Cookie className="h-5 w-5 text-security-primary" />
           <span className="text-sm font-medium">{t('cookies')}</span>
         </div>
+        {onPreferences && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={onPreferences}
+            title={t('preferences')}
+          >
+            <Settings className="h-3.5 w-3.5" />
+          </Button>
+        )}
       </div>
       <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">
         {t('cookie_preferences_description').substring(0, 100)}...

@@ -1,6 +1,6 @@
 
 // Version pour le cache
-const CACHE_VERSION = 'v3'; // Incremented cache version
+const CACHE_VERSION = 'v4'; // Incremented cache version again to refresh assets
 const CACHE_NAME = `guardia-cache-${CACHE_VERSION}`;
 
 // Liste des ressources à mettre en cache

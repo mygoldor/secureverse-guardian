@@ -1,17 +1,19 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Cookie } from 'lucide-react';
+import { Cookie, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CookieBannerCompactProps {
   onAccept: () => void;
   onReject: () => void;
+  onPreferences?: () => void;
 }
 
 const CookieBannerCompact: React.FC<CookieBannerCompactProps> = ({
   onAccept,
   onReject,
+  onPreferences,
 }) => {
   const { t } = useLanguage();
 
@@ -35,6 +37,17 @@ const CookieBannerCompact: React.FC<CookieBannerCompactProps> = ({
         >
           {t('accept')}
         </Button>
+        {onPreferences && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-5 w-5"
+            onClick={onPreferences}
+            title={t('preferences')}
+          >
+            <Settings className="h-3 w-3" />
+          </Button>
+        )}
       </div>
     </div>
   );

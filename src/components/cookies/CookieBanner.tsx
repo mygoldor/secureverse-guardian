@@ -28,6 +28,11 @@ const CookieBanner: React.FC = () => {
     console.log('Cookie banner mounted, showBanner:', showBanner);
   }, [showBanner]);
   
+  // Reset local preferences when global preferences change
+  useEffect(() => {
+    setLocalPreferences(cookiePreferences);
+  }, [cookiePreferences]);
+  
   // Handle preference changes
   const handlePreferenceChange = (category: keyof typeof cookiePreferences) => {
     if (category === 'essential') return; // Essential cookies can't be disabled
@@ -54,6 +59,14 @@ const CookieBanner: React.FC = () => {
     rejectAllCookies();
   };
 
+  const openPreferences = () => {
+    setShowDetails(true);
+  };
+
+  if (!showBanner && !showDetails) {
+    return null;
+  }
+
   return (
     <>
       {/* Banner with different styling for landing page */}
@@ -67,11 +80,13 @@ const CookieBanner: React.FC = () => {
             <CookieBannerFull 
               onAccept={handleAcceptCookies}
               onReject={handleRejectCookies}
+              onPreferences={openPreferences}
             />
           ) : (
             <CookieBannerCompact
               onAccept={handleAcceptCookies}
               onReject={handleRejectCookies}
+              onPreferences={openPreferences}
             />
           )}
         </div>
