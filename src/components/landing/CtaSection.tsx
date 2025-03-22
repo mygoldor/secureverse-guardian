@@ -19,11 +19,23 @@ const CtaSection: React.FC = () => {
           <p className="text-xl mb-10 text-blue-100">
             {t('cta_subtitle')}
           </p>
-          <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
-            <Link to="/signup">
-              {t('signup_now')}
-            </Link>
-          </Button>
+          
+          {/* Link-wrapped button for direct HTML approach */}
+          <a href="/signup" className="inline-block mb-4">
+            <button 
+              className="px-6 py-3 bg-white text-blue-700 rounded-md font-semibold text-lg hover:bg-blue-50 transition-colors"
+            >
+              Commencer
+            </button>
+          </a>
+          
+          <div className="mt-4">
+            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
+              <Link to="/signup">
+                {t('signup_now')}
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
