@@ -90,9 +90,9 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               )}
             />
             
-            {!isBancontact && (
+            {!isBancontact && 'cvc' in form.getValues() && (
               <FormField
-                control={form.control}
+                control={form.control as UseFormReturn<PaymentFormValues>['control']}
                 name="cvc"
                 render={({ field }) => (
                   <FormItem>
