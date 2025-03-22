@@ -18,12 +18,14 @@ interface StripeCheckoutProps {
   planType: 'monthly' | 'yearly';
   email?: string;
   onSuccess?: () => void;
+  paymentMethod?: string;
 }
 
 const StripeCheckout: React.FC<StripeCheckoutProps> = ({ 
   planType, 
   email, 
-  onSuccess 
+  onSuccess,
+  paymentMethod = 'stripe'
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [testMode, setTestMode] = React.useState(false);
@@ -52,7 +54,8 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
         successUrl: `${window.location.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${window.location.origin}/payment`,
         customerEmail: email || '',
-        testMode
+        testMode,
+        paymentMethod
       };
 
       // Call our Supabase Edge Function to create a payment session
@@ -101,7 +104,8 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
           successUrl: `${window.location.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
           cancelUrl: `${window.location.origin}/payment`,
           customerEmail: email || '',
-          testMode
+          testMode,
+          paymentMethod
         };
 
         // Call our Supabase Edge Function to create a payment session
@@ -154,20 +158,31 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
     }
   };
 
+  // Special message for Bancontact payments
+  const getPaymentButtonText = () => {
+    if (paymentMethod === 'mollie') {
+      return "Payer avec Bancontact";
+    }
+    return isLoading ? "Traitement du paiement..." : (testMode ? "Tester le Paiement" : "Contenu");
+  };
+
   return (
     <div className="space-y-4">
-      <TestModeSection 
-        testMode={testMode}
-        testCardNumber={testCardNumber}
-        onTestModeChange={setTestMode}
-        onTestCardNumberChange={setTestCardNumber}
-      />
+      {paymentMethod === 'stripe' && (
+        <TestModeSection 
+          testMode={testMode}
+          testCardNumber={testCardNumber}
+          onTestModeChange={setTestMode}
+          onTestCardNumberChange={setTestCardNumber}
+        />
+      )}
       
       {!showCardForm ? (
         <PaymentButton 
           onClick={handleCheckout}
           isLoading={isLoading}
           isTestMode={testMode}
+          customText={paymentMethod === 'mollie' ? "Payer avec Bancontact" : undefined}
         />
       ) : (
         <CardPaymentForm
@@ -175,6 +190,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
           isLoading={isLoading}
           onSubmit={handlePayNow}
           onCancel={() => setShowCardForm(false)}
+          isBancontact={paymentMethod === 'mollie'}
         />
       )}
     </div>

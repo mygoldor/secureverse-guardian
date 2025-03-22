@@ -2,7 +2,6 @@
 import React from 'react';
 import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import StripeCheckout from '@/components/payment/StripeCheckout';
-import BancontactOptions from '@/components/payment/BancontactOptions';
 
 interface PaymentMethodsSectionProps {
   paymentMethod: string;
@@ -28,16 +27,11 @@ const PaymentMethodsSection: React.FC<PaymentMethodsSectionProps> = ({
             onChange={onPaymentMethodChange} 
           />
           
-          {paymentMethod === 'stripe' && (
-            <StripeCheckout 
-              planType={selectedPlan}
-              onSuccess={onPaymentSuccess}
-            />
-          )}
-          
-          {paymentMethod === 'mollie' && (
-            <BancontactOptions onSuccess={onPaymentSuccess} />
-          )}
+          <StripeCheckout 
+            planType={selectedPlan}
+            onSuccess={onPaymentSuccess}
+            paymentMethod={paymentMethod}
+          />
         </div>
       </div>
     </section>

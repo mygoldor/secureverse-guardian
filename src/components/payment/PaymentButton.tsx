@@ -8,12 +8,14 @@ interface PaymentButtonProps {
   onClick: () => void;
   isLoading: boolean;
   isTestMode: boolean;
+  customText?: string;
 }
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({
   onClick,
   isLoading,
-  isTestMode
+  isTestMode,
+  customText
 }) => {
   return (
     <Button 
@@ -29,7 +31,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       ) : (
         <>
           <CreditCard className="h-4 w-4 mr-2" />
-          {isTestMode ? 'Tester le Paiement' : 'Contenu'}
+          {customText || (isTestMode ? 'Tester le Paiement' : 'Contenu')}
         </>
       )}
     </Button>

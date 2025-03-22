@@ -8,6 +8,8 @@ interface CreatePaymentSessionOptions {
   customerEmail?: string;
   // Add test mode for using fake cards
   testMode?: boolean;
+  // Add payment method type
+  paymentMethod?: string;
 }
 
 interface PaymentResult {

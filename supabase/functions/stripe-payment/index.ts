@@ -40,12 +40,13 @@ serve(async (req) => {
 
   try {
     // Get request body
-    const { planType, successUrl, cancelUrl, customerEmail, testMode, priceId } = await req.json()
+    const { planType, successUrl, cancelUrl, customerEmail, testMode, priceId, paymentMethod } = await req.json()
     
     console.log('Creating payment session for plan:', planType)
     console.log('Customer email:', customerEmail)
     console.log('Test mode:', testMode ? 'enabled' : 'disabled')
     console.log('Price ID:', priceId || 'Not provided, using default')
+    console.log('Payment method:', paymentMethod || 'Default (card)')
 
     // Get the amount based on plan type
     const amount = PRICE_AMOUNTS[planType] || PRICE_AMOUNTS.monthly
@@ -53,12 +54,19 @@ serve(async (req) => {
     // Get the price ID
     const stripePriceId = priceId || PRICE_IDS[planType] || PRICE_IDS.monthly
 
+    // Determine payment method types based on the selected method
+    const paymentMethodTypes = ['card']; 
+    if (paymentMethod === 'mollie') {
+      // Add bancontact to payment methods when Bancontact is selected
+      paymentMethodTypes.push('bancontact');
+    }
+
     // For real implementation, you would use the price ID to create a Checkout Session
     // For now, we'll continue with the direct Payment Intent approach for demo purposes
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: 'eur',
-      payment_method_types: ['card'],
+      payment_method_types: paymentMethodTypes,
       receipt_email: customerEmail,
       description: `Guardia ${planType === 'yearly' ? 'Yearly' : 'Monthly'} Subscription`,
       metadata: {
@@ -66,6 +74,7 @@ serve(async (req) => {
         price_id: stripePriceId,
         customer_email: customerEmail,
         test_mode: testMode ? 'true' : 'false',
+        payment_method: paymentMethod || 'stripe',
       },
     })
 
@@ -82,6 +91,7 @@ serve(async (req) => {
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
         status: paymentIntent.status,
+        payment_method: paymentMethod || 'stripe',
       })
       .select('id')
 
