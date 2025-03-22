@@ -8,12 +8,12 @@ const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   
-  // Function to handle navigation to signup page for "Get Started" button
+  // Function to handle navigation to signup page
   const handleGetStartedClick = () => {
     navigate('/signup');
   };
   
-  // Function to handle navigation to signup page for "Discover Guardia" button
+  // Function to handle navigation to signup page
   const handleDiscoverGuardiaClick = () => {
     navigate('/signup');
   };
