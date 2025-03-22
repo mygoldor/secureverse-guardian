@@ -33,7 +33,7 @@ const LandingHeader = () => {
   };
 
   return (
-    <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50 shadow-md">
+    <header className="w-full bg-blue-800 py-4 px-4 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3">
           <img 
@@ -52,18 +52,18 @@ const LandingHeader = () => {
                 key={item.href} 
                 href={item.href} 
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="text-white hover:text-gray-300 transition-colors font-medium"
+                className="text-white hover:text-blue-200 transition-colors font-medium"
               >
                 {item.label}
               </a>
             ))}
-            <Link to="/login" className="text-white hover:text-gray-300 transition-colors font-medium">{t('login')}</Link>
+            <Link to="/login" className="text-white hover:text-blue-200 transition-colors font-medium">{t('login')}</Link>
           </nav>
           
           <div className="flex items-center space-x-4">
             <LanguageSelector />
             <Link to="/signup">
-              <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white font-semibold">
+              <Button className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
                 {t('get_started')}
               </Button>
             </Link>
@@ -75,7 +75,7 @@ const LandingHeader = () => {
           <LanguageSelector />
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-blue-800">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-blue-700">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Menu</span>
               </Button>
@@ -92,7 +92,7 @@ const LandingHeader = () => {
                           handleNavClick(e, item.href);
                         }, 100);
                       }}
-                      className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
+                      className="text-lg font-medium text-gray-800 hover:text-blue-600 py-2"
                     >
                       {item.label}
                     </a>
@@ -101,7 +101,7 @@ const LandingHeader = () => {
                 <SheetClose asChild>
                   <Link 
                     to="/login" 
-                    className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
+                    className="text-lg font-medium text-gray-800 hover:text-blue-600 py-2"
                   >
                     {t('login')}
                   </Link>
@@ -111,7 +111,7 @@ const LandingHeader = () => {
                     to="/signup" 
                     className="mt-4"
                   >
-                    <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">
                       {t('get_started')}
                     </Button>
                   </Link>

@@ -8,22 +8,22 @@ const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   
   return (
-    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 text-white">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             {t('hero_title')}
           </h1>
-          <p className="text-xl mb-10 text-gray-700">
+          <p className="text-xl mb-10 text-blue-100">
             {t('hero_subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
+            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
               <Link to="/signup">
                 {t('get_started')}
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-blue-700">
               <Link to="/signup">
                 {t('discover_guardia')}
               </Link>
