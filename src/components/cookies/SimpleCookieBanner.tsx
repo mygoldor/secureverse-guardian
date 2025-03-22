@@ -33,46 +33,51 @@ const SimpleCookieBanner: React.FC = () => {
         position: 'fixed',
         bottom: '20px',
         right: '20px',
-        width: '250px',
-        padding: '15px',
+        width: '300px',
+        padding: '20px',
         background: '#fff',
         borderRadius: '10px',
         boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
         textAlign: 'center',
         fontSize: '14px',
-        zIndex: 1000
+        zIndex: 1000,
+        border: '1px solid #ddd'
       }}
     >
-      <h4 style={{ margin: '0 0 8px 0', fontSize: '16px' }}>Politique de Cookies</h4>
-      <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant à naviguer, vous acceptez notre utilisation des cookies.</p>
-      <button 
-        onClick={handleAccept}
-        style={{
-          margin: '5px',
-          padding: '8px 12px',
-          border: 'none',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          backgroundColor: '#4caf50',
-          color: 'white'
-        }}
-      >
-        Accepter
-      </button>
-      <button 
-        onClick={handleReject}
-        style={{
-          margin: '5px',
-          padding: '8px 12px',
-          border: 'none',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          backgroundColor: '#f44336',
-          color: 'white'
-        }}
-      >
-        Refuser
-      </button>
+      <h4 style={{ margin: '0 0 10px 0', fontSize: '16px', fontWeight: 'bold', color: '#333' }}>Politique de Cookies</h4>
+      <p style={{ margin: '0 0 15px 0', lineHeight: '1.5' }}>Ce site utilise des cookies pour améliorer votre expérience. En continuant à naviguer, vous acceptez notre utilisation des cookies.</p>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        <button 
+          onClick={handleAccept}
+          style={{
+            padding: '8px 16px',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            backgroundColor: '#4caf50',
+            color: 'white',
+            transition: 'background-color 0.2s'
+          }}
+        >
+          Accepter
+        </button>
+        <button 
+          onClick={handleReject}
+          style={{
+            padding: '8px 16px',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            backgroundColor: '#f44336',
+            color: 'white',
+            transition: 'background-color 0.2s'
+          }}
+        >
+          Refuser
+        </button>
+      </div>
     </div>
   );
 };
