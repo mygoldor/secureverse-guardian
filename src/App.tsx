@@ -40,25 +40,21 @@ const App: React.FC = () => {
               {/* Protected routes that require authentication and subscription */}
               <Route path="/dashboard" element={
                 <AuthGuard>
-                  <Header />
                   <Dashboard />
                 </AuthGuard>
               } />
               <Route path="/protection" element={
                 <AuthGuard>
-                  <Header />
                   <Protection />
                 </AuthGuard>
               } />
               <Route path="/performance" element={
                 <AuthGuard>
-                  <Header />
                   <Performance />
                 </AuthGuard>
               } />
               <Route path="/settings" element={
                 <AuthGuard>
-                  <Header />
                   <Settings />
                 </AuthGuard>
               } />
