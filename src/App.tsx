@@ -26,20 +26,60 @@ const App = () => {
       <LanguageProvider>
         <AuthProvider>
           <Router>
-            <Header />
+            {/* Header component is now only rendered for authenticated routes */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/payment" element={<Payment />} />
-              <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
-              <Route path="/protection" element={<Protection />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/performance" element={<Performance />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/mentions-legales" element={<MentionsLegales />} />
-              <Route path="/cookies" element={<CookiesPolicy />} />
-              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/dashboard" element={
+                <AuthGuard>
+                  <Header />
+                  <Dashboard />
+                </AuthGuard>
+              } />
+              <Route path="/protection" element={
+                <>
+                  <Header />
+                  <Protection />
+                </>
+              } />
+              <Route path="/privacy" element={
+                <>
+                  <Header />
+                  <Privacy />
+                </>
+              } />
+              <Route path="/performance" element={
+                <>
+                  <Header />
+                  <Performance />
+                </>
+              } />
+              <Route path="/settings" element={
+                <>
+                  <Header />
+                  <Settings />
+                </>
+              } />
+              <Route path="/mentions-legales" element={
+                <>
+                  <Header />
+                  <MentionsLegales />
+                </>
+              } />
+              <Route path="/cookies" element={
+                <>
+                  <Header />
+                  <CookiesPolicy />
+                </>
+              } />
+              <Route path="/terms" element={
+                <>
+                  <Header />
+                  <TermsOfService />
+                </>
+              } />
               {/* Catch all route for pages that don't exist */}
               <Route path="*" element={<NotFound />} />
             </Routes>

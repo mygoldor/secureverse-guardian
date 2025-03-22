@@ -18,8 +18,8 @@ const Home = () => {
       <main>
         <HeroSection />
         <FeaturesSection />
-        <PricingSection />
         <TestimonialsSection />
+        <PricingSection />
         <CtaSection />
       </main>
       <Footer />
