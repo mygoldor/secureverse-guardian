@@ -1,61 +1,27 @@
-
-import React, { useEffect } from 'react';
-import HeroSection from '@/components/landing/HeroSection';
-import FeaturesSection from '@/components/landing/FeaturesSection';
-import PricingSection from '@/components/landing/PricingSection';
-import TestimonialsSection from '@/components/landing/TestimonialsSection';
-import CtaSection from '@/components/landing/CtaSection';
-import LandingHeader from '@/components/landing/LandingHeader';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import HeroSection from '@/components/HeroSection';
+import FeaturesSection from '@/components/FeaturesSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import Footer from '@/components/Footer';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { CreditCard } from 'lucide-react';
 
-const Home = () => {
-  const { t } = useLanguage();
-
-  // Handle smooth scrolling for anchor links
-  useEffect(() => {
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLAnchorElement;
-      
-      if (target.tagName === 'A' && target.hash && target.hash.startsWith('#') && !target.classList.contains('nav-item')) {
-        e.preventDefault();
-        const element = document.querySelector(target.hash);
-        
-        if (element) {
-          window.scrollTo({
-            top: element.getBoundingClientRect().top + window.scrollY - 80, // Account for header height
-            behavior: 'smooth'
-          });
-        }
-      }
-    };
-
-    document.addEventListener('click', handleAnchorClick);
-    
-    return () => {
-      document.removeEventListener('click', handleAnchorClick);
-    };
-  }, []);
-
+const Home: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <LandingHeader />
-      <main>
-        <HeroSection />
-        <div id="features" className="scroll-mt-24">
-          <FeaturesSection />
-        </div>
-        <div id="testimonials" className="scroll-mt-24">
-          <TestimonialsSection />
-        </div>
-        <div id="pricing" className="scroll-mt-24">
-          <PricingSection />
-        </div>
-        <div id="contact" className="scroll-mt-24">
-          <CtaSection />
-        </div>
-      </main>
+    <div className="min-h-screen bg-white text-gray-800">
+      <HeroSection />
+      <FeaturesSection />
+      <TestimonialsSection />
       <Footer />
+      <div className="mt-8">
+        <Link
+          to="/one-month-payment"
+          className="inline-flex items-center px-6 py-3 bg-security-primary hover:bg-security-primary/90 text-white font-medium rounded-lg shadow-md"
+        >
+          <CreditCard className="w-5 h-5 mr-2" />
+          Get One-Month Subscription
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
@@ -21,6 +20,7 @@ import CookiesPolicy from '@/pages/CookiesPolicy';
 import TermsOfService from '@/pages/TermsOfService';
 import { CookieConsentProvider } from '@/contexts/CookieConsentContext';
 import SimpleCookieBanner from '@/components/cookies/SimpleCookieBanner';
+import OneMonthPaymentPage from './pages/OneMonthPayment';
 
 const App: React.FC = () => {
   return (
@@ -34,6 +34,7 @@ const App: React.FC = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/payment" element={<Payment />} />
+              <Route path="/one-month-payment" element={<OneMonthPaymentPage />} />
               
               {/* Protected routes that require authentication and subscription */}
               <Route path="/dashboard" element={

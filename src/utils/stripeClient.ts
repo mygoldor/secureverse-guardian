@@ -38,10 +38,20 @@ export const createPaymentSession = async (options: CreatePaymentSessionOptions)
 /**
  * Update payment status in Supabase
  */
-export const updatePaymentStatus = async (paymentIntentId: string, paymentAttemptId: string): Promise<{ status: string }> => {
+export const updatePaymentStatus = async (
+  paymentIntentId: string, 
+  paymentAttemptId: string,
+  testMode?: boolean,
+  simulatedStatus?: string
+): Promise<{ status: string }> => {
   try {
     const { data, error } = await supabase.functions.invoke('update-payment', {
-      body: { paymentIntentId, paymentAttemptId },
+      body: { 
+        paymentIntentId, 
+        paymentAttemptId,
+        testMode,
+        simulatedStatus
+      },
     });
 
     if (error) throw new Error(error.message);
