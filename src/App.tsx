@@ -25,8 +25,8 @@ import OneMonthPaymentPage from './pages/OneMonthPayment';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <React.StrictMode>
+    <React.StrictMode>
+      <Router>
         <LanguageProvider>
           <AuthProvider>
             <CookieConsentProvider>
@@ -98,8 +98,8 @@ const App: React.FC = () => {
             </CookieConsentProvider>
           </AuthProvider>
         </LanguageProvider>
-      </React.StrictMode>
-    </Router>
+      </Router>
+    </React.StrictMode>
   );
 };
 
