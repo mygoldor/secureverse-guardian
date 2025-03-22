@@ -1,3 +1,4 @@
+
 import { TranslationKeys } from './types';
 
 const de: TranslationKeys = {
@@ -362,6 +363,7 @@ const de: TranslationKeys = {
   marketing_cookies_info: 'Zeigt Anzeigen basierend auf Ihren Interessen',
   gdpr_compliant: 'DSGVO-konform',
   cookie_policy: 'Cookie-Richtlinie',
+  preferences: 'Einstellungen',
 };
 
 export default de;

@@ -364,6 +364,7 @@ const fr: TranslationKeys = {
   marketing_cookies_info: 'Affiche des publicités basées sur vos intérêts',
   gdpr_compliant: 'Conforme au RGPD',
   cookie_policy: 'Politique des cookies',
+  preferences: 'Préférences',
 };
 
 export default fr;
