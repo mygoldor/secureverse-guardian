@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +20,7 @@ const Signup = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -49,11 +50,14 @@ const Signup = () => {
       const result = await signUp(email, password, name);
       
       if (result.success) {
-        console.log("Signup successful");
+        console.log("Signup successful - redirecting to payment page");
         toast({
           title: t('signup_success'),
           description: t('signup_success'),
         });
+        
+        // Redirect to payment page after successful signup
+        navigate('/payment');
       } else {
         console.log("Signup failed:", result.error);
         toast({
