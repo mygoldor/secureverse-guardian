@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
 
@@ -144,8 +143,7 @@ const CookiesPolicyContent: React.FC = () => {
         Pour toute question concernant cette politique des cookies, contactez-nous à :
       </p>
       <ul className="list-none mb-4">
-        <li><strong>Email</strong> : privacy@guardia-security.com</li>
-        <li><strong>Adresse postale</strong> : 123 Avenue de la Cybersécurité, 75001 Paris</li>
+        <li><strong>Email</strong> : info@cybergard.eu</li>
       </ul>
       
       <Separator className="my-6" />
