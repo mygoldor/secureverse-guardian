@@ -9,25 +9,25 @@ const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   
   return (
-    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 text-white">
+    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-            {t('hero_title')}
+            Protection complète contre les menaces numériques
           </h1>
           <p className="text-xl mb-10 text-blue-100">
-            {t('hero_subtitle')}
+            Sécurisez vos appareils, données et vie privée avec notre solution de cybersécurité tout-en-un
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
             <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
               <Link to="/signup">
-                {t('get_started')}
+                Commencer
               </Link>
             </Button>
             <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
               <Link to="/signup">
-                {t('discover_guardia')}
+                Découvrir Guardia
               </Link>
             </Button>
           </div>
@@ -37,8 +37,8 @@ const HeroSection: React.FC = () => {
         <div className="relative w-full max-w-4xl">
           <div className="aspect-video rounded-lg overflow-hidden shadow-xl">
             <img 
-              src="/lovable-uploads/a79c46d3-f1c2-4593-967d-8c6176e58cbc.png" 
-              alt="Guardia dashboard preview" 
+              src="/lovable-uploads/e43f9f04-afc5-43f6-857e-d2da3c3128f6.png" 
+              alt="Guardia security illustration" 
               className="w-full h-full object-cover"
             />
           </div>
