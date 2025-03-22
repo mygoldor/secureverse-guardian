@@ -42,44 +42,44 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4">{t('navigation')}</h4>
             <ul className="space-y-2">
               <li>
-                <button 
-                  onClick={() => handleNavigation('hero')} 
+                <Link 
+                  to="/"
                   className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   {t('home')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('features')} 
+                <Link 
+                  to="/#features"
                   className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   {t('features')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('pricing')} 
+                <Link 
+                  to="/#pricing"
                   className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   {t('pricing')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('testimonials')} 
+                <Link 
+                  to="/#testimonials"
                   className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   {t('testimonials')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('contact')} 
+                <Link 
+                  to="/#contact"
                   className="text-gray-300 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   {t('contact')}
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
