@@ -1,6 +1,6 @@
 
 // Version pour le cache
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3'; // Incremented cache version
 const CACHE_NAME = `guardia-cache-${CACHE_VERSION}`;
 
 // Liste des ressources à mettre en cache
@@ -52,8 +52,10 @@ self.addEventListener('activate', (event) => {
 
 // Stratégie de récupération: cache puis réseau avec mise à jour du cache
 self.addEventListener('fetch', (event) => {
-  // Ignorer les requêtes cross-origin
-  if (!event.request.url.startsWith(self.location.origin)) {
+  // Ignorer les requêtes cross-origin et vers "cdn.gpteng.co"
+  if (!event.request.url.startsWith(self.location.origin) || 
+      event.request.url.includes('cdn.gpteng.co') ||
+      event.request.url.includes('gpteng.co')) {
     return;
   }
   
