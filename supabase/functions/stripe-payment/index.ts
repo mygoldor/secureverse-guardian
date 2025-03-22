@@ -20,10 +20,16 @@ const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2023-10-16',
 })
 
-// Define price amounts in cents
+// Define price amounts in cents and IDs
 const PRICE_AMOUNTS = {
   monthly: 999, // €9.99
   yearly: 9900,  // €99.00
+}
+
+// Define Stripe price IDs
+const PRICE_IDS = {
+  yearly: 'price_1R5UkPL2HzcstfNBQgbH8SyW', // Annual subscription price ID from user
+  monthly: 'price_monthly_placeholder' // Placeholder for monthly price ID
 }
 
 serve(async (req) => {
@@ -34,17 +40,21 @@ serve(async (req) => {
 
   try {
     // Get request body
-    const { planType, successUrl, cancelUrl, customerEmail, testMode } = await req.json()
+    const { planType, successUrl, cancelUrl, customerEmail, testMode, priceId } = await req.json()
     
     console.log('Creating payment session for plan:', planType)
     console.log('Customer email:', customerEmail)
     console.log('Test mode:', testMode ? 'enabled' : 'disabled')
+    console.log('Price ID:', priceId || 'Not provided, using default')
 
     // Get the amount based on plan type
     const amount = PRICE_AMOUNTS[planType] || PRICE_AMOUNTS.monthly
+    
+    // Get the price ID
+    const stripePriceId = priceId || PRICE_IDS[planType] || PRICE_IDS.monthly
 
-    // For testing purposes, we'll create a Payment Intent directly without redirecting to Stripe
-    // In production, you would create a Checkout Session and redirect to Stripe
+    // For real implementation, you would use the price ID to create a Checkout Session
+    // For now, we'll continue with the direct Payment Intent approach for demo purposes
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: 'eur',
@@ -53,6 +63,7 @@ serve(async (req) => {
       description: `Guardia ${planType === 'yearly' ? 'Yearly' : 'Monthly'} Subscription`,
       metadata: {
         plan: planType,
+        price_id: stripePriceId,
         customer_email: customerEmail,
         test_mode: testMode ? 'true' : 'false',
       },
@@ -67,6 +78,7 @@ serve(async (req) => {
         stripe_payment_id: paymentIntent.id,
         customer_email: customerEmail,
         plan_type: planType,
+        price_id: stripePriceId,
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
         status: paymentIntent.status,
