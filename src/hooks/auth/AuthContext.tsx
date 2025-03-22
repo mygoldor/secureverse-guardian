@@ -9,9 +9,11 @@ import {
   signOutUser 
 } from './authFunctions';
 
+// Create the context with a default undefined value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+// Create the provider component as a proper React functional component
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,6 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// Export the hook to use the AuthContext
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
