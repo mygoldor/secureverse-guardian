@@ -1,12 +1,17 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Shield } from 'lucide-react';
 
 const CtaSection: React.FC = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  
+  const handleStartButtonClick = () => {
+    navigate('/signup');
+  };
 
   return (
     <section className="py-20 bg-blue-700 text-white">
@@ -20,14 +25,13 @@ const CtaSection: React.FC = () => {
             {t('cta_subtitle')}
           </p>
           
-          {/* Link-wrapped button for direct HTML approach */}
-          <a href="/signup" className="inline-block mb-4">
-            <button 
-              className="px-6 py-3 bg-white text-blue-700 rounded-md font-semibold text-lg hover:bg-blue-50 transition-colors"
-            >
-              Commencer
-            </button>
-          </a>
+          {/* Direct button with onClick handler */}
+          <button 
+            onClick={handleStartButtonClick}
+            className="px-6 py-3 bg-white text-blue-700 rounded-md font-semibold text-lg hover:bg-blue-50 transition-colors mb-6"
+          >
+            Commencer
+          </button>
           
           <div className="mt-4">
             <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">

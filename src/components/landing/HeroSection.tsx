@@ -1,31 +1,16 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   
-  useEffect(() => {
-    // Add event listener for the start button
-    const startButton = document.getElementById("start-button");
-    if (startButton) {
-      startButton.addEventListener("click", function () {
-        window.location.href = "/signup"; // Redirect to signup page instead of inscription.html
-      });
-    }
-    
-    // Cleanup function to remove event listener
-    return () => {
-      const startButton = document.getElementById("start-button");
-      if (startButton) {
-        startButton.removeEventListener("click", function () {
-          window.location.href = "/signup";
-        });
-      }
-    };
-  }, []);
+  const handleStartButtonClick = () => {
+    navigate('/signup');
+  };
   
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 text-white">
@@ -38,9 +23,9 @@ const HeroSection: React.FC = () => {
             {t('hero_subtitle')}
           </p>
           
-          {/* New start button with ID */}
+          {/* Direct button with onClick handler for signup */}
           <button 
-            id="start-button" 
+            onClick={handleStartButtonClick}
             className="px-6 py-3 bg-white text-blue-700 rounded-md font-semibold text-lg hover:bg-blue-50 transition-colors mb-6"
           >
             Commencer
