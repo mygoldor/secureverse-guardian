@@ -49,12 +49,6 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
         // Simulate successful payment
         sessionStorage.setItem('paymentSuccessful', 'true');
         
-        // Show success message
-        toast({
-          title: "Paiement simulé",
-          description: "Paiement réussi simulé pour démonstration",
-        });
-        
         // Call success callback
         if (onSuccess) {
           onSuccess();

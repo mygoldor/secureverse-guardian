@@ -29,7 +29,6 @@ const Payment = () => {
       sessionStorage.setItem('paymentSuccessful', 'true');
       sessionStorage.removeItem('installationChoiceMade');
       setShowSuccessModal(true);
-      console.log('Paiement simulé', new Date().toISOString());
     } catch (error) {
       console.error('Erreur de paiement:', error);
       toast({
