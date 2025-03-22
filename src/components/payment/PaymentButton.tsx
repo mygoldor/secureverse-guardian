@@ -7,14 +7,13 @@ import LoadingSpinner from './LoadingSpinner';
 interface PaymentButtonProps {
   onClick: () => void;
   isLoading: boolean;
-  isTestMode: boolean;
+  isTestMode?: boolean;
   customText?: string;
 }
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({
   onClick,
   isLoading,
-  isTestMode,
   customText
 }) => {
   return (
@@ -31,7 +30,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       ) : (
         <>
           <CreditCard className="h-4 w-4 mr-2" />
-          {customText || (isTestMode ? 'Tester le Paiement' : 'Contenu')}
+          {customText || 'Contenu'}
         </>
       )}
     </Button>

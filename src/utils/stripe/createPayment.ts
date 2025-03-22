@@ -6,8 +6,6 @@ interface CreatePaymentSessionOptions {
   successUrl: string;
   cancelUrl: string;
   customerEmail?: string;
-  // Add test mode for using fake cards
-  testMode?: boolean;
   // Add payment method type
   paymentMethod?: string;
 }

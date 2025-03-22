@@ -6,17 +6,13 @@ import { supabase } from '@/integrations/supabase/client';
  */
 export const updatePaymentStatus = async (
   paymentIntentId: string, 
-  paymentAttemptId: string,
-  testMode?: boolean,
-  simulatedStatus?: string
+  paymentAttemptId: string
 ): Promise<{ status: string }> => {
   try {
     const { data, error } = await supabase.functions.invoke('update-payment', {
       body: { 
         paymentIntentId, 
-        paymentAttemptId,
-        testMode,
-        simulatedStatus
+        paymentAttemptId
       },
     });
 
