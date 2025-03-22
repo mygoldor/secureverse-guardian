@@ -26,8 +26,8 @@ const LandingHeader = () => {
         <div className="hidden md:flex items-center space-x-8">
           <nav className="flex items-center space-x-6">
             <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
-            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
             <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
+            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
             <a href="#contact" className="text-white hover:text-gray-300 transition-colors">{t('contact')}</a>
             <Link to="/login" className="text-white hover:text-gray-300 transition-colors">{t('login')}</Link>
           </nav>
@@ -54,8 +54,8 @@ const LandingHeader = () => {
             <SheetContent side="right" className="w-[250px] sm:w-[300px]">
               <div className="flex flex-col space-y-4 mt-8">
                 <a href="#features" className="text-lg font-medium hover:text-security-primary py-2">{t('features')}</a>
-                <a href="#pricing" className="text-lg font-medium hover:text-security-primary py-2">{t('pricing')}</a>
                 <a href="#testimonials" className="text-lg font-medium hover:text-security-primary py-2">{t('testimonials')}</a>
+                <a href="#pricing" className="text-lg font-medium hover:text-security-primary py-2">{t('pricing')}</a>
                 <a href="#contact" className="text-lg font-medium hover:text-security-primary py-2">{t('contact')}</a>
                 <Link to="/login" className="text-lg font-medium hover:text-security-primary py-2">{t('login')}</Link>
                 <Link to="/signup" className="mt-4">

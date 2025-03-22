@@ -17,10 +17,18 @@ const Home = () => {
       <LandingHeader />
       <main>
         <HeroSection />
-        <FeaturesSection />
-        <TestimonialsSection />
-        <PricingSection />
-        <CtaSection />
+        <div id="features">
+          <FeaturesSection />
+        </div>
+        <div id="testimonials">
+          <TestimonialsSection />
+        </div>
+        <div id="pricing">
+          <PricingSection />
+        </div>
+        <div id="contact">
+          <CtaSection />
+        </div>
       </main>
       <Footer />
     </div>
