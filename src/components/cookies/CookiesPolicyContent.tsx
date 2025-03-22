@@ -126,7 +126,7 @@ const CookiesPolicyContent: React.FC = () => {
         <li>De retirer votre consentement à tout moment.</li>
       </ul>
       <p className="mb-4">
-        Pour exercer vos droits, contactez-nous à l'adresse : <strong>privacy@guardia-security.com</strong>.
+        Pour exercer vos droits, contactez-nous à l'adresse : <strong>info@cybergard.eu</strong>.
       </p>
       
       <Separator className="my-6" />
