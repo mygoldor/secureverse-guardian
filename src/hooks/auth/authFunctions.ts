@@ -13,21 +13,10 @@ export const signInWithEmailPassword = async (email: string, password: string) =
     if (error) throw error;
     
     if (data && data.user) {
-      // Get user profile
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', data.user.id)
-        .single();
-        
-      if (profileError) {
-        console.error('Error fetching user profile:', profileError);
-      }
-      
       // Create user data for localStorage (for backward compatibility)
       const userData: UserData = {
         id: data.user.id,
-        name: profileData?.name || email.split('@')[0],
+        name: email.split('@')[0], // Use part of email as name since we don't have a profiles table
         email: email,
         isAuthenticated: true,
         subscriptionActive: false // This would be updated based on subscription check
@@ -55,6 +44,11 @@ export const signUpWithEmailPassword = async (email: string, password: string, n
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          name: name, // Store name in user metadata
+        }
+      }
     });
 
     if (authError) {
@@ -65,18 +59,6 @@ export const signUpWithEmailPassword = async (email: string, password: string, n
     console.log("Auth signup successful:", authData?.user?.id);
 
     if (authData && authData.user) {
-      // Create a profile for the user in profiles table
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          user_id: authData.user.id,
-          name: name,
-        });
-
-      if (profileError) {
-        console.error('Error creating user profile:', profileError);
-      }
-
       // Create user data for localStorage (for backward compatibility)
       const userData: UserData = {
         id: authData.user.id,
