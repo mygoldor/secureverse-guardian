@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -37,7 +38,6 @@ const OneMonthPayment: React.FC<OneMonthPaymentProps> = ({ onSuccess }) => {
         successUrl: `${window.location.origin}/payment/success`,
         cancelUrl: `${window.location.origin}/payment`,
         customerEmail: email,
-        testMode: true // Using test mode for demonstration
       };
 
       toast({
@@ -56,9 +56,7 @@ const OneMonthPayment: React.FC<OneMonthPaymentProps> = ({ onSuccess }) => {
           // Update payment status to succeeded
           const { status } = await updatePaymentStatus(
             paymentIntentId, 
-            paymentAttemptId, 
-            true, // Use test mode
-            'succeeded' // Force success status
+            paymentAttemptId
           );
           
           setIsLoading(false);
@@ -121,14 +119,10 @@ const OneMonthPayment: React.FC<OneMonthPaymentProps> = ({ onSuccess }) => {
             ) : (
               <>
                 <CreditCard className="h-4 w-4 mr-2" />
-                Pay Now (Test Mode)
+                Pay Now
               </>
             )}
           </Button>
-          
-          <p className="text-xs text-center text-gray-500 mt-2">
-            This is a test payment. No actual charge will be made.
-          </p>
         </div>
       </CardContent>
     </Card>
