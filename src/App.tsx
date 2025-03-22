@@ -26,8 +26,8 @@ const App = () => {
       <LanguageProvider>
         <AuthProvider>
           <Router>
-            {/* Header component is now only rendered for authenticated routes */}
             <Routes>
+              {/* Home route without additional header */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
@@ -39,46 +39,46 @@ const App = () => {
                 </AuthGuard>
               } />
               <Route path="/protection" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <Protection />
-                </>
+                </AuthGuard>
               } />
               <Route path="/privacy" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <Privacy />
-                </>
+                </AuthGuard>
               } />
               <Route path="/performance" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <Performance />
-                </>
+                </AuthGuard>
               } />
               <Route path="/settings" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <Settings />
-                </>
+                </AuthGuard>
               } />
               <Route path="/mentions-legales" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <MentionsLegales />
-                </>
+                </AuthGuard>
               } />
               <Route path="/cookies" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <CookiesPolicy />
-                </>
+                </AuthGuard>
               } />
               <Route path="/terms" element={
-                <>
+                <AuthGuard>
                   <Header />
                   <TermsOfService />
-                </>
+                </AuthGuard>
               } />
               {/* Catch all route for pages that don't exist */}
               <Route path="*" element={<NotFound />} />
