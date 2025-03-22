@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import CardPaymentForm from './CardPaymentForm';
@@ -17,7 +16,6 @@ interface BancontactOptionsProps {
 const BancontactOptions: React.FC<BancontactOptionsProps> = ({ onSuccess }) => {
   const [showCardForm, setShowCardForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'app'>('card');
   
   const form = useForm<PaymentFormValues>({
     resolver: zodResolver(paymentFormSchema),
@@ -51,66 +49,56 @@ const BancontactOptions: React.FC<BancontactOptionsProps> = ({ onSuccess }) => {
     }, 2000);
   };
 
-  const handleChooseMethod = (method: 'card' | 'app') => {
-    setPaymentMethod(method);
-    if (method === 'card') {
-      setShowCardForm(true);
-    } else {
-      handleAppPayment();
-    }
+  // Direct handler for card option - immediately shows the form
+  const handleCardOptionClick = () => {
+    setShowCardForm(true);
   };
+
+  if (showCardForm) {
+    return (
+      <CardPaymentForm 
+        form={form}
+        isLoading={isLoading}
+        onSubmit={handleCardSubmit}
+        onCancel={() => setShowCardForm(false)}
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
-      {!showCardForm ? (
-        <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4 text-center">Options Bancontact</h3>
-          
-          <RadioGroup 
-            defaultValue="card"
-            className="grid grid-cols-1 gap-4 pt-2"
-            onValueChange={(value) => setPaymentMethod(value as 'card' | 'app')}
+      <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+        <h3 className="text-lg font-semibold mb-4 text-center">Options Bancontact</h3>
+        
+        <div className="grid grid-cols-1 gap-4 pt-2">
+          {/* Card option - now directly clickable */}
+          <div 
+            className="flex items-center space-x-2 border p-3 rounded-md hover:bg-gray-50 cursor-pointer"
+            onClick={handleCardOptionClick}
           >
-            <div className="flex items-center space-x-2 border p-3 rounded-md hover:bg-gray-50 cursor-pointer">
-              <RadioGroupItem value="card" id="card-option" />
-              <Label htmlFor="card-option" className="flex-grow cursor-pointer flex items-center">
-                <div className="ml-2">
-                  <p className="font-medium">Carte bancaire</p>
-                  <p className="text-sm text-gray-500">Payer avec une carte Bancontact</p>
-                </div>
-              </Label>
+            <div className="flex-grow cursor-pointer flex items-center">
+              <div className="ml-2">
+                <p className="font-medium">Carte bancaire</p>
+                <p className="text-sm text-gray-500">Payer avec une carte Bancontact</p>
+              </div>
             </div>
-            
-            <div className="flex items-center space-x-2 border p-3 rounded-md hover:bg-gray-50 cursor-pointer">
-              <RadioGroupItem value="app" id="app-option" />
-              <Label htmlFor="app-option" className="flex-grow cursor-pointer flex items-center">
-                <Smartphone className="h-5 w-5 text-blue-500 mr-2" />
-                <div>
-                  <p className="font-medium">Application mobile</p>
-                  <p className="text-sm text-gray-500">Utiliser l'app Bancontact sur votre téléphone</p>
-                </div>
-              </Label>
-            </div>
-          </RadioGroup>
+          </div>
           
-          <div className="mt-6 flex justify-center">
-            <Button 
-              onClick={() => handleChooseMethod(paymentMethod)}
-              className="bg-[#0a84ff] hover:bg-[#0a84ff]/90 text-white w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Traitement...' : 'Continuer'}
-            </Button>
+          {/* App option */}
+          <div 
+            className="flex items-center space-x-2 border p-3 rounded-md hover:bg-gray-50 cursor-pointer"
+            onClick={handleAppPayment}
+          >
+            <div className="flex-grow cursor-pointer flex items-center">
+              <Smartphone className="h-5 w-5 text-blue-500 mr-2" />
+              <div>
+                <p className="font-medium">Application mobile</p>
+                <p className="text-sm text-gray-500">Utiliser l'app Bancontact sur votre téléphone</p>
+              </div>
+            </div>
           </div>
         </div>
-      ) : (
-        <CardPaymentForm 
-          form={form}
-          isLoading={isLoading}
-          onSubmit={handleCardSubmit}
-          onCancel={() => setShowCardForm(false)}
-        />
-      )}
+      </div>
     </div>
   );
 };
