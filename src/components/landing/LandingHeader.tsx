@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
 
 const LandingHeader = () => {
   const { t } = useLanguage();
@@ -40,9 +42,28 @@ const LandingHeader = () => {
           </div>
         </div>
         
-        {/* Mobile Menu area */}
-        <div className="flex md:hidden items-center">
+        {/* Mobile Menu */}
+        <div className="flex md:hidden items-center space-x-2">
           <LanguageSelector />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-white">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <div className="flex flex-col space-y-4 mt-8">
+                <a href="#features" className="text-gray-800 hover:text-security-primary py-2">{t('features')}</a>
+                <a href="#pricing" className="text-gray-800 hover:text-security-primary py-2">{t('pricing')}</a>
+                <a href="#testimonials" className="text-gray-800 hover:text-security-primary py-2">{t('testimonials')}</a>
+                <a href="#contact" className="text-gray-800 hover:text-security-primary py-2">{t('contact')}</a>
+                <Link to="/login" className="text-gray-800 hover:text-security-primary py-2">{t('login')}</Link>
+                <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full mt-4" onClick={() => window.location.href='/signup'}>
+                  {t('get_started')}
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
