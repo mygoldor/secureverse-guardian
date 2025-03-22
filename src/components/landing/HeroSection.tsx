@@ -8,10 +8,6 @@ const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   
-  const handleStartButtonClick = () => {
-    navigate('/signup');
-  };
-  
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 text-white">
       <div className="container mx-auto px-4">
@@ -22,14 +18,6 @@ const HeroSection: React.FC = () => {
           <p className="text-xl mb-10 text-blue-100">
             {t('hero_subtitle')}
           </p>
-          
-          {/* Direct button with onClick handler for signup */}
-          <button 
-            onClick={handleStartButtonClick}
-            className="px-6 py-3 bg-white text-blue-700 rounded-md font-semibold text-lg hover:bg-blue-50 transition-colors mb-6"
-          >
-            Commencer
-          </button>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
             <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
