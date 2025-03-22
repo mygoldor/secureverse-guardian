@@ -32,13 +32,6 @@ const LandingHeader = () => {
     }
   };
 
-  const closeSheet = () => {
-    const closeButton = document.querySelector('[data-radix-collection-item]') as HTMLElement;
-    if (closeButton) {
-      closeButton.click();
-    }
-  };
-
   return (
     <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -90,42 +83,39 @@ const LandingHeader = () => {
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-white">
               <div className="flex flex-col space-y-4 mt-8">
                 {navItems.map((item) => (
-                  <a 
-                    key={item.href} 
-                    href={item.href} 
-                    onClick={(e) => {
-                      // Close the sheet
-                      closeSheet();
-                      // After a small delay, scroll to the section
-                      setTimeout(() => {
-                        handleNavClick(e, item.href);
-                      }, 100);
-                    }}
+                  <SheetClose asChild key={item.href}>
+                    <a 
+                      href={item.href} 
+                      onClick={(e) => {
+                        // After the sheet is closed, scroll to the section
+                        setTimeout(() => {
+                          handleNavClick(e, item.href);
+                        }, 100);
+                      }}
+                      className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
+                    >
+                      {item.label}
+                    </a>
+                  </SheetClose>
+                ))}
+                <SheetClose asChild>
+                  <Link 
+                    to="/login" 
                     className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
                   >
-                    {item.label}
-                  </a>
-                ))}
-                <Link 
-                  to="/login" 
-                  className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
-                  onClick={() => {
-                    closeSheet();
-                  }}
-                >
-                  {t('login')}
-                </Link>
-                <Link 
-                  to="/signup" 
-                  className="mt-4"
-                  onClick={() => {
-                    closeSheet();
-                  }}
-                >
-                  <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
-                    {t('get_started')}
-                  </Button>
-                </Link>
+                    {t('login')}
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link 
+                    to="/signup" 
+                    className="mt-4"
+                  >
+                    <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
+                      {t('get_started')}
+                    </Button>
+                  </Link>
+                </SheetClose>
               </div>
             </SheetContent>
           </Sheet>
