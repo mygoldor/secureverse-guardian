@@ -20,10 +20,10 @@ const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2023-10-16',
 })
 
-// Define price IDs - in a real environment, these would be your actual Stripe price IDs
-const PRICE_IDS = {
-  monthly: 'price_monthly_test',
-  yearly: 'price_yearly_test',
+// Define price amounts in cents
+const PRICE_AMOUNTS = {
+  monthly: 999, // €9.99
+  yearly: 9900,  // €99.00
 }
 
 serve(async (req) => {
@@ -40,10 +40,13 @@ serve(async (req) => {
     console.log('Customer email:', customerEmail)
     console.log('Test mode:', testMode ? 'enabled' : 'disabled')
 
+    // Get the amount based on plan type
+    const amount = PRICE_AMOUNTS[planType] || PRICE_AMOUNTS.monthly
+
     // For testing purposes, we'll create a Payment Intent directly without redirecting to Stripe
     // In production, you would create a Checkout Session and redirect to Stripe
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: planType === 'yearly' ? 9900 : 999, // €9.99 or €99 in cents
+      amount: amount,
       currency: 'eur',
       payment_method_types: ['card'],
       receipt_email: customerEmail,

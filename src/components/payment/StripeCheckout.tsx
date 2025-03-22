@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { ExternalLink, CreditCard } from 'lucide-react';
@@ -11,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface StripeCheckoutProps {
   planType: 'monthly' | 'yearly';
@@ -23,10 +24,11 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
   email, 
   onSuccess 
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [testMode, setTestMode] = useState(false);
-  const [testCardNumber, setTestCardNumber] = useState('4242424242424242');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [testMode, setTestMode] = React.useState(false);
+  const [testCardNumber, setTestCardNumber] = React.useState('4242424242424242');
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleCheckout = async () => {
     try {

@@ -34,16 +34,38 @@ serve(async (req) => {
     console.log('Test mode:', testMode ? 'enabled' : 'disabled')
 
     let paymentStatus
+    let paymentDetails = {}
 
     if (testMode && simulatedStatus) {
       // Use the simulated status for test mode
       paymentStatus = simulatedStatus
       console.log('Using simulated status:', paymentStatus)
+      
+      // Add test payment details
+      paymentDetails = {
+        last_four: '4242',
+        card_brand: 'Visa',
+        payment_method_type: 'card',
+      }
     } else {
       // Retrieve the payment intent from Stripe to get its latest status
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
       paymentStatus = paymentIntent.status
       console.log('Retrieved Stripe status:', paymentStatus)
+      
+      // Extract payment details if available
+      if (paymentIntent.charges?.data?.length > 0) {
+        const charge = paymentIntent.charges.data[0]
+        const paymentMethod = charge.payment_method_details
+        
+        if (paymentMethod?.card) {
+          paymentDetails = {
+            last_four: paymentMethod.card.last4,
+            card_brand: paymentMethod.card.brand,
+            payment_method_type: paymentMethod.type,
+          }
+        }
+      }
     }
 
     // Update the payment attempt in Supabase
@@ -52,6 +74,7 @@ serve(async (req) => {
       .update({
         status: paymentStatus,
         updated_at: new Date().toISOString(),
+        ...paymentDetails
       })
       .eq('id', paymentAttemptId)
       .select()
