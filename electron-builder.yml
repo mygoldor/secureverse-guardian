@@ -1,7 +1,7 @@
 
 appId: "com.guardia.security"
 productName: "Guardia Security"
-copyright: "Copyright © 2023 Guardia Security"
+copyright: "Copyright © 2023-2024 Guardia Security"
 
 directories:
   output: "release/"
@@ -36,8 +36,9 @@ mac:
     - "dmg"
     - "zip"
   artifactName: "${productName}-${version}-${arch}.${ext}"
+  darkModeSupport: true
+  hardenedRuntime: true
   # Code signing for macOS - Uncomment when certificate is available
-  # hardenedRuntime: true
   # gatekeeperAssess: false
   # entitlements: "./build/entitlements.mac.plist"
   # entitlementsInherit: "./build/entitlements.mac.plist"
@@ -60,6 +61,7 @@ linux:
   target:
     - "AppImage"
     - "deb"
+    - "snap"
   category: "Utility"
   artifactName: "${productName}-${version}-${arch}.${ext}"
   desktop:
@@ -93,8 +95,16 @@ publish:
   provider: "github"
   releaseType: "release"
   generateUpdatesFilesForAllChannels: true
+  publishAutoUpdate: true # Add auto-update publishing
 
 afterPack: "electron/afterPack.js"
 
-# Ajouter cette configuration lors de la signature du programme
+# Uncomment this configuration when ready for code signing and notarization
 # afterSign: "electron/notarize.js"
+
+# Add these configuration options for auto-updates
+updater:
+  allowPrerelease: false
+  channel: "latest"
+  requestHeaders:
+    "Cache-Control": "no-cache"
