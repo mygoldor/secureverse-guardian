@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { CreditCard, Check, Download, Calendar } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { getSuccessfulPayments, getPaymentStats } from '@/utils/stripeClient';
+import { getSuccessfulPayments, getPaymentStats } from '@/utils/stripe';
 import { useToast } from '@/hooks/use-toast';
 import PaymentHistory from './PaymentHistory';
 
