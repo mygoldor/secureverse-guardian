@@ -23,15 +23,23 @@ const CookieBanner: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [localPreferences, setLocalPreferences] = useState(cookiePreferences);
   
-  // Force banner to show on mount for testing
-  useEffect(() => {
-    console.log('Cookie banner mounted, showBanner:', showBanner);
-  }, [showBanner]);
-  
   // Reset local preferences when global preferences change
   useEffect(() => {
     setLocalPreferences(cookiePreferences);
   }, [cookiePreferences]);
+
+  // Force banner to show at first visit
+  useEffect(() => {
+    // Check if this is the first visit
+    const hasVisited = localStorage.getItem('hasVisited');
+    
+    if (!hasVisited) {
+      setShowBanner(true);
+      localStorage.setItem('hasVisited', 'true');
+    }
+    
+    console.log('Cookie banner mounted, showBanner:', showBanner);
+  }, [setShowBanner]);
   
   // Handle preference changes
   const handlePreferenceChange = (category: keyof typeof cookiePreferences) => {
