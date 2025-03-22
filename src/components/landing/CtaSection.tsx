@@ -19,7 +19,7 @@ const CtaSection: React.FC = () => {
           <p className="text-xl mb-10 text-blue-100">
             {t('cta_subtitle')}
           </p>
-          <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
+          <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
             <Link to="/signup">
               {t('signup_now')}
             </Link>

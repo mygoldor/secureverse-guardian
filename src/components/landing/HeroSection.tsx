@@ -18,12 +18,12 @@ const HeroSection: React.FC = () => {
             {t('hero_subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
+            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold">
               <Link to="/signup">
                 {t('get_started')}
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="bg-white border-white text-blue-700 hover:bg-blue-50">
+            <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-blue-700/20 hover:text-blue-50">
               <Link to="/signup">
                 {t('discover_guardia')}
               </Link>
