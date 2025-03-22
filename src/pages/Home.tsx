@@ -6,6 +6,7 @@ import PricingSection from '@/components/landing/PricingSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import CtaSection from '@/components/landing/CtaSection';
 import LandingHeader from '@/components/landing/LandingHeader';
+import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Home = () => {
@@ -21,6 +22,7 @@ const Home = () => {
         <TestimonialsSection />
         <CtaSection />
       </main>
+      <Footer />
     </div>
   );
 };

@@ -15,6 +15,9 @@ import Protection from '@/pages/Protection';
 import Privacy from '@/pages/Privacy';
 import Performance from '@/pages/Performance';
 import Settings from '@/pages/Settings';
+import MentionsLegales from '@/pages/MentionsLegales';
+import CookiesPolicy from '@/pages/CookiesPolicy';
+import TermsOfService from '@/pages/TermsOfService';
 
 const App = () => {
   return (
@@ -32,6 +35,9 @@ const App = () => {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/performance" element={<Performance />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route path="/cookies" element={<CookiesPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
             {/* Catch all route for pages that don't exist */}
             <Route path="*" element={<NotFound />} />
           </Routes>
