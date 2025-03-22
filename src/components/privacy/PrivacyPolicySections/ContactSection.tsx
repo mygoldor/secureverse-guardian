@@ -7,7 +7,7 @@ const ContactSection: React.FC = () => {
     <PrivacyPolicySection title="11. Contact">
       <p className="mb-3">If you have any questions, you can contact us at:</p>
       <p className="mb-4">
-        📩 <strong>Email</strong>: privacy@guardia-security.com<br />
+        📩 <strong>Email</strong>: info@cybergard.eu<br />
         📍 <strong>Postal address</strong>: 123 Security Street, 1000 Brussels, Belgium
       </p>
       
