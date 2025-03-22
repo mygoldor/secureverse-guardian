@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { signInUser } from '@/utils/authUtils';
+import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +17,14 @@ const Login = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signIn, user } = useAuth();
+
+  useEffect(() => {
+    // If already logged in, redirect to dashboard
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -26,25 +34,34 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    const result = await signInUser(email, password);
-    
-    if (result.success) {
-      toast({
-        title: t('login'),
-        description: t('login_success'),
-      });
+    try {
+      const result = await signIn(email, password);
       
-      // Redirect to dashboard
-      navigate('/dashboard');
-    } else {
+      if (result.success) {
+        toast({
+          title: t('login'),
+          description: t('login_success'),
+        });
+        
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        toast({
+          title: t('login'),
+          description: result.error instanceof Error ? result.error.message : t('login_failed'),
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
       toast({
         title: t('login'),
-        description: result.error instanceof Error ? result.error.message : t('login_failed'),
+        description: error instanceof Error ? error.message : t('login_failed'),
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
