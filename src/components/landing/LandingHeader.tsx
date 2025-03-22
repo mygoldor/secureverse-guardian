@@ -20,6 +20,18 @@ const LandingHeader = () => {
     { href: "#contact", label: t('contact') },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    
+    if (element) {
+      window.scrollTo({
+        top: element.getBoundingClientRect().top + window.scrollY - 80, // Account for header height
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -39,6 +51,7 @@ const LandingHeader = () => {
               <a 
                 key={item.href} 
                 href={item.href} 
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="text-white hover:text-gray-300 transition-colors font-medium"
               >
                 {item.label}
@@ -73,6 +86,18 @@ const LandingHeader = () => {
                   <SheetClose asChild key={item.href}>
                     <a 
                       href={item.href} 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const element = document.querySelector(item.href);
+                        if (element) {
+                          setTimeout(() => {
+                            window.scrollTo({
+                              top: element.getBoundingClientRect().top + window.scrollY - 80,
+                              behavior: 'smooth'
+                            });
+                          }, 100); // Small delay to ensure sheet closes first
+                        }
+                      }}
                       className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
                     >
                       {item.label}

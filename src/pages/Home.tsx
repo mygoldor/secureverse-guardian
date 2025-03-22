@@ -17,7 +17,7 @@ const Home = () => {
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLAnchorElement;
       
-      if (target.tagName === 'A' && target.hash && target.hash.startsWith('#')) {
+      if (target.tagName === 'A' && target.hash && target.hash.startsWith('#') && !target.classList.contains('nav-item')) {
         e.preventDefault();
         const element = document.querySelector(target.hash);
         
