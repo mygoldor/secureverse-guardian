@@ -1,5 +1,5 @@
 
+// Re-export the Auth provider and useAuth hook from AuthContext
 import { AuthProvider, useAuth } from './auth/AuthContext';
 
-// Re-export the Auth provider and hook
 export { AuthProvider, useAuth };
