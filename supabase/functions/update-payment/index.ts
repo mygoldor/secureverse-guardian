@@ -28,18 +28,29 @@ serve(async (req) => {
 
   try {
     // Get request body
-    const { paymentIntentId, paymentAttemptId } = await req.json()
+    const { paymentIntentId, paymentAttemptId, testMode, simulatedStatus } = await req.json()
     
     console.log('Updating payment status for intent:', paymentIntentId)
+    console.log('Test mode:', testMode ? 'enabled' : 'disabled')
 
-    // Retrieve the payment intent from Stripe to get its latest status
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+    let paymentStatus
+
+    if (testMode && simulatedStatus) {
+      // Use the simulated status for test mode
+      paymentStatus = simulatedStatus
+      console.log('Using simulated status:', paymentStatus)
+    } else {
+      // Retrieve the payment intent from Stripe to get its latest status
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+      paymentStatus = paymentIntent.status
+      console.log('Retrieved Stripe status:', paymentStatus)
+    }
 
     // Update the payment attempt in Supabase
     const { data, error } = await supabase
       .from('payment_attempts')
       .update({
-        status: paymentIntent.status,
+        status: paymentStatus,
         updated_at: new Date().toISOString(),
       })
       .eq('id', paymentAttemptId)
@@ -50,11 +61,13 @@ serve(async (req) => {
       throw error
     }
 
+    console.log('Payment status updated in Supabase:', paymentStatus)
+
     // Return the updated payment attempt
     return new Response(
       JSON.stringify({ 
         success: true, 
-        status: paymentIntent.status,
+        status: paymentStatus,
         paymentAttempt: data[0] 
       }),
       {

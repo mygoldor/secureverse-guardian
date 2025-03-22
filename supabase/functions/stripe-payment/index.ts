@@ -34,10 +34,11 @@ serve(async (req) => {
 
   try {
     // Get request body
-    const { planType, successUrl, cancelUrl, customerEmail } = await req.json()
+    const { planType, successUrl, cancelUrl, customerEmail, testMode } = await req.json()
     
     console.log('Creating payment session for plan:', planType)
     console.log('Customer email:', customerEmail)
+    console.log('Test mode:', testMode ? 'enabled' : 'disabled')
 
     // For testing purposes, we'll create a Payment Intent directly without redirecting to Stripe
     // In production, you would create a Checkout Session and redirect to Stripe
@@ -50,8 +51,11 @@ serve(async (req) => {
       metadata: {
         plan: planType,
         customer_email: customerEmail,
+        test_mode: testMode ? 'true' : 'false',
       },
     })
+
+    console.log('Created payment intent:', paymentIntent.id)
 
     // Store the payment attempt in Supabase
     const { data, error } = await supabase
@@ -70,6 +74,8 @@ serve(async (req) => {
       console.error('Error saving payment attempt to Supabase:', error)
       throw error
     }
+
+    console.log('Saved payment attempt:', data[0].id)
 
     // Return the client secret for the frontend to confirm the payment
     return new Response(

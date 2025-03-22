@@ -24,6 +24,42 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_attempts: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          customer_email: string | null
+          id: string
+          plan_type: string
+          status: string
+          stripe_payment_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency: string
+          customer_email?: string | null
+          id?: string
+          plan_type: string
+          status: string
+          stripe_payment_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          customer_email?: string | null
+          id?: string
+          plan_type?: string
+          status?: string
+          stripe_payment_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
