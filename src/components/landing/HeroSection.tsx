@@ -23,7 +23,7 @@ const HeroSection: React.FC = () => {
                 {t('get_started')}
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-blue-700">
+            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-blue-700/50">
               <Link to="/signup">
                 {t('discover_guardia')}
               </Link>
