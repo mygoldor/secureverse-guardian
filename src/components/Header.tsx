@@ -61,7 +61,7 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu without the blue button trigger */}
       <MobileMenu user={user} handleLogout={handleLogout} />
     </>
   );

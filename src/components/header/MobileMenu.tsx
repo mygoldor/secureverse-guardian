@@ -11,7 +11,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from 'lucide-react';
 
 interface MobileMenuProps {
   user: any;
@@ -29,11 +28,6 @@ const MobileMenu = ({ user, handleLogout }: MobileMenuProps) => {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <button className="menu-button md:hidden">
-          <Menu className="h-6 w-6" />
-        </button>
-      </SheetTrigger>
       <SheetContent side="right" className="w-[80%] sm:w-[350px]">
         <SheetHeader className="mb-6">
           <SheetTitle>Guardia</SheetTitle>
