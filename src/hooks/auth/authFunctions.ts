@@ -2,27 +2,20 @@
 import { supabase } from '@/integrations/supabase/client';
 import { UserData } from '@/types/auth';
 
-// Sign in an existing user with email and password
+// Sign in with email and password
 export const signInWithEmailPassword = async (email: string, password: string) => {
-  console.log("Signing in with email:", email);
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     
-    if (error) {
-      console.error("Auth error during signin:", error);
-      throw error;
-    }
-    
-    console.log("Sign in successful:", data.user?.id);
+    if (error) throw error;
     
     if (data && data.user) {
       // Get user profile
-      // Using type assertion because the Supabase type doesn't match the actual table structure
       const { data: profileData, error: profileError } = await supabase
-        .from('profiles' as any)
+        .from('profiles')
         .select('*')
         .eq('user_id', data.user.id)
         .single();
@@ -34,8 +27,7 @@ export const signInWithEmailPassword = async (email: string, password: string) =
       // Create user data for localStorage (for backward compatibility)
       const userData: UserData = {
         id: data.user.id,
-        // Use optional chaining and type assertion to safely access the name property
-        name: (profileData as any)?.name || email.split('@')[0],
+        name: profileData?.name || email.split('@')[0],
         email: email,
         isAuthenticated: true,
         subscriptionActive: false // This would be updated based on subscription check
@@ -54,19 +46,15 @@ export const signInWithEmailPassword = async (email: string, password: string) =
   }
 };
 
-// Sign up a new user with email, password, and name
+// Sign up with email, password and name
 export const signUpWithEmailPassword = async (email: string, password: string, name: string) => {
-  console.log("Starting signup process for:", email);
   try {
+    console.log("Starting signup process for:", email);
+    
     // Sign up the user with Supabase
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          name: name
-        }
-      }
     });
 
     if (authError) {
@@ -78,13 +66,12 @@ export const signUpWithEmailPassword = async (email: string, password: string, n
 
     if (authData && authData.user) {
       // Create a profile for the user in profiles table
-      // Using type assertion because the Supabase type doesn't match the actual table structure
       const { error: profileError } = await supabase
-        .from('profiles' as any)
+        .from('profiles')
         .insert({
           user_id: authData.user.id,
           name: name,
-        } as any);
+        });
 
       if (profileError) {
         console.error('Error creating user profile:', profileError);
@@ -112,7 +99,7 @@ export const signUpWithEmailPassword = async (email: string, password: string, n
   }
 };
 
-// Sign out the current user
+// Sign out user
 export const signOutUser = async () => {
   try {
     const { error } = await supabase.auth.signOut();

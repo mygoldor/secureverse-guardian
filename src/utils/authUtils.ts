@@ -29,13 +29,12 @@ export const signUpUser = async (email: string, password: string, name: string) 
 
     if (authData && authData.user) {
       // Create a profile for the user in profiles table
-      // Using type assertion because the Supabase type doesn't match the actual table structure
       const { error: profileError } = await supabase
-        .from('profiles' as any)
+        .from('profiles')
         .insert({
           user_id: authData.user.id,
           name: name,
-        } as any);
+        });
 
       if (profileError) {
         console.error('Error creating user profile:', profileError);
@@ -75,9 +74,8 @@ export const signInUser = async (email: string, password: string) => {
     
     if (data && data.user) {
       // Get user profile
-      // Using type assertion because the Supabase type doesn't match the actual table structure
       const { data: profileData, error: profileError } = await supabase
-        .from('profiles' as any)
+        .from('profiles')
         .select('*')
         .eq('user_id', data.user.id)
         .single();
@@ -89,8 +87,7 @@ export const signInUser = async (email: string, password: string) => {
       // Create user data for localStorage (for backward compatibility)
       const userData: UserData = {
         id: data.user.id,
-        // Use optional chaining and type assertion to safely access the name property
-        name: (profileData as any)?.name || email.split('@')[0],
+        name: profileData?.name || email.split('@')[0],
         email: email,
         isAuthenticated: true,
         subscriptionActive: false // This would be updated based on subscription check
