@@ -10,11 +10,13 @@ const HeroSection: React.FC = () => {
   
   // Function to handle navigation to signup page
   const handleGetStartedClick = () => {
+    console.log("Navigating to signup page from Get Started button");
     navigate('/signup');
   };
   
   // Function to handle navigation to signup page
   const handleDiscoverGuardiaClick = () => {
+    console.log("Navigating to signup page from Discover Guardia button");
     navigate('/signup');
   };
   
@@ -38,8 +40,9 @@ const HeroSection: React.FC = () => {
               {t('get_started')}
             </Button>
             <Button 
+              variant="outline"
               size="lg" 
-              className="bg-white text-blue-700 hover:bg-blue-50 font-semibold"
+              className="bg-transparent border-white text-white hover:bg-white/10 font-semibold"
               onClick={handleDiscoverGuardiaClick}
             >
               {t('discover_guardia')}
