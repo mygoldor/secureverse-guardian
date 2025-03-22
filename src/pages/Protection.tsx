@@ -1,9 +1,9 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Shield, RefreshCcw, Lock, Eye } from 'lucide-react';
 import Header from '@/components/Header';
 import ProtectionCard from '@/components/ProtectionCard';
 import SecurityAgent from '@/components/SecurityAgent';
+import Footer from '@/components/Footer';
 
 const Protection = () => {
   const [protectionSettings, setProtectionSettings] = useState({
@@ -21,7 +21,7 @@ const Protection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-[#F9F9F9]">
       <Header />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
@@ -74,6 +74,7 @@ const Protection = () => {
           <SecurityAgent />
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
