@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,17 +16,23 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { signUp, user } = useAuth();
 
   useEffect(() => {
-    // If already logged in, redirect to dashboard
-    if (user) {
-      navigate('/dashboard');
+    setIsPageLoaded(true);
+    
+    if (user && isPageLoaded) {
+      const redirectTimer = setTimeout(() => {
+        navigate('/dashboard');
+      }, 300);
+      
+      return () => clearTimeout(redirectTimer);
     }
-  }, [user, navigate]);
+  }, [user, navigate, isPageLoaded]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -41,7 +46,6 @@ const Signup = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Basic validation
     if (password !== confirmPassword) {
       toast({
         title: t('passwords_dont_match'),
@@ -53,7 +57,6 @@ const Signup = () => {
     }
     
     try {
-      // Call the signup function
       const result = await signUp(email, password, name);
       
       if (result.success) {
@@ -62,7 +65,6 @@ const Signup = () => {
           description: t('signup_success'),
         });
         
-        // Redirect to payment page to complete subscription
         navigate('/payment');
       } else {
         toast({

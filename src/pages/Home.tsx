@@ -10,6 +10,9 @@ import LandingHeader from '@/components/landing/LandingHeader';
 import Footer from '@/components/Footer';
 
 const Home: React.FC = () => {
+  // Log a message to confirm the Home page is rendering
+  console.log("Home page rendered");
+
   return (
     <div className="min-h-screen">
       <LandingHeader />

@@ -1,9 +1,11 @@
 
 import React, { useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   
   useEffect(() => {
     // Add event listeners directly to the buttons after component mounts
@@ -12,13 +14,13 @@ const HeroSection: React.FC = () => {
     
     if (startButton) {
       startButton.addEventListener("click", function () {
-        window.location.href = "/signup"; // Redirect to signup page
+        navigate('/signup'); // Redirect to signup page using React Router
       });
     }
     
     if (discoverButton) {
       discoverButton.addEventListener("click", function () {
-        window.location.href = "/signup"; // Redirect to signup page
+        navigate('/signup'); // Redirect to signup page using React Router
       });
     }
     
@@ -39,7 +41,7 @@ const HeroSection: React.FC = () => {
         });
       }
     };
-  }, []);
+  }, [navigate]);
   
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
