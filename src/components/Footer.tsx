@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -20,7 +20,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#003366] text-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2 mb-4">
               <img 
@@ -91,6 +91,18 @@ const Footer = () => {
               <li><Link to="/privacy" className="text-gray-300 hover:text-white transition-colors">{t('privacy_policy')}</Link></li>
               <li><Link to="/terms" className="text-gray-300 hover:text-white transition-colors">{t('terms_of_use')}</Link></li>
               <li><Link to="/cookies" className="text-gray-300 hover:text-white transition-colors">{t('cookie_management')}</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-lg mb-4">{t('contact')}</h4>
+            <ul className="space-y-2">
+              <li className="flex items-center space-x-2">
+                <Mail className="h-4 w-4 text-[#0099FF]" />
+                <a href="mailto:info@cybergard.eu" className="text-gray-300 hover:text-white transition-colors">
+                  info@cybergard.eu
+                </a>
+              </li>
             </ul>
           </div>
         </div>
