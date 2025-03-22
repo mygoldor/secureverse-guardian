@@ -32,6 +32,13 @@ const LandingHeader = () => {
     }
   };
 
+  const closeSheet = () => {
+    const closeButton = document.querySelector('[data-radix-collection-item]') as HTMLElement;
+    if (closeButton) {
+      closeButton.click();
+    }
+  };
+
   return (
     <header className="w-full bg-[#003366] py-4 px-4 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -88,7 +95,7 @@ const LandingHeader = () => {
                     href={item.href} 
                     onClick={(e) => {
                       // Close the sheet
-                      document.querySelector('[data-radix-collection-item]')?.click();
+                      closeSheet();
                       // After a small delay, scroll to the section
                       setTimeout(() => {
                         handleNavClick(e, item.href);
@@ -103,7 +110,7 @@ const LandingHeader = () => {
                   to="/login" 
                   className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
                   onClick={() => {
-                    document.querySelector('[data-radix-collection-item]')?.click();
+                    closeSheet();
                   }}
                 >
                   {t('login')}
@@ -112,7 +119,7 @@ const LandingHeader = () => {
                   to="/signup" 
                   className="mt-4"
                   onClick={() => {
-                    document.querySelector('[data-radix-collection-item]')?.click();
+                    closeSheet();
                   }}
                 >
                   <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
