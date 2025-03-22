@@ -83,30 +83,42 @@ const LandingHeader = () => {
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-white">
               <div className="flex flex-col space-y-4 mt-8">
                 {navItems.map((item) => (
-                  <SheetClose key={item.href} asChild>
-                    <a 
-                      href={item.href} 
-                      onClick={(e) => {
+                  <a 
+                    key={item.href} 
+                    href={item.href} 
+                    onClick={(e) => {
+                      // Close the sheet
+                      document.querySelector('[data-radix-collection-item]')?.click();
+                      // After a small delay, scroll to the section
+                      setTimeout(() => {
                         handleNavClick(e, item.href);
-                      }}
-                      className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
-                    >
-                      {item.label}
-                    </a>
-                  </SheetClose>
+                      }, 100);
+                    }}
+                    className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
+                  >
+                    {item.label}
+                  </a>
                 ))}
-                <SheetClose asChild>
-                  <Link to="/login" className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2">
-                    {t('login')}
-                  </Link>
-                </SheetClose>
-                <SheetClose asChild>
-                  <Link to="/signup" className="mt-4">
-                    <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
-                      {t('get_started')}
-                    </Button>
-                  </Link>
-                </SheetClose>
+                <Link 
+                  to="/login" 
+                  className="text-lg font-medium text-gray-800 hover:text-[#0099FF] py-2"
+                  onClick={() => {
+                    document.querySelector('[data-radix-collection-item]')?.click();
+                  }}
+                >
+                  {t('login')}
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className="mt-4"
+                  onClick={() => {
+                    document.querySelector('[data-radix-collection-item]')?.click();
+                  }}
+                >
+                  <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
+                    {t('get_started')}
+                  </Button>
+                </Link>
               </div>
             </SheetContent>
           </Sheet>
