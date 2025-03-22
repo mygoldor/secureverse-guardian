@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import StripeCheckout from '@/components/payment/StripeCheckout';
+import BancontactOptions from '@/components/payment/BancontactOptions';
 
 interface PaymentMethodsSectionProps {
   paymentMethod: string;
@@ -36,12 +37,7 @@ const PaymentMethodsSection: React.FC<PaymentMethodsSectionProps> = ({
           )}
           
           {paymentMethod === 'mollie' && (
-            <Button 
-              onClick={onPaymentSuccess} 
-              className="w-full bg-[#0a84ff] hover:bg-[#0a84ff]/90 text-white"
-            >
-              Payer avec Bancontact
-            </Button>
+            <BancontactOptions onSuccess={onPaymentSuccess} />
           )}
           
           {paymentMethod === 'paypal' && (

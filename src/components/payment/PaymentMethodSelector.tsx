@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CreditCard, CreditCardIcon } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 
 interface PaymentMethodSelectorProps {
   value: string;
