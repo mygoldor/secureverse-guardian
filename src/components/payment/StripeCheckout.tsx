@@ -185,7 +185,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
         ) : (
           <>
             <CreditCard className="h-4 w-4 mr-2" />
-            {testMode ? 'Tester le Paiement' : 'Payer avec Stripe'}
+            {testMode ? 'Tester le Paiement' : 'Contenu'}
           </>
         )}
       </Button>
