@@ -1,11 +1,15 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const HeroSection: React.FC = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  
+  const handleNavigateToSignup = () => {
+    navigate('/signup');
+  };
   
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
@@ -19,23 +23,20 @@ const HeroSection: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-            <Link to="/signup" id="start-button" className="inline-block w-full sm:w-auto no-underline">
-              <Button 
-                size="lg" 
-                className="bg-white text-blue-700 hover:bg-blue-50 font-semibold w-full"
-              >
-                {t('get_started')}
-              </Button>
-            </Link>
-            <Link to="/signup" id="discover-button" className="inline-block w-full sm:w-auto no-underline">
-              <Button 
-                variant="outline"
-                size="lg" 
-                className="bg-transparent border-white text-white hover:bg-white/10 font-semibold w-full"
-              >
-                {t('discover_guardia')}
-              </Button>
-            </Link>
+            <button 
+              id="start-button" 
+              onClick={handleNavigateToSignup}
+              className="bg-white text-blue-700 hover:bg-blue-50 font-semibold py-3 px-6 rounded-md w-full sm:w-auto"
+            >
+              {t('get_started')}
+            </button>
+            <button 
+              id="discover-button" 
+              onClick={handleNavigateToSignup}
+              className="bg-transparent border border-white text-white hover:bg-white/10 font-semibold py-3 px-6 rounded-md w-full sm:w-auto"
+            >
+              {t('discover_guardia')}
+            </button>
           </div>
         </div>
       </div>
