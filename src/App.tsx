@@ -11,6 +11,10 @@ import Payment from '@/pages/Payment';
 import Home from '@/pages/Home';
 import NotFound from '@/pages/NotFound';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import Protection from '@/pages/Protection';
+import Privacy from '@/pages/Privacy';
+import Performance from '@/pages/Performance';
+import Settings from '@/pages/Settings';
 
 const App = () => {
   return (
@@ -24,6 +28,10 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
+            <Route path="/protection" element={<Protection />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/performance" element={<Performance />} />
+            <Route path="/settings" element={<Settings />} />
             {/* Catch all route for pages that don't exist */}
             <Route path="*" element={<NotFound />} />
           </Routes>
