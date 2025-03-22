@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
@@ -31,6 +32,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/payment" element={<Payment />} />
+            
+            {/* Protected routes that require authentication and subscription */}
             <Route path="/dashboard" element={
               <AuthGuard>
                 <Header />
@@ -41,12 +44,6 @@ const App = () => {
               <AuthGuard>
                 <Header />
                 <Protection />
-              </AuthGuard>
-            } />
-            <Route path="/privacy" element={
-              <AuthGuard>
-                <Header />
-                <Privacy />
               </AuthGuard>
             } />
             <Route path="/performance" element={
@@ -61,24 +58,33 @@ const App = () => {
                 <Settings />
               </AuthGuard>
             } />
+            
+            {/* Legal pages - publicly accessible */}
+            <Route path="/privacy" element={
+              <>
+                <Header />
+                <Privacy />
+              </>
+            } />
             <Route path="/mentions-legales" element={
-              <AuthGuard>
+              <>
                 <Header />
                 <MentionsLegales />
-              </AuthGuard>
+              </>
             } />
             <Route path="/cookies" element={
-              <AuthGuard>
+              <>
                 <Header />
                 <CookiesPolicy />
-              </AuthGuard>
+              </>
             } />
             <Route path="/terms" element={
-              <AuthGuard>
+              <>
                 <Header />
                 <TermsOfService />
-              </AuthGuard>
+              </>
             } />
+            
             {/* Catch all route for pages that don't exist */}
             <Route path="*" element={<NotFound />} />
           </Routes>
