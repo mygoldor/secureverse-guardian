@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,23 +13,29 @@ export const paymentFormSchema = z.object({
   cardNumber: z.string().min(16, "Le numéro de carte doit comporter 16 chiffres"),
   cardName: z.string().min(3, "Veuillez entrer le nom sur la carte"),
   expiry: z.string().regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Format MM/YY requis"),
-  cvc: z.string().min(3, "Le CVC doit comporter 3 chiffres"),
+  cvc: z.string().min(3, "Le CVC doit comporter 3 chiffres").optional(),
 });
 
+// Bancontact schema without CVC
+export const bancontactFormSchema = paymentFormSchema.omit({ cvc: true });
+
 export type PaymentFormValues = z.infer<typeof paymentFormSchema>;
+export type BancontactFormValues = z.infer<typeof bancontactFormSchema>;
 
 interface CardPaymentFormProps {
-  form: UseFormReturn<PaymentFormValues>;
+  form: UseFormReturn<PaymentFormValues> | UseFormReturn<BancontactFormValues>;
   isLoading: boolean;
-  onSubmit: (values: PaymentFormValues) => void;
+  onSubmit: (values: PaymentFormValues | BancontactFormValues) => void;
   onCancel: () => void;
+  isBancontact?: boolean;
 }
 
 const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
   form,
   isLoading,
   onSubmit,
-  onCancel
+  onCancel,
+  isBancontact = false
 }) => {
   return (
     <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
@@ -68,7 +75,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
             )}
           />
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className={isBancontact ? "grid grid-cols-1" : "grid grid-cols-2 gap-4"}>
             <FormField
               control={form.control}
               name="expiry"
@@ -83,19 +90,21 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               )}
             />
             
-            <FormField
-              control={form.control}
-              name="cvc"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>CVC</FormLabel>
-                  <FormControl>
-                    <Input placeholder="123" maxLength={3} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {!isBancontact && (
+              <FormField
+                control={form.control}
+                name="cvc"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>CVC</FormLabel>
+                    <FormControl>
+                      <Input placeholder="123" maxLength={3} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
           
           <div className="flex items-center text-sm text-gray-500 mb-4">

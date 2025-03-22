@@ -1,13 +1,9 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import CardPaymentForm from './CardPaymentForm';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { paymentFormSchema, PaymentFormValues } from './CardPaymentForm';
 import { Smartphone } from 'lucide-react';
+import CardPaymentForm, { bancontactFormSchema, BancontactFormValues } from './CardPaymentForm';
 
 interface BancontactOptionsProps {
   onSuccess: () => void;
@@ -17,19 +13,18 @@ const BancontactOptions: React.FC<BancontactOptionsProps> = ({ onSuccess }) => {
   const [showCardForm, setShowCardForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  const form = useForm<PaymentFormValues>({
-    resolver: zodResolver(paymentFormSchema),
+  const form = useForm<BancontactFormValues>({
+    resolver: zodResolver(bancontactFormSchema),
     defaultValues: {
       cardNumber: '',
       cardName: '',
       expiry: '',
-      cvc: '',
     },
   });
 
-  const handleCardSubmit = (values: PaymentFormValues) => {
+  const handleCardSubmit = (values: BancontactFormValues) => {
     setIsLoading(true);
-    console.log('Card payment values:', values);
+    console.log('Bancontact card payment values:', values);
     
     // Simulate payment processing
     setTimeout(() => {
@@ -61,6 +56,7 @@ const BancontactOptions: React.FC<BancontactOptionsProps> = ({ onSuccess }) => {
         isLoading={isLoading}
         onSubmit={handleCardSubmit}
         onCancel={() => setShowCardForm(false)}
+        isBancontact={true}
       />
     );
   }
