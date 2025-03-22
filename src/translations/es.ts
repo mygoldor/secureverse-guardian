@@ -361,7 +361,9 @@ const es = {
   full_name: 'Nombre completo',
   enter_your_name: 'Introduzca su nombre',
   confirm_your_password: 'Confirme su contraseña',
-  already_have_account: '¿Ya tiene una cuenta?'
+  already_have_account: '¿Ya tiene una cuenta?',
+  already_logged_in: 'Ya ha iniciado sesión',
+  go_to_dashboard: 'Ir al panel'
 };
 
 export default es;

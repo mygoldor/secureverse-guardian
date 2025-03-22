@@ -361,7 +361,9 @@ const de = {
   full_name: 'Vollständiger Name',
   enter_your_name: 'Geben Sie Ihren Namen ein',
   confirm_your_password: 'Bestätigen Sie Ihr Passwort',
-  already_have_account: 'Sie haben bereits ein Konto?'
+  already_have_account: 'Sie haben bereits ein Konto?',
+  already_logged_in: 'Sie sind bereits angemeldet',
+  go_to_dashboard: 'Zum Dashboard'
 };
 
 export default de;

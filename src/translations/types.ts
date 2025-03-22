@@ -362,4 +362,6 @@ export interface TranslationKeys {
   enter_your_name: string;
   confirm_your_password: string;
   already_have_account: string;
+  already_logged_in: string;
+  go_to_dashboard: string;
 }

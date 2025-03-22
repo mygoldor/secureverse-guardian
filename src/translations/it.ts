@@ -361,7 +361,9 @@ const it = {
   full_name: 'Nome completo',
   enter_your_name: 'Inserisci il tuo nome',
   confirm_your_password: 'Conferma la tua password',
-  already_have_account: 'Hai già un account?'
+  already_have_account: 'Hai già un account?',
+  already_logged_in: 'Hai già effettuato l\'accesso',
+  go_to_dashboard: 'Vai alla dashboard'
 };
 
 export default it;

@@ -361,7 +361,9 @@ const en = {
   full_name: 'Full Name',
   enter_your_name: 'Enter your name',
   confirm_your_password: 'Confirm your password',
-  already_have_account: 'Already have an account?'
+  already_have_account: 'Already have an account?',
+  already_logged_in: 'You are already logged in',
+  go_to_dashboard: 'Go to Dashboard'
 };
 
 export default en;

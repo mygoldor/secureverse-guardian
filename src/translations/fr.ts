@@ -349,10 +349,10 @@ const fr = {
   login_success: 'Connexion réussie',
   login_failed: 'Échec de la connexion',
   login_to_guardia: 'Connexion à Guardia',
-  email_address: 'Adresse email',
-  enter_your_email: 'Entrez votre email',
+  email_address: 'Adresse e-mail',
+  enter_your_email: 'Entrez votre e-mail',
   enter_your_password: 'Entrez votre mot de passe',
-  dont_have_account: 'Vous n\'avez pas de compte ?',
+  dont_have_account: 'Vous n\'avez pas de compte?',
   create_account: 'Créer un compte',
   passwords_dont_match: 'Les mots de passe ne correspondent pas',
   signup_success: 'Inscription réussie',
@@ -361,7 +361,9 @@ const fr = {
   full_name: 'Nom complet',
   enter_your_name: 'Entrez votre nom',
   confirm_your_password: 'Confirmez votre mot de passe',
-  already_have_account: 'Vous avez déjà un compte ?'
+  already_have_account: 'Vous avez déjà un compte?',
+  already_logged_in: 'Vous êtes déjà connecté',
+  go_to_dashboard: 'Aller au tableau de bord'
 };
 
 export default fr;
