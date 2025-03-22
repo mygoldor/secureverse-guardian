@@ -25,17 +25,17 @@ const LandingHeader = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <nav className="flex items-center space-x-6">
-            <a href="#features" className="text-white hover:text-gray-300 transition-colors">{t('features')}</a>
-            <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors">{t('testimonials')}</a>
-            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors">{t('pricing')}</a>
-            <a href="#contact" className="text-white hover:text-gray-300 transition-colors">{t('contact')}</a>
-            <Link to="/login" className="text-white hover:text-gray-300 transition-colors">{t('login')}</Link>
+            <a href="#features" className="text-white hover:text-gray-300 transition-colors font-medium">{t('features')}</a>
+            <a href="#testimonials" className="text-white hover:text-gray-300 transition-colors font-medium">{t('testimonials')}</a>
+            <a href="#pricing" className="text-white hover:text-gray-300 transition-colors font-medium">{t('pricing')}</a>
+            <a href="#contact" className="text-white hover:text-gray-300 transition-colors font-medium">{t('contact')}</a>
+            <Link to="/login" className="text-white hover:text-gray-300 transition-colors font-medium">{t('login')}</Link>
           </nav>
           
           <div className="flex items-center space-x-4">
             <LanguageSelector />
             <Link to="/signup">
-              <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white">
+              <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white font-semibold">
                 {t('get_started')}
               </Button>
             </Link>
@@ -53,11 +53,11 @@ const LandingHeader = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] sm:w-[300px]">
               <div className="flex flex-col space-y-4 mt-8">
-                <a href="#features" className="text-lg font-medium hover:text-security-primary py-2">{t('features')}</a>
-                <a href="#testimonials" className="text-lg font-medium hover:text-security-primary py-2">{t('testimonials')}</a>
-                <a href="#pricing" className="text-lg font-medium hover:text-security-primary py-2">{t('pricing')}</a>
-                <a href="#contact" className="text-lg font-medium hover:text-security-primary py-2">{t('contact')}</a>
-                <Link to="/login" className="text-lg font-medium hover:text-security-primary py-2">{t('login')}</Link>
+                <a href="#features" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('features')}</a>
+                <a href="#testimonials" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('testimonials')}</a>
+                <a href="#pricing" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('pricing')}</a>
+                <a href="#contact" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('contact')}</a>
+                <Link to="/login" className="text-lg font-medium hover:text-[#0099FF] py-2">{t('login')}</Link>
                 <Link to="/signup" className="mt-4">
                   <Button className="bg-[#0099FF] hover:bg-[#007ACC] text-white w-full">
                     {t('get_started')}

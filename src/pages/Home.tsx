@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import HeroSection from '@/components/landing/HeroSection';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import PricingSection from '@/components/landing/PricingSection';
@@ -12,21 +12,45 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Home = () => {
   const { t } = useLanguage();
 
+  // Handle smooth scrolling for anchor links
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLAnchorElement;
+      
+      if (target.tagName === 'A' && target.hash && target.hash.startsWith('#')) {
+        e.preventDefault();
+        const element = document.querySelector(target.hash);
+        
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+    
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <LandingHeader />
       <main>
         <HeroSection />
-        <div id="features">
+        <div id="features" className="scroll-mt-20">
           <FeaturesSection />
         </div>
-        <div id="testimonials">
+        <div id="testimonials" className="scroll-mt-20">
           <TestimonialsSection />
         </div>
-        <div id="pricing">
+        <div id="pricing" className="scroll-mt-20">
           <PricingSection />
         </div>
-        <div id="contact">
+        <div id="contact" className="scroll-mt-20">
           <CtaSection />
         </div>
       </main>
