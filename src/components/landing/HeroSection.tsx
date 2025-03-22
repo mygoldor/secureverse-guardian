@@ -33,17 +33,6 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="mt-16 flex justify-center">
-        <div className="relative w-full max-w-4xl">
-          <div className="aspect-video rounded-lg overflow-hidden shadow-xl">
-            <img 
-              src="/lovable-uploads/e43f9f04-afc5-43f6-857e-d2da3c3128f6.png" 
-              alt="Guardia security illustration" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </div>
     </section>
   );
 };
