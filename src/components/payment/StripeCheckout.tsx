@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { createCheckoutSession, StripeCheckoutOptions } from '@/utils/stripeUtils';
 import { ExternalLink } from 'lucide-react';
+import { createPaymentSession, updatePaymentStatus } from '@/utils/stripeClient';
 
 interface StripeCheckoutProps {
   planType: 'monthly' | 'yearly';
@@ -19,48 +19,68 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // These would be your actual price IDs from Stripe
-  const PRICE_IDS = {
-    monthly: 'price_monthly',
-    yearly: 'price_yearly'
-  };
-
   const handleCheckout = async () => {
     try {
       setIsLoading(true);
-
-      // In a real implementation, create the options based on selected plan
-      const options: StripeCheckoutOptions = {
-        priceId: PRICE_IDS[planType],
+      
+      // Create options for payment session
+      const options = {
+        planType,
         successUrl: `${window.location.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${window.location.origin}/payment`,
-        customerEmail: email
+        customerEmail: email || ''
       };
 
-      // For demonstration, simulate a successful checkout
-      // In production, uncomment the line below to redirect to Stripe
-      // const checkoutUrl = await createCheckoutSession(options);
-      // window.location.href = checkoutUrl;
+      // Call our Supabase Edge Function to create a payment session
+      const { clientSecret, paymentIntentId, paymentAttemptId } = await createPaymentSession(options);
       
-      // For demo purposes, simulate a successful checkout after short delay
-      setTimeout(() => {
-        setIsLoading(false);
-        
-        // Simulate successful payment
-        sessionStorage.setItem('paymentSuccessful', 'true');
-        
-        // Call success callback
-        if (onSuccess) {
-          onSuccess();
+      console.log('Payment session created:', { clientSecret, paymentIntentId, paymentAttemptId });
+      
+      // For testing purposes, we'll simulate a successful payment
+      // In a real app, you'd use Stripe Elements or redirect to Stripe Checkout
+      toast({
+        title: "Test Payment Initialized",
+        description: "Using test mode. In a real app, you'd be redirected to Stripe.",
+      });
+      
+      // Simulate payment processing
+      setTimeout(async () => {
+        try {
+          // Update the payment status
+          const { status } = await updatePaymentStatus(paymentIntentId, paymentAttemptId);
+          
+          console.log('Payment status updated:', status);
+          
+          setIsLoading(false);
+          toast({
+            title: "Test Payment Successful",
+            description: `Payment status: ${status}`,
+          });
+          
+          // Set success in session storage for demo purposes
+          sessionStorage.setItem('paymentSuccessful', 'true');
+          
+          // Call the success callback
+          if (onSuccess) {
+            onSuccess();
+          }
+        } catch (error) {
+          console.error('Error updating payment status:', error);
+          setIsLoading(false);
+          toast({
+            variant: "destructive",
+            title: "Payment Error",
+            description: "Error updating payment status.",
+          });
         }
-      }, 1500);
+      }, 2000);
     } catch (error) {
       console.error('Checkout error:', error);
       setIsLoading(false);
       toast({
         variant: "destructive",
         title: "Erreur de paiement",
-        description: "Une erreur s'est produite lors de la redirection vers Stripe.",
+        description: "Une erreur s'est produite lors de la création du paiement.",
       });
     }
   };
@@ -77,7 +97,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Redirection...
+          Traitement du paiement...
         </>
       ) : (
         <>
